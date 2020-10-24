@@ -67,7 +67,7 @@ public class SearchableTextAreaPanelTest {
     private static void createAndShowGUI() {
 
         JFrame frame = new JFrame("TextSearchTest");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         final JTextArea textArea = new JTextArea(50, 80);
         textArea.setEditable(false);
 

@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -63,7 +62,7 @@ public class TextEditorDemo extends JFrame {
 
         setContentPane(cp);
         setTitle("Text Editor Demo");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(3);
         pack();
         setLocationRelativeTo(null);
 

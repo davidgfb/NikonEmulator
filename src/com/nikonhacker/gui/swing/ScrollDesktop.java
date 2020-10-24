@@ -38,7 +38,7 @@ class ScrollDesktop extends JDesktopPane implements Scrollable {
 
 class Main extends JFrame {
     public Main() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(3);
         JDesktopPane desk = new ScrollDesktop();
         desk.setPreferredSize(new Dimension(1000, 1000));
         getContentPane().add(new JScrollPane(desk), "Center");
