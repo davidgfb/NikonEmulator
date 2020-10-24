@@ -24,7 +24,7 @@ public class BrowsePath extends JFrame implements ActionListener {
         this.add(button);
 
         button.addActionListener(this);
-        setDefaultCloseOperation(3);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void actionPerformed(ActionEvent e) {

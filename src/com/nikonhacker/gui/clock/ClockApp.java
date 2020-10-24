@@ -14,7 +14,7 @@ public class ClockApp {
 
     private void run() {
         JFrame window = new JFrame();
-        window.setDefaultCloseOperation(3);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("Analog Clock");
         ClockAnalogBuf contentPane = new ClockAnalogBuf();
         window.setContentPane(contentPane);

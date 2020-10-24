@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 public class IoPortsFrameTest {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("SteelCheckBoxTest");
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);
         JDesktopPane mdiPane = new JDesktopPane();
         IoPort[] ioPorts = new IoPort[3];

@@ -599,7 +599,7 @@ public class DialogDemo extends JPanel {
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("DialogDemo");
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
         DialogDemo newContentPane = new DialogDemo(frame);

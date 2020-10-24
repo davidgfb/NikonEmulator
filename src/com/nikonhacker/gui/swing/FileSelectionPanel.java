@@ -103,7 +103,7 @@ public class FileSelectionPanel extends JPanel implements ActionListener {
         this.add(button);
 
         button.addActionListener(this);
-        //setDefaultCloseOperation(3);
+        //setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void actionPerformed(ActionEvent e) {

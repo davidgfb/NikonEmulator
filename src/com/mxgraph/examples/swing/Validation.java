@@ -87,7 +87,7 @@ public class Validation extends JFrame {
 
     public static void main(String[] args) {
         Validation frame = new Validation();
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 320);
         frame.setVisible(true);
     }

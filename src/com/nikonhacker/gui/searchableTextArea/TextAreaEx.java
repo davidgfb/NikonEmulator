@@ -49,7 +49,7 @@ class TextAreaEx extends JFrame implements ActionListener, KeyListener {
         JFrame.setDefaultLookAndFeelDecorated(true);
         tx.addKeyListener(this);
         setSize(400, 400);
-        setDefaultCloseOperation(3);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(400, 300);
         setVisible(true);
     }

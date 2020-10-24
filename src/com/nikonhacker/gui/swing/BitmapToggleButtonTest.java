@@ -12,7 +12,7 @@ public class BitmapToggleButtonTest {
 
     public static void main(String[] args) throws Exception {
         javax.swing.JFrame frame = new javax.swing.JFrame("Custom Shape Button");
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
         ImagePanel panel = new ImagePanel();
         BufferedImage background = ImageIO.read(EmulatorUI.class.getResource(IMG_DIR + "/background.png"));

@@ -27,7 +27,7 @@ public class SplitPaneState {
     private void createAndSowGUI() {
         final JFrame frame = new JFrame("frame");
         frame.setSize( 200, 100 );
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.setLocationRelativeTo( null );
         frame.getContentPane().add( new JButton( new AbstractAction(){
             {
