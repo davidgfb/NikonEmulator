@@ -7,6 +7,7 @@ package com.nikonhacker.gui;
  * http://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
  */
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.ApplicationInfo;
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
@@ -76,6 +77,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.ORANGE;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -86,8 +90,25 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import static java.awt.event.ActionEvent.CTRL_MASK;
+import static java.awt.event.ActionEvent.SHIFT_MASK;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.VK_F10;
+import static java.awt.event.KeyEvent.VK_F11;
+import static java.awt.event.KeyEvent.VK_F12;
+import static java.awt.event.KeyEvent.VK_F5;
+import static java.awt.event.KeyEvent.VK_F6;
+import static java.awt.event.KeyEvent.VK_F7;
+import static java.awt.event.KeyEvent.VK_F8;
+import static java.awt.event.KeyEvent.VK_F9;
+import static java.awt.event.KeyEvent.VK_G;
+import static java.awt.event.KeyEvent.VK_L;
+import static java.awt.event.KeyEvent.VK_M;
+import static java.awt.event.KeyEvent.VK_Q;
+import static java.awt.event.KeyEvent.VK_R;
+import static java.awt.event.KeyEvent.VK_S;
+import static java.awt.event.KeyEvent.VK_T;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -131,51 +152,68 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+//</editor-fold>
+
 
 public class EmulatorUI extends JFrame implements ActionListener {
 
+    public static String getBUTTON_SIZE_SMALL() {
+        return BUTTON_SIZE_SMALL;
+    }
+    
+    
+
+    //<editor-fold defaultstate="collapsed" desc="vars">
     // Constants for commands
-    private static final String[] COMMAND_IMAGE_LOAD                         = {"FR_IMAGE_LOAD", "TX_IMAGE_LOAD"};
-    private static final String[] COMMAND_ANALYSE_DISASSEMBLE                = {"FR_ANALYSE_DISASSEMBLE", "TX_ANALYSE_DISASSEMBLE"};
-    private static final String[] COMMAND_EMULATOR_PLAY                      = {"FR_EMULATOR_PLAY", "TX_EMULATOR_PLAY"};
-    private static final String[] COMMAND_EMULATOR_DEBUG                     = {"FR_EMULATOR_DEBUG", "TX_EMULATOR_DEBUG"};
-    private static final String[] COMMAND_EMULATOR_PAUSE                     = {"FR_EMULATOR_PAUSE", "TX_EMULATOR_PAUSE"};
-    private static final String[] COMMAND_EMULATOR_STEP                      = {"FR_EMULATOR_STEP", "TX_EMULATOR_STEP"};
-    private static final String[] COMMAND_EMULATOR_STOP                      = {"FR_EMULATOR_STOP", "TX_EMULATOR_STOP"};
-    private static final String[] COMMAND_SETUP_BREAKPOINTS                  = {"FR_SETUP_BREAKPOINTS", "TX_SETUP_BREAKPOINTS"};
-    private static final String[] COMMAND_TOGGLE_MEMORY_ACTIVITY_VIEWER      = {"FR_TOGGLE_MEMORY_ACTIVITY_VIEWER", "TX_TOGGLE_MEMORY_ACTIVITY_VIEWER"};
-    private static final String[] COMMAND_TOGGLE_MEMORY_HEX_EDITOR           = {"FR_TOGGLE_MEMORY_HEX_EDITOR", "TX_TOGGLE_MEMORY_HEX_EDITOR"};
-    private static final String[] COMMAND_TOGGLE_DISASSEMBLY_WINDOW          = {"FR_TOGGLE_DISASSEMBLY_WINDOW", "TX_TOGGLE_DISASSEMBLY_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_CPUSTATE_WINDOW             = {"FR_TOGGLE_CPUSTATE_WINDOW", "TX_TOGGLE_CPUSTATE_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW        = {"FR_COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW", "TX_COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_INTERRUPT_CONTROLLER_WINDOW = {"FR_TOGGLE_INTERRUPT_CONTROLLER_WINDOW", "TX_TOGGLE_INTERRUPT_CONTROLLER_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_SERIAL_INTERFACES           = {"FR_COMMAND_TOGGLE_SERIAL_INTERFACES", "TX_COMMAND_TOGGLE_SERIAL_INTERFACES"};
-    private static final String[] COMMAND_TOGGLE_SERIAL_DEVICES              = {"FR_COMMAND_TOGGLE_SERIAL_DEVICES", "TX_COMMAND_TOGGLE_SERIAL_DEVICES"};
-    private static final String[] COMMAND_TOGGLE_IO_PORTS_WINDOW             = {"FR_COMMAND_TOGGLE_IO_PORTS_WINDOW", "TX_COMMAND_TOGGLE_IO_PORTS_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_AD_CONVERTER                = {"FR_COMMAND_TOGGLE_AD_CONVERTER", "TX_COMMAND_TOGGLE_AD_CONVERTER"};
-    private static final String[] COMMAND_SAVE_LOAD_MEMORY                   = {"FR_SAVE_LOAD_MEMORY", "TX_SAVE_LOAD_MEMORY"};
-    private static final String[] COMMAND_TOGGLE_CODE_STRUCTURE_WINDOW       = {"FR_TOGGLE_CODE_STRUCTURE_WINDOW", "TX_TOGGLE_CODE_STRUCTURE_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_SOURCE_CODE_WINDOW          = {"FR_TOGGLE_SOURCE_CODE_WINDOW", "TX_TOGGLE_SOURCE_CODE_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW  = {"FR_COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW", "TX_COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_CALL_STACK_WINDOW           = {"FR_TOGGLE_CALL_STACK_WINDOW", "TX_TOGGLE_CALL_STACK_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_ITRON_OBJECT_WINDOW         = {"FR_TOGGLE_ITRON_OBJECT_WINDOW", "TX_TOGGLE_ITRON_OBJECT_WINDOW"};
-    private static final String[] COMMAND_TOGGLE_ITRON_RETURN_STACK_WINDOW   = {"FR_TOGGLE_ITRON_RETURN_STACK_WINDOW", "TX_TOGGLE_ITRON_RETURN_STACK_WINDOW"};
-    private static final String[] COMMAND_CHIP_OPTIONS                       = {"FR_OPTIONS", "TX_OPTIONS"};
+    private static final String[] COMMAND_IMAGE_LOAD                         = {"FR_IMAGE_LOAD", "TX_IMAGE_LOAD"},
+                                  COMMAND_ANALYSE_DISASSEMBLE                = {"FR_ANALYSE_DISASSEMBLE", "TX_ANALYSE_DISASSEMBLE"},
+                                  COMMAND_EMULATOR_PLAY                      = {"FR_EMULATOR_PLAY", "TX_EMULATOR_PLAY"},
+                                  COMMAND_EMULATOR_DEBUG                     = {"FR_EMULATOR_DEBUG", "TX_EMULATOR_DEBUG"},
+                                  COMMAND_EMULATOR_PAUSE                     = {"FR_EMULATOR_PAUSE", "TX_EMULATOR_PAUSE"},
+                                  COMMAND_EMULATOR_STEP                      = {"FR_EMULATOR_STEP", "TX_EMULATOR_STEP"},
+                                  COMMAND_EMULATOR_STOP                      = {"FR_EMULATOR_STOP", "TX_EMULATOR_STOP"},
+                                  COMMAND_SETUP_BREAKPOINTS                  = {"FR_SETUP_BREAKPOINTS", "TX_SETUP_BREAKPOINTS"},
+                                  COMMAND_TOGGLE_MEMORY_ACTIVITY_VIEWER      = {"FR_TOGGLE_MEMORY_ACTIVITY_VIEWER", "TX_TOGGLE_MEMORY_ACTIVITY_VIEWER"},
+                                  COMMAND_TOGGLE_MEMORY_HEX_EDITOR           = {"FR_TOGGLE_MEMORY_HEX_EDITOR", "TX_TOGGLE_MEMORY_HEX_EDITOR"},
+                                  COMMAND_TOGGLE_DISASSEMBLY_WINDOW          = {"FR_TOGGLE_DISASSEMBLY_WINDOW", "TX_TOGGLE_DISASSEMBLY_WINDOW"},
+                                  COMMAND_TOGGLE_CPUSTATE_WINDOW             = {"FR_TOGGLE_CPUSTATE_WINDOW", "TX_TOGGLE_CPUSTATE_WINDOW"},
+                                  COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW        = {"FR_COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW", "TX_COMMAND_TOGGLE_CUSTOM_LOGGER_WINDOW"},
+                                  COMMAND_TOGGLE_INTERRUPT_CONTROLLER_WINDOW = {"FR_TOGGLE_INTERRUPT_CONTROLLER_WINDOW", "TX_TOGGLE_INTERRUPT_CONTROLLER_WINDOW"},
+                                  COMMAND_TOGGLE_SERIAL_INTERFACES           = {"FR_COMMAND_TOGGLE_SERIAL_INTERFACES", "TX_COMMAND_TOGGLE_SERIAL_INTERFACES"},
+                                  COMMAND_TOGGLE_SERIAL_DEVICES              = {"FR_COMMAND_TOGGLE_SERIAL_DEVICES", "TX_COMMAND_TOGGLE_SERIAL_DEVICES"},
+                                  COMMAND_TOGGLE_IO_PORTS_WINDOW             = {"FR_COMMAND_TOGGLE_IO_PORTS_WINDOW", "TX_COMMAND_TOGGLE_IO_PORTS_WINDOW"},
+                                  COMMAND_TOGGLE_AD_CONVERTER                = {"FR_COMMAND_TOGGLE_AD_CONVERTER", "TX_COMMAND_TOGGLE_AD_CONVERTER"},
+                                  COMMAND_SAVE_LOAD_MEMORY                   = {"FR_SAVE_LOAD_MEMORY", "TX_SAVE_LOAD_MEMORY"},
+                                  COMMAND_TOGGLE_CODE_STRUCTURE_WINDOW       = {"FR_TOGGLE_CODE_STRUCTURE_WINDOW", "TX_TOGGLE_CODE_STRUCTURE_WINDOW"},
+                                  COMMAND_TOGGLE_SOURCE_CODE_WINDOW          = {"FR_TOGGLE_SOURCE_CODE_WINDOW", "TX_TOGGLE_SOURCE_CODE_WINDOW"},
+                                  COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW  = {"FR_COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW", "TX_COMMAND_TOGGLE_PROGRAMMABLE_TIMERS_WINDOW"},
+                                  COMMAND_TOGGLE_CALL_STACK_WINDOW           = {"FR_TOGGLE_CALL_STACK_WINDOW", "TX_TOGGLE_CALL_STACK_WINDOW"},
+                                  COMMAND_TOGGLE_ITRON_OBJECT_WINDOW         = {"FR_TOGGLE_ITRON_OBJECT_WINDOW", "TX_TOGGLE_ITRON_OBJECT_WINDOW"},
+                                  COMMAND_TOGGLE_ITRON_RETURN_STACK_WINDOW   = {"FR_TOGGLE_ITRON_RETURN_STACK_WINDOW", "TX_TOGGLE_ITRON_RETURN_STACK_WINDOW"},
+                                  COMMAND_CHIP_OPTIONS                       = {"FR_OPTIONS", "TX_OPTIONS"};
+    public static final String COMMAND_GENERATE_SYS_SYMBOLS = "GENERATE_SYS_SYMBOLS";
+    
+    private static final String COMMAND_TOGGLE_COMPONENT_4006_WINDOW = "TOGGLE_COMPONENT_4006_WINDOW",
+                                COMMAND_TOGGLE_SCREEN_EMULATOR       = "TOGGLE_SCREEN_EMULATOR",
+                                COMMAND_TOGGLE_FRONT_PANEL           = "TOGGLE_FRONT_PANEL",
+                                COMMAND_UI_OPTIONS                   = "UI_OPTIONS",
+                                COMMAND_DECODE                       = "DECODE",
+                                COMMAND_ENCODE                       = "ENCODE",
+                                COMMAND_DECODE_NKLD                  = "DECODE_NKLD",
+                                COMMAND_LOAD_STATE                   = "LOAD_STATE",
+                                COMMAND_SAVE_STATE                   = "SAVE_STATE",
+                                COMMAND_QUIT                         = "QUIT",
+                                COMMAND_ABOUT                        = "ABOUT",
+                                COMMAND_TEST                         = "TEST",
+    
+    // Business constants                            
+                               BUTTON_SIZE_SMALL  = "SMALL",
+                               BUTTON_SIZE_MEDIUM = "MEDIUM",
+                               BUTTON_SIZE_LARGE  = "LARGE",
 
-    private static final String COMMAND_GENERATE_SYS_SYMBOLS         = "GENERATE_SYS_SYMBOLS";
-    private static final String COMMAND_TOGGLE_COMPONENT_4006_WINDOW = "TOGGLE_COMPONENT_4006_WINDOW";
-    private static final String COMMAND_TOGGLE_SCREEN_EMULATOR       = "TOGGLE_SCREEN_EMULATOR";
-    private static final String COMMAND_TOGGLE_FRONT_PANEL           = "TOGGLE_FRONT_PANEL";
-    private static final String COMMAND_UI_OPTIONS                   = "UI_OPTIONS";
-    private static final String COMMAND_DECODE                       = "DECODE";
-    private static final String COMMAND_ENCODE                       = "ENCODE";
-    private static final String COMMAND_DECODE_NKLD                  = "DECODE_NKLD";
-    private static final String COMMAND_LOAD_STATE                   = "LOAD_STATE";
-    private static final String COMMAND_SAVE_STATE                   = "SAVE_STATE";
-    private static final String COMMAND_QUIT                         = "QUIT";
-    private static final String COMMAND_ABOUT                        = "ABOUT";
-    private static final String COMMAND_TEST                         = "TEST";
-
+                               BUTTON_PROPERTY_KEY_ICON = "icon",
+                               STATUS_DEFAULT_TEXT = "Ready";
+    
     /* Tried to set key bindings that avoid conflicts:
 
      1 - See http://msdn.microsoft.com/en-us/library/windows/desktop/bb545460.aspx
@@ -201,40 +239,30 @@ public class EmulatorUI extends JFrame implements ActionListener {
     Still free : Ctrl+J
     */
 
-    private static final int KEY_EVENT_RUN[]   = {KeyEvent.VK_F5, KeyEvent.VK_F9};
-    private static final int KEY_EVENT_DEBUG[] = {KeyEvent.VK_F6, KeyEvent.VK_F10};
-    private static final int KEY_EVENT_PAUSE[] = {KeyEvent.VK_F7, KeyEvent.VK_F11};
-    private static final int KEY_EVENT_STEP[]  = {KeyEvent.VK_F8, KeyEvent.VK_F12};
+    private static final int[] KEY_EVENT_RUN   = {VK_F5, VK_F9},
+                               KEY_EVENT_DEBUG = {VK_F6, VK_F10},
+                               KEY_EVENT_PAUSE = {VK_F7, VK_F11},
+                               KEY_EVENT_STEP  = {VK_F8, VK_F12},
+    
+                               KEY_CHIP_MODIFIER = {CTRL_MASK, SHIFT_MASK | CTRL_MASK};
+    
+    private static final int KEY_EVENT_LOAD = VK_L, // Standard
+                             KEY_EVENT_QUIT = VK_Q, // Standard
 
-    private static final int[] KEY_CHIP_MODIFIER = new int[]{ActionEvent.CTRL_MASK, ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK};
-
-    private static final int KEY_EVENT_LOAD = KeyEvent.VK_L; // Standard
-    private static final int KEY_EVENT_QUIT = KeyEvent.VK_Q; // Standard
-
-    private static final int KEY_EVENT_CPUSTATE             = KeyEvent.VK_T;
-    private static final int KEY_EVENT_MEMORY               = KeyEvent.VK_M;
-    private static final int KEY_EVENT_SCREEN               = KeyEvent.VK_S; // Not recommended
-    private static final int KEY_EVENT_REALTIME_DISASSEMBLY = KeyEvent.VK_R;
-    private static final int KEY_EVENT_SOURCE               = KeyEvent.VK_G; // Meaningless, but well...
-
-
-    public static final String BUTTON_SIZE_SMALL  = "SMALL";
-    public static final String BUTTON_SIZE_MEDIUM = "MEDIUM";
-    public static final String BUTTON_SIZE_LARGE  = "LARGE";
-
-    private static final String BUTTON_PROPERTY_KEY_ICON = "icon";
-
-    // Business constants
-
-    private static final String STATUS_DEFAULT_TEXT = "Ready";
-
-    public static final Color STATUS_BGCOLOR_DEFAULT = Color.LIGHT_GRAY;
-    public static final Color STATUS_BGCOLOR_RUN     = Color.GREEN;
-    public static final Color STATUS_BGCOLOR_DEBUG   = Color.ORANGE;
-    public static final Color STATUS_BGCOLOR_BREAK   = new Color(255, 127, 127);
+                             KEY_EVENT_CPUSTATE             = VK_T,
+                             KEY_EVENT_MEMORY               = VK_M,
+                             KEY_EVENT_SCREEN               = VK_S, // Not recommended
+                             KEY_EVENT_REALTIME_DISASSEMBLY = VK_R,
+                             KEY_EVENT_SOURCE               = VK_G; // Meaningless, but well...
+    
+    public static final Color STATUS_BGCOLOR_DEFAULT = LIGHT_GRAY,
+                              STATUS_BGCOLOR_RUN     = GREEN,
+                              STATUS_BGCOLOR_DEBUG   = ORANGE,
+                              STATUS_BGCOLOR_BREAK   = new Color(255, 127, 127);
 
     private EmulationFramework framework;
-
+//</editor-fold>
+    
     // UI
 
     private final Insets toolbarButtonMargin;
@@ -244,13 +272,13 @@ public class EmulatorUI extends JFrame implements ActionListener {
     private final JPanel[]       toolBar = new JPanel[2];
 
     // Menu items
-    private JMenuItem[] loadMenuItem       = new JMenuItem[2];
-    private JMenuItem[] playMenuItem       = new JMenuItem[2];
-    private JMenuItem[] debugMenuItem      = new JMenuItem[2];
-    private JMenuItem[] pauseMenuItem      = new JMenuItem[2];
-    private JMenuItem[] stepMenuItem       = new JMenuItem[2];
-    private JMenuItem[] stopMenuItem       = new JMenuItem[2];
-    private JMenuItem[] breakpointMenuItem = new JMenuItem[2];
+    private JMenuItem[] loadMenuItem       = new JMenuItem[2],
+                        playMenuItem       = new JMenuItem[2],
+                        debugMenuItem      = new JMenuItem[2],
+                        pauseMenuItem      = new JMenuItem[2],
+                        stepMenuItem       = new JMenuItem[2],
+                        stopMenuItem       = new JMenuItem[2],
+                        breakpointMenuItem = new JMenuItem[2];
 
     private JMenuItem generateSysSymbolsMenuItem;
 

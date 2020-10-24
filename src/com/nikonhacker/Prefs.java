@@ -33,7 +33,7 @@ public class Prefs {
     private static final String KEY_WINDOW_MAIN = "MAIN";
 
     // Common
-    private String  buttonSize            = EmulatorUI.BUTTON_SIZE_SMALL;
+    private String  buttonSize            = EmulatorUI.getBUTTON_SIZE_SMALL();
     private boolean closeAllWindowsOnStop = false;
     private HashMap<String, WindowPosition> windowPositionMap;
     private HashMap<String, WindowPosition> windowSizeMap;

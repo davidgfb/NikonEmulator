@@ -3,17 +3,14 @@ package Main;
 //<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.Constants;
 import com.nikonhacker.emu.EmulationException;
-import static com.nikonhacker.gui.EmulatorUI.BUTTON_SIZE_SMALL;
 import com.nikonhacker.gui.EmulatorUI;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.System.exit;
 import static java.lang.System.setProperty;
-import java.lang.Thread.UncaughtExceptionHandler;
 import static java.lang.Thread.setDefaultUncaughtExceptionHandler;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
 //</editor-fold>
+
 
 
 /*
@@ -45,7 +42,7 @@ public class Main {
             }
         }
 
-        eUI.initProgrammableTimerAnimationIcons(BUTTON_SIZE_SMALL);
+        eUI.initProgrammableTimerAnimationIcons(eUI.getBUTTON_SIZE_SMALL());
 
         // a lot of calls are made from GUI in AWT thread that exits fast with no error code
         setDefaultUncaughtExceptionHandler(new UEHandler());
