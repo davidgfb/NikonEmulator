@@ -1,7 +1,10 @@
 package com.nikonhacker.gui.swing;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.MediaTracker;
+import javax.swing.JPanel;
 
 public class BackgroundImagePanel extends JPanel {
     private Image backgroundImage = null;

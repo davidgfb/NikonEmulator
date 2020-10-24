@@ -27,16 +27,42 @@
  */
 package eu.hansolo.steelseries.extras;
 
-import eu.hansolo.steelseries.tools.*;
+import eu.hansolo.steelseries.tools.CustomLedColor;
+import eu.hansolo.steelseries.tools.LedColor;
+import eu.hansolo.steelseries.tools.LedType;
+import static eu.hansolo.steelseries.tools.LedType.RECT_HORIZONTAL;
+import static eu.hansolo.steelseries.tools.LedType.RECT_VERTICAL;
+import static eu.hansolo.steelseries.tools.LedType.ROUND;
+import eu.hansolo.steelseries.tools.Shadow;
+import eu.hansolo.steelseries.tools.Util;
 
-import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LinearGradientPaint;
+import java.awt.RadialGradientPaint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 /**
  *

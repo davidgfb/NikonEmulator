@@ -10,7 +10,10 @@ package com.nikonhacker.gui.component.sourceCode.syntaxHighlighter;
 import javax.swing.text.Segment;
 import java.io.IOException;
 
-import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker;
+import org.fife.ui.rsyntaxtextarea.DefaultToken;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenMaker;
 
 
 /**

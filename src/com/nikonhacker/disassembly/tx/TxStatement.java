@@ -2,7 +2,12 @@ package com.nikonhacker.disassembly.tx;
 
 import com.nikonhacker.BinaryArithmetics;
 import com.nikonhacker.Format;
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.DisassemblyException;
+import com.nikonhacker.disassembly.Instruction;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.Statement;
+import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.memory.Memory;
 import org.apache.commons.lang3.StringUtils;
 

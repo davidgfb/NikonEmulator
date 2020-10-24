@@ -1,6 +1,6 @@
 package com.nikonhacker.gui.component.serialInterface;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * This file is part of NikonEmulator, a NikonHacker.com project.

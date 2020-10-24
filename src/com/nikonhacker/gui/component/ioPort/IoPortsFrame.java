@@ -1,8 +1,11 @@
 package com.nikonhacker.gui.component.ioPort;
 
 import com.nikonhacker.Constants;
-import com.nikonhacker.emu.peripherials.ioPort.*;
-import com.nikonhacker.emu.peripherials.ioPort.function.AbstractInputPinFunction;
+import com.nikonhacker.emu.peripherials.ioPort.IoPort;
+import com.nikonhacker.emu.peripherials.ioPort.IoPortConfigListener;
+import com.nikonhacker.emu.peripherials.ioPort.IoPortValueChangeListener;
+import com.nikonhacker.emu.peripherials.ioPort.Pin;
+import com.nikonhacker.emu.peripherials.ioPort.VariableFunctionPin;
 import com.nikonhacker.emu.peripherials.ioPort.util.FixedSourceComponent;
 import com.nikonhacker.emu.peripherials.ioPort.util.FixedSourcePin;
 import com.nikonhacker.emu.peripherials.ioPort.util.ForwardingPin;
@@ -11,11 +14,20 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.DocumentFrame;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

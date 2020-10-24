@@ -43,7 +43,15 @@ package com.nikonhacker.disassembly.fr;
 // */
 
 import com.nikonhacker.Constants;
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.CodeStructure;
+import com.nikonhacker.disassembly.Disassembler;
+import com.nikonhacker.disassembly.DisassemblyException;
+import com.nikonhacker.disassembly.Instruction;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.Range;
+import com.nikonhacker.disassembly.RangeType;
+import com.nikonhacker.disassembly.StatementContext;
 
 import java.io.IOException;
 import java.util.Set;

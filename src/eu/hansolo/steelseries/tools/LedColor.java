@@ -27,7 +27,7 @@
  */
 package eu.hansolo.steelseries.tools;
 
-import java.awt.*;
+import java.awt.Color;
 
 
 /**

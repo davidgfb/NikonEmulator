@@ -13,12 +13,17 @@ package com.nikonhacker.gui.swing;
  * Author: Rob Camick
  */
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.Scrollable;
 
 public class ScrollableDesktop extends JDesktopPane implements Scrollable, ContainerListener, ComponentListener {
     private int originalWidth;

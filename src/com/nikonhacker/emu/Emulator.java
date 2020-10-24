@@ -2,7 +2,13 @@ package com.nikonhacker.emu;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.DisassemblyException;
+import static com.nikonhacker.disassembly.Instruction.FlowType.CALL;
+import static com.nikonhacker.disassembly.Instruction.FlowType.INT;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.Statement;
+import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.peripherials.interruptController.InterruptController;
 import com.nikonhacker.emu.trigger.BreakTrigger;
@@ -12,7 +18,12 @@ import com.nikonhacker.emu.trigger.condition.BreakPointCondition;
 import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public abstract class Emulator implements Clockable {
     protected long                       totalCycles;

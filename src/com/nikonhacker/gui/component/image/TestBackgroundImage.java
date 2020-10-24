@@ -2,8 +2,8 @@ package com.nikonhacker.gui.component.image;
 
 import com.nikonhacker.gui.swing.BackgroundImagePanel;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
 
 public class TestBackgroundImage extends JFrame {
     TestBackgroundImage() {

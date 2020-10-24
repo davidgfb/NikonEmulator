@@ -4,7 +4,7 @@ import com.nikonhacker.emu.peripherials.serialInterface.SerialDevice;
 import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.DocumentFrame;
 
-import javax.swing.*;
+import javax.swing.JTabbedPane;
 import javax.swing.event.InternalFrameEvent;
 import java.util.ArrayList;
 import java.util.List;

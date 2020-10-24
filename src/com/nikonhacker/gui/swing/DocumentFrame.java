@@ -3,10 +3,12 @@ package com.nikonhacker.gui.swing;
 import com.nikonhacker.Constants;
 import com.nikonhacker.gui.EmulatorUI;
 
-import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class DocumentFrame extends JInternalFrame implements InternalFrameListener {
     protected int chip;

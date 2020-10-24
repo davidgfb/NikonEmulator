@@ -1,13 +1,16 @@
 package com.nikonhacker.gui.swing;
 
-import com.nikonhacker.Constants;
-import com.nikonhacker.Format;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 public class ListSelectionDialog extends JDialog {
 

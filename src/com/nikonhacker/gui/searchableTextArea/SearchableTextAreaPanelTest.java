@@ -2,10 +2,15 @@ package com.nikonhacker.gui.searchableTextArea;
 
 import com.nikonhacker.gui.swing.SearchableTextAreaPanel;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  * Inspired by

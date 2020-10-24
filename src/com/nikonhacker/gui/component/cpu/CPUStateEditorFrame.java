@@ -7,10 +7,6 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
 import com.nikonhacker.gui.swing.DocumentFrame;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class CPUStateEditorFrame extends DocumentFrame {
 
     private final CPUStateComponent cpuPanel;

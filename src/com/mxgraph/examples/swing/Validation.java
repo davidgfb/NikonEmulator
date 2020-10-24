@@ -16,7 +16,7 @@ import com.mxgraph.view.mxMultiplicity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.util.Arrays;
 
 public class Validation extends JFrame {

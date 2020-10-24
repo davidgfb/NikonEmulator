@@ -10,7 +10,10 @@ import com.nikonhacker.gui.swing.DocumentFrame;
 import com.nikonhacker.gui.swing.ImagePanel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 

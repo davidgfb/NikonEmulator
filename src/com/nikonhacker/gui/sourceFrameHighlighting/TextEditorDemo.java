@@ -6,9 +6,14 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * A simple example showing how to use RSyntaxTextArea to add Java syntax

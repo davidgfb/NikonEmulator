@@ -4,8 +4,8 @@ import com.nikonhacker.emu.peripherials.frontPanel.FrontPanel;
 import com.nikonhacker.gui.EmulatorUI;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
 
 public class BitmapToggleButtonTest {
     private static final String IMG_DIR = "images/buttons/D5100_large";

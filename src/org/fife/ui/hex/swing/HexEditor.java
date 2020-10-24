@@ -30,12 +30,17 @@ import org.fife.ui.hex.event.HexEditorEvent;
 import org.fife.ui.hex.event.HexEditorListener;
 import org.fife.ui.hex.event.SelectionChangedListener;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ResourceBundle;
+import javax.swing.Action;
+import javax.swing.JScrollPane;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 
 
 

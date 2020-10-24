@@ -7,12 +7,15 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.PrintWriterArea;
 import com.nikonhacker.gui.swing.SearchableTextAreaPanel;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 import java.util.Map;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class GenerateSysSymbolsDialog extends JDialog {
     private static final int INTERRUPT_VECTOR_BASE_ADDRESS = 0xDFC00;

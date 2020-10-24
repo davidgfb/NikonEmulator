@@ -3,19 +3,18 @@ package com.nikonhacker.gui.component.serialInterface.imageSensor;
 import com.nikonhacker.Prefs;
 import com.nikonhacker.emu.peripherials.serialInterface.imageSensor.Imx071;
 import com.nikonhacker.gui.EmulatorUI;
-import com.nikonhacker.gui.component.serialInterface.RxTxSerialPanel;
 import com.nikonhacker.gui.component.serialInterface.SerialDevicePanel;
 import org.fife.ui.hex.event.HexEditorEvent;
 import org.fife.ui.hex.event.HexEditorListener;
 import org.fife.ui.hex.swing.HexEditor;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 
 /**

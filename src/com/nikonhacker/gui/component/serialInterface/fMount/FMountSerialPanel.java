@@ -8,8 +8,10 @@ import com.nikonhacker.gui.EmulatorUI;
 
 import com.nikonhacker.gui.component.serialInterface.SerialDevicePanel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

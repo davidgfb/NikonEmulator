@@ -13,9 +13,14 @@ import com.nikonhacker.gui.swing.PrintWriterArea;
 import com.nikonhacker.gui.swing.VerticalLayout;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

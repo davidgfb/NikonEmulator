@@ -1,10 +1,16 @@
 package com.nikonhacker.gui.swing;
 
 import javax.accessibility.Accessible;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.SwingUtilities;
+import javax.swing.ButtonModel;
 import javax.swing.plaf.basic.BasicButtonListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JButton;
 
 /**
  * This is the code of the standard "JButton",

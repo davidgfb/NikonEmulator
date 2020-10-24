@@ -1,7 +1,8 @@
 package com.nikonhacker.gui.clock;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JComponent;
+import java.awt.BorderLayout;
 
 public class ClockApp {
     private Clock _clock;                        // Our clock component.

@@ -1,8 +1,11 @@
 package com.nikonhacker.gui.swing;
 
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 public class JRightClickableButton extends JButton {
     public JRightClickableButton() {

@@ -2,7 +2,7 @@ package com.nikonhacker.gui.swing;
 
 import com.nikonhacker.Format;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 public class JValueButton extends JButton {
     private int value;

@@ -3,8 +3,13 @@ package com.nikonhacker.gui.ioport;
 import eu.hansolo.custom.SteelCheckBox;
 import eu.hansolo.tools.ColorDef;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Original source was from http://harmoniccode.blogspot.be/2010/11/friday-fun-component-iii.html

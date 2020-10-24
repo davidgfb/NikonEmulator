@@ -3,9 +3,9 @@ package com.nikonhacker;
 import com.nikonhacker.disassembly.ParsingException;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 
 public class Format {

@@ -8,8 +8,9 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.DocumentFrame;
 import com.nikonhacker.gui.swing.PrintWriterArea;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.util.EnumSet;
 
 

@@ -1,11 +1,20 @@
 package com.nikonhacker.disassembly.arm;
 
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.CodeAnalyzer;
+import com.nikonhacker.disassembly.CodeStructure;
+import com.nikonhacker.disassembly.Range;
+import com.nikonhacker.disassembly.Symbol;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.Function;
+import com.nikonhacker.disassembly.Statement;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.Format;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.SortedSet;
+import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 public class ArmCodeAnalyzer extends CodeAnalyzer {
 

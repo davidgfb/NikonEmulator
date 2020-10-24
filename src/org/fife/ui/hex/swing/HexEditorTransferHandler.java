@@ -1,10 +1,14 @@
 package org.fife.ui.hex.swing;
 
-import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
+import static javax.swing.TransferHandler.COPY;
+import static javax.swing.TransferHandler.COPY_OR_MOVE;
+import static javax.swing.TransferHandler.MOVE;
 
 
 /**

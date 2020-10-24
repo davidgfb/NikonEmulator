@@ -13,8 +13,17 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.memoryHexEditor.MemoryWatch;
 import com.thoughtworks.xstream.XStream;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class Prefs {
     public enum EepromInitMode {

@@ -1,9 +1,13 @@
 package com.nikonhacker.gui.swing;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
 public class JToggleButtonsTest {
     private static void createAndShowGUI() {

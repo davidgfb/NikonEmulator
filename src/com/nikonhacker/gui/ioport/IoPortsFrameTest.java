@@ -5,8 +5,9 @@ import com.nikonhacker.emu.peripherials.ioPort.tx.TxIoPort;
 import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.ioPort.IoPortsFrame;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.EventQueue;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 
 /**
  * Original source was from http://harmoniccode.blogspot.be/2010/11/friday-fun-component-iii.html

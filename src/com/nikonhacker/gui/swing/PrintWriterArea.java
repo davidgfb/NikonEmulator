@@ -1,6 +1,5 @@
 package com.nikonhacker.gui.swing;
 
-import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -8,6 +7,7 @@ import javax.swing.text.SimpleAttributeSet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import javax.swing.JTextArea;
 
 /**
  * A JTextArea exposing a Writer to be used for any output or logging

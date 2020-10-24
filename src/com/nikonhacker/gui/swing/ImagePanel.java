@@ -1,8 +1,9 @@
 package com.nikonhacker.gui.swing;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
     BufferedImage image;

@@ -1,13 +1,20 @@
 package com.nikonhacker.gui;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;

@@ -10,11 +10,14 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.PrintWriterArea;
 import com.nikonhacker.gui.swing.SearchableTextAreaPanel;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class AnalyseProgressDialog extends JDialog {
     private PrintWriterArea printWriterArea;

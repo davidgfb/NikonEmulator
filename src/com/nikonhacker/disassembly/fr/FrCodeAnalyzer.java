@@ -1,11 +1,21 @@
 package com.nikonhacker.disassembly.fr;
 
-import com.nikonhacker.disassembly.*;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.Format;
+import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.CodeAnalyzer;
+import com.nikonhacker.disassembly.CodeStructure;
+import com.nikonhacker.disassembly.Function;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.Range;
+import com.nikonhacker.disassembly.Statement;
+import com.nikonhacker.disassembly.Symbol;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 public class FrCodeAnalyzer extends CodeAnalyzer {
 

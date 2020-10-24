@@ -1,6 +1,10 @@
 package com.nikonhacker.gui.swing;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
 
 /**
  * A modified version of FlowLayout that allows containers using this

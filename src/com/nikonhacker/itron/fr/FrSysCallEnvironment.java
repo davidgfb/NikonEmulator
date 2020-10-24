@@ -7,7 +7,12 @@ import com.nikonhacker.emu.FrEmulator;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.emu.trigger.condition.BreakPointCondition;
-import com.nikonhacker.itron.*;
+import com.nikonhacker.itron.ErrorCode;
+import com.nikonhacker.itron.EventFlagInformation;
+import com.nikonhacker.itron.MailboxInformation;
+import com.nikonhacker.itron.SemaphoreInformation;
+import com.nikonhacker.itron.SysCallEnvironment;
+import com.nikonhacker.itron.TaskInformation;
 
 /**
  * This environment is the implementation for the FR CPU

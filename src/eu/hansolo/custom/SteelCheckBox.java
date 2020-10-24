@@ -1,7 +1,9 @@
 package eu.hansolo.custom;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * Original source was from http://harmoniccode.blogspot.be/2010/11/friday-fun-component-iii.html

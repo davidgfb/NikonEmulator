@@ -4,8 +4,8 @@ import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.frontPanel.StateChangeListener;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 public class BitmapToggleButton extends JComponent implements MouseMotionListener, MouseListener {
 

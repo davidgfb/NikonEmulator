@@ -8,7 +8,7 @@ import com.mxgraph.util.mxRectangle;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxMultiplicity;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.util.Arrays;
 
 public class Port extends JFrame {

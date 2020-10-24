@@ -2,7 +2,11 @@ package com.nikonhacker.emu.trigger;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.CodeStructure;
+import com.nikonhacker.disassembly.Function;
+import com.nikonhacker.disassembly.ParsingException;
+import com.nikonhacker.disassembly.Symbol;
 import com.nikonhacker.disassembly.fr.FrCPUState;
 import com.nikonhacker.disassembly.fr.Syscall;
 import com.nikonhacker.disassembly.tx.TxCPUState;

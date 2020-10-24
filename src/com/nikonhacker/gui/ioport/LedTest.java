@@ -6,10 +6,13 @@ import eu.hansolo.steelseries.tools.LedColor;
 import eu.hansolo.steelseries.tools.LedType;
 import eu.hansolo.tools.ColorDef;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Original source was from http://harmoniccode.blogspot.be/2010/11/friday-fun-component-iii.html

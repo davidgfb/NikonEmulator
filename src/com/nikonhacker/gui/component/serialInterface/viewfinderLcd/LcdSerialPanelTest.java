@@ -4,7 +4,7 @@ import com.nikonhacker.Format;
 import com.nikonhacker.disassembly.ParsingException;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

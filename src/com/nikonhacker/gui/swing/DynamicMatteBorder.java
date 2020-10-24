@@ -1,7 +1,7 @@
 package com.nikonhacker.gui.swing;
 
 import javax.swing.border.MatteBorder;
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * This is just a matte border whose color can be dynamically changed with setColor();

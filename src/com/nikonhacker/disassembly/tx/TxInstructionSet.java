@@ -1,7 +1,12 @@
 package com.nikonhacker.disassembly.tx;
 
 import com.nikonhacker.Format;
-import com.nikonhacker.disassembly.*;
+import com.nikonhacker.disassembly.DisassemblyException;
+import com.nikonhacker.disassembly.Instruction;
+import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.SimulationCode;
+import com.nikonhacker.disassembly.Statement;
+import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.interrupt.tx.CoprocessorUnusableException;
 

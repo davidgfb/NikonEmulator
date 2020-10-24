@@ -1,11 +1,10 @@
 package com.nikonhacker.emu.memory.listener.fr;
 
-import com.nikonhacker.Format;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.listener.IoActivityListener;
 
-import java.util.*;
+import java.util.HashMap;
 
 public class ExpeedProxyIoListener extends IoActivityListener {
 

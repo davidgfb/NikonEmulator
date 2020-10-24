@@ -5,8 +5,13 @@ import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.Color;
 
 public abstract class CPUStateComponent extends JComponent {
     public static final Color COLOR_UNCHANGED = Color.WHITE;

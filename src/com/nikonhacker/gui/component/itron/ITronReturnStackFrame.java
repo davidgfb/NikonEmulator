@@ -2,26 +2,34 @@ package com.nikonhacker.gui.component.itron;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
-import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.CodeStructure;
-import com.nikonhacker.disassembly.tx.TxCPUState;
 import com.nikonhacker.emu.Emulator;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.swing.DocumentFrame;
-import com.nikonhacker.gui.swing.VerticalLayout;
 import com.nikonhacker.itron.tx.TxItronTaskTable;
 import com.nikonhacker.itron.fr.FrItronTaskTable;
 import com.nikonhacker.itron.ReturnStackEntry;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 import java.util.LinkedList;
 
 

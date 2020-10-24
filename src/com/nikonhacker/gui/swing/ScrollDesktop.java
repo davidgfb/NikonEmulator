@@ -5,8 +5,14 @@ package com.nikonhacker.gui.swing;
  * Taken from http://www.java2s.com/Tutorial/Java/0240__Swing/extendsJDesktopPaneimplementsScrollable.htm
  */
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.Scrollable;
 
 class ScrollDesktop extends JDesktopPane implements Scrollable {
     public Dimension getPreferredScrollableViewportSize() {

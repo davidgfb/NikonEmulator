@@ -4,8 +4,8 @@ import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.listener.TrackingMemoryActivityListener;
 
-import javax.swing.*;
 import java.io.IOException;
+import javax.swing.JFrame;
 
 public class MemoryMapComponentTest {
     public static void main(String[] args) throws EmulationException, IOException {

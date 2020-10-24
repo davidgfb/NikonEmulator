@@ -3,14 +3,16 @@ package com.nikonhacker.gui.component.serialInterface.sensorBridge;
 import com.nikonhacker.Format;
 import com.nikonhacker.emu.peripherials.serialInterface.sensorBridge.Ei155;
 import com.nikonhacker.gui.EmulatorUI;
-import com.nikonhacker.gui.component.serialInterface.RxTxSerialPanel;
 import com.nikonhacker.gui.component.serialInterface.SerialDevicePanel;
-import com.nikonhacker.Prefs;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 
 public class SensorBridgeSerialPanel extends SerialDevicePanel {
 

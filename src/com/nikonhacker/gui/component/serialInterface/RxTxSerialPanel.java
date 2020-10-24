@@ -9,8 +9,13 @@ import com.nikonhacker.gui.swing.JValueButton;
 import com.nikonhacker.gui.swing.PrintWriterArea;
 import com.nikonhacker.gui.swing.VerticalLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
