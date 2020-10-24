@@ -29,7 +29,7 @@ public class IoPortsFrameTest {
         frame.setVisible(true);
     }
 
-
+    /*
     public static void main(String args[]) {
 
         EventQueue.invokeLater(new Runnable() {
@@ -38,4 +38,5 @@ public class IoPortsFrameTest {
             }
         });
     }
+    */
 }

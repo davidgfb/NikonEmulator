@@ -25,13 +25,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 public class ScrollableDesktopTest extends JFrame {
 
     private JScrollPane scrollPane;
-
+    
+    /*
     public static void main(String arg[]) {
         UIManager.put("SplitPane.background", new Color(0xff8080ff));
         SwingUtilities.invokeLater(new Runnable() {
@@ -40,6 +39,7 @@ public class ScrollableDesktopTest extends JFrame {
             }
         });
     }
+    */
 
     private static void createAndShowGUI() {
         //Make sure we have nice window decorations.
@@ -55,7 +55,7 @@ public class ScrollableDesktopTest extends JFrame {
     public ScrollableDesktopTest() {
         super("ScrollableDesktopTest");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(2);
 
         setJMenuBar(createMenuBar());
 

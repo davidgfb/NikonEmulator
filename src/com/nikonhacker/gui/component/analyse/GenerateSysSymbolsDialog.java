@@ -72,7 +72,7 @@ public class GenerateSysSymbolsDialog extends JDialog {
                     debugPrintWriter.println("ERROR : " + e.getClass().getName() + ": " + e.getMessage());
                     debugPrintWriter.println("See console for more information");
                 }
-                setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                setDefaultCloseOperation(2);
                 closeButton.setEnabled(true);
                 emulatorUI.updateStates();
             }

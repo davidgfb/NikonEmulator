@@ -77,8 +77,9 @@ class Main extends JFrame {
     }
 
 
-
+    /*
     public static void main(String arg[]) {
         new Main();
     }
+    */
 }

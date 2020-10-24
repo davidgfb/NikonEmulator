@@ -68,7 +68,7 @@ public class SplitPaneState {
                 };
 
                 dialog.setSize(size);
-                dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                dialog.setDefaultCloseOperation(2);
                 dialog.setLocationRelativeTo(frame);
                 dialog.getContentPane().add(splitPane);
                 dialog.setVisible(true);

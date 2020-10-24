@@ -40,7 +40,7 @@ public class JToggleButtonsTest {
         frame.setVisible(true);
     }
 
-
+    /*
     public static void main(String args[]) {
 
         EventQueue.invokeLater(new Runnable() {
@@ -49,6 +49,7 @@ public class JToggleButtonsTest {
             }
         });
     }
+    */
 
 
 }

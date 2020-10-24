@@ -53,9 +53,11 @@ public class TableSortDemo extends JFrame {
         setVisible(true);
     }
 
+    /*
     public static void main(String argv[]) {
         new TableSortDemo();
     }
+    */
 }
 
 class MyTableModel extends AbstractTableModel {

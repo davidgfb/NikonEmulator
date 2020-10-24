@@ -116,6 +116,7 @@ public class SearchableTextAreaPanelTest {
         return testButton;
     }
 
+    /*
     public static void main(String args[]) {
 
         EventQueue.invokeLater(new Runnable() {
@@ -124,4 +125,5 @@ public class SearchableTextAreaPanelTest {
             }
         });
     }
+    */
 }

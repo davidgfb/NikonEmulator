@@ -32,6 +32,7 @@ public class BrowsePath extends JFrame implements ActionListener {
         field.setText(frame.fileName);
     }
 
+    /*
     public static void main(String args[]) {
 
         BrowsePath frame = new BrowsePath();
@@ -39,6 +40,7 @@ public class BrowsePath extends JFrame implements ActionListener {
         frame.setLocation(200, 100);
         frame.setVisible(true);
     }
+    */
 
     class Chooser extends JFrame {
 

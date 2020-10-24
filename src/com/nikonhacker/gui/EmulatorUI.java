@@ -20,7 +20,6 @@ import com.nikonhacker.disassembly.fr.FrCPUState;
 import com.nikonhacker.disassembly.tx.Dtx;
 import com.nikonhacker.disassembly.tx.TxCPUState;
 import com.nikonhacker.emu.ClockableCallbackHandler;
-import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.EmulationFramework;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.Memory;
@@ -90,7 +89,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
@@ -133,8 +131,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
 
 public class EmulatorUI extends JFrame implements ActionListener {
 
@@ -363,37 +359,19 @@ public class EmulatorUI extends JFrame implements ActionListener {
 
     private Prefs prefs = new Prefs();
 
-
-    public static void main(String[] args) throws EmulationException, IOException, ClassNotFoundException, UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException {
-
-        // Workaround for JDK bug - https://code.google.com/p/nikon-firmware-tools/issues/detail?id=17
-        System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
-
-        if (args.length > 0) {
-            imageFile[Constants.CHIP_FR] = new File(args[0]);
-            if (args.length > 1) {
-                imageFile[Constants.CHIP_TX] = new File(args[1]);
-            }
-        }
-
-        initProgrammableTimerAnimationIcons(BUTTON_SIZE_SMALL);
-
-        // a lot of calls are made from GUI in AWT thread that exits fast with no error code
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t, Throwable e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
-        });
-
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+    
+    
+    
+    public static void setImageFile(File[] imageFile) {
+        EmulatorUI.imageFile = imageFile;
     }
+
+    public static File[] getImageFile() {
+        return imageFile;
+    }
+
+    
+    
 
 
     /**
@@ -401,7 +379,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         // Choose to keep Java-style for main window decorations.
         JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -415,7 +393,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
     public EmulatorUI() {
         super(ApplicationInfo.getNameVersion() + " - (none) / (none)");
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(2);
 
         prefs = Prefs.load();
         // Apply register label prefs immediately
@@ -2611,7 +2589,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
     }
 
 
-    private static void initProgrammableTimerAnimationIcons(String buttonSize) {
+    public static void initProgrammableTimerAnimationIcons(String buttonSize) {
         programmableTimersPauseButtonIcon[0] = new ImageIcon(EmulatorUI.class.getResource("images/timer.png"), "Start programmable timer");
         programmableTimersPauseButtonIcon[1] = new ImageIcon(EmulatorUI.class.getResource("images/timer_pause.png"), "Start programmable timer");
         if (BUTTON_SIZE_SMALL.equals(buttonSize)) {
