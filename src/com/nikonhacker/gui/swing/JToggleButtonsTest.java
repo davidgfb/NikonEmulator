@@ -12,7 +12,7 @@ import javax.swing.JToggleButton;
 public class JToggleButtonsTest {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("JToggleButtonsTest");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         JPanel panel = new JPanel(new FlowLayout());
 
         final JButton button = new JButton("JButton");

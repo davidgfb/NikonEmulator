@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 public class SteelCheckBoxTest {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("SteelCheckBoxTest");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         JPanel panel = new JPanel(new BorderLayout());
 
 

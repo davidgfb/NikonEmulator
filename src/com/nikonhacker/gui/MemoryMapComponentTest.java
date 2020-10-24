@@ -19,7 +19,7 @@ public class MemoryMapComponentTest {
         // Create a frame
         JFrame frame = new JFrame();
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         frame.setTitle("Emulator memory viewer");
 
         MemoryMapComponent memoryMapComponent = new MemoryMapComponent(activityListener, MemoryMapComponent.PAGE_MODE, null);

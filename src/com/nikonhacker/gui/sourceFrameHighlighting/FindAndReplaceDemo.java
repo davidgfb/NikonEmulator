@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -75,7 +74,7 @@ public class FindAndReplaceDemo extends JFrame implements ActionListener {
 
         setContentPane(cp);
         setTitle("Find and Replace Demo");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(3);
         pack();
         setLocationRelativeTo(null);
 

@@ -90,7 +90,7 @@ public class Port extends JFrame {
 
     public static void main(String[] args) {
         Port frame = new Port();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         frame.setSize(400, 320);
         frame.setVisible(true);
     }

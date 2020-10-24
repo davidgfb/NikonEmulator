@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 public class LedTest {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("SteelCheckBoxTest");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
         JPanel panel = new JPanel(new BorderLayout());
 
         final Led led1 = new Led();

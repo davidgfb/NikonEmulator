@@ -91,7 +91,7 @@ public class InternalFrameDemo extends JFrame implements ActionListener {
 
         //Create and set up the window.
         InternalFrameDemo frame = new InternalFrameDemo();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
 
         //Display the window.
         frame.setVisible(true);
