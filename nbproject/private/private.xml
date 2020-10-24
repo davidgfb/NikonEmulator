@@ -46,10 +46,12 @@
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/disassembly/tx/TxStatement.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/swing/SearchableTextAreaPanel.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/disassembly/fr/FrCodeAnalyzer.java</file>
+            <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/BrowsePath.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/mxgraph/examples/swing/Port.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/eu/hansolo/custom/SteelCheckBox.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/serialInterface/sensorBridge/SensorBridgeSerialPanel.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/customDialog/CustomDialog.java</file>
+            <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/Main/UEHandler.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/emu/MasterClock.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/serialInterface/fMount/FMountSerialPanel.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/eu/hansolo/steelseries/tools/BrushedMetalFilter.java</file>
@@ -76,6 +78,7 @@
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/swing/PrintWriterArea.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/Format.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/sourceCode/syntaxHighlighter/AssemblerTxTokenMaker.flex</file>
+            <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/Main/Main.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/disassembly/arm/ArmStatement.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/analyse/GenerateSysSymbolsDialog.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/interruptController/InterruptControllerFrame.java</file>
@@ -118,6 +121,7 @@
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/swing/ListSelectionDialog.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/disassembly/fr/Dfr.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/searchableTextArea/TextAreaEx.java</file>
+            <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/Constants.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/encoding/NkldUtils.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/component/saveLoadMemory/SaveLoadMemoryDialog.java</file>
             <file>file:/C:/Users/David/Documents/GitHub/NikonEmulator/src/com/nikonhacker/gui/TableSortDemo.java</file>
