@@ -43,7 +43,6 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /* 1.4 example used by DialogDemo.java. */
 class CustomDialog extends JDialog
@@ -99,7 +98,7 @@ class CustomDialog extends JDialog
         setContentPane(optionPane);
 
         //Handle window closing correctly.
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(0);
         addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent we) {
                 /*

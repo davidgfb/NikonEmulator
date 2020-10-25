@@ -17,7 +17,6 @@ import java.io.PrintWriter;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 public class AnalyseProgressDialog extends JDialog {
     private PrintWriterArea printWriterArea;
@@ -49,7 +48,7 @@ public class AnalyseProgressDialog extends JDialog {
 
         setContentPane(panel);
 
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(0);
         pack();
         setLocationRelativeTo(null);
     }

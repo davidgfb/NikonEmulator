@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 public class GenerateSysSymbolsDialog extends JDialog {
     private static final int INTERRUPT_VECTOR_BASE_ADDRESS = 0xDFC00;
@@ -49,7 +48,7 @@ public class GenerateSysSymbolsDialog extends JDialog {
 
         setContentPane(panel);
 
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(0);
         pack();
         setLocationRelativeTo(null);
     }

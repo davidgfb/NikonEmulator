@@ -8,7 +8,6 @@ import javax.swing.event.InternalFrameListener;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class DocumentFrame extends JInternalFrame implements InternalFrameListener {
     protected int chip;
@@ -21,7 +20,7 @@ public class DocumentFrame extends JInternalFrame implements InternalFrameListen
         this.chip = chip;
         this.ui = ui;
         addInternalFrameListener(this);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(0);
         if (imageName != null) {
             String imgLocation = "images/" + imageName + ".png";
             URL imageURL = EmulatorUI.class.getResource(imgLocation);
