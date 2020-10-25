@@ -49,6 +49,9 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
+import static java.lang.Integer.parseInt;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
@@ -443,69 +446,67 @@ class HexTable extends JTable {
 	}
 
 
+        @Override
 	protected void processKeyEvent (KeyEvent e) {
+            super.processKeyEvent(e);
 
-		// TODO: Convert into Actions and put into InputMap/ActionMap?
-		if (e.getID()==KeyEvent.KEY_PRESSED) {
-			switch (e.getKeyCode()) {
-				case KeyEvent.VK_LEFT:
-					boolean extend = e.isShiftDown();
-					int offs = Math.max(leadSelectionIndex-1, 0);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_RIGHT:
-					extend = e.isShiftDown();
-					offs = Math.min(leadSelectionIndex+1, model.getByteCount()-1);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_UP:
-					extend = e.isShiftDown();
-					offs = Math.max(leadSelectionIndex-16, 0);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_DOWN:
-					extend = e.isShiftDown();
-					offs = Math.min(leadSelectionIndex+16, model.getByteCount()-1);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_PAGE_DOWN:
-					extend = e.isShiftDown();
-					int visibleRowCount = getVisibleRect().height/getRowHeight();
-					offs = Math.min(leadSelectionIndex+visibleRowCount*16,
-									model.getByteCount()-1);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_PAGE_UP:
-					extend = e.isShiftDown();
-					visibleRowCount = getVisibleRect().height/getRowHeight();
-					offs = Math.max(leadSelectionIndex-visibleRowCount*16, 0);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_HOME:
-					extend = e.isShiftDown();
-					offs = (leadSelectionIndex/16)*16;
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-				case KeyEvent.VK_END:
-					extend = e.isShiftDown();
-					offs = (leadSelectionIndex/16)*16 + 15;
-					offs = Math.min(offs, model.getByteCount()-1);
-					changeSelectionByOffset(offs, extend);
-					e.consume();
-					break;
-			}
-		}
-
-		super.processKeyEvent(e);
-
-	}
+            // TODO: Convert into Actions and put into InputMap/ActionMap?
+            if (e.getID()==KeyEvent.KEY_PRESSED) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        boolean extend = e.isShiftDown();
+                        int offs = max(leadSelectionIndex-1, 0);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                            break;
+                    case KeyEvent.VK_RIGHT:
+                        extend = e.isShiftDown();
+                        offs = min(leadSelectionIndex+1, model.getByteCount()-1);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_UP:
+                        extend = e.isShiftDown();
+                        offs = max(leadSelectionIndex-16, 0);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        extend = e.isShiftDown();
+                        offs = min(leadSelectionIndex+16, model.getByteCount()-1);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_PAGE_DOWN:
+                        extend = e.isShiftDown();
+                        int visibleRowCount = getVisibleRect().height/getRowHeight();
+                        offs = min(leadSelectionIndex+visibleRowCount*16, model.getByteCount()-1);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_PAGE_UP:
+                        extend = e.isShiftDown();
+                        visibleRowCount = getVisibleRect().height/getRowHeight();
+                        offs = max(leadSelectionIndex-visibleRowCount*16, 0);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_HOME:
+                        extend = e.isShiftDown();
+                        offs = (leadSelectionIndex/16)*16;
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_END:
+                        extend = e.isShiftDown();
+                        offs = (leadSelectionIndex/16)*16 + 15;
+                        offs = min(offs, model.getByteCount()-1);
+                        changeSelectionByOffset(offs, extend);
+                        e.consume();
+                        break;
+                }
+            }
+        }
 
 
 	/**
@@ -515,7 +516,7 @@ class HexTable extends JTable {
 	 * @see #undo()
 	 */
 	public boolean redo() {
-		return model.redo();
+            return model.redo();
 	}
 
 
@@ -527,13 +528,13 @@ class HexTable extends JTable {
 	 * @see #replaceBytes(int, int, byte[])
 	 */
 	void removeBytes(int offs, int len) {
-		model.removeBytes(offs, len);
+            model.removeBytes(offs, len);
 	}
 
 
 	private void repaintSelection() {
-		// TODO: Repaint only selected lines.
-		repaint();
+            // TODO: Repaint only selected lines.
+            repaint();
 	}
     
 
@@ -545,7 +546,7 @@ class HexTable extends JTable {
 	 * @see #addSelectionChangedListener(org.fife.ui.hex.event.SelectionChangedListener)
 	 */
 	public void removeSelectionChangedListener(SelectionChangedListener l) {
-		listenerList.remove(SelectionChangedListener.class, l);
+            listenerList.remove(SelectionChangedListener.class, l);
 	}
 
 
@@ -558,7 +559,7 @@ class HexTable extends JTable {
 	 * @see #removeBytes(int, int)
 	 */
 	public void replaceBytes(int offset, int len, byte[] bytes) {
-		model.replaceBytes(offset, len, bytes);
+            model.replaceBytes(offset, len, bytes);
 	}
 
 
@@ -569,20 +570,19 @@ class HexTable extends JTable {
 	 * @param cellEditable Whether individual hex editor cells should be editable.
 	 */
 	public void setCellEditable(boolean cellEditable) {
-		cellEditor.setEditable(cellEditable);
+            cellEditor.setEditable(cellEditable);
 	}
 
 
 	public void setSelectedRows(int min, int max) {
-		if (min<0 || min>=getRowCount() ||
-				max<0 || max>=getRowCount()) {
-			throw new IllegalArgumentException();
-		}
-		int startOffs = min*16;
-		int endOffs = max*16+15;
-		// TODO: Have a single call to change selection by a range.
-		changeSelectionByOffset(startOffs, false);
-		changeSelectionByOffset(endOffs, true);
+            if (min<0 || min>=getRowCount() || max<0 || max>=getRowCount()) {
+                throw new IllegalArgumentException();
+            }
+            int startOffs = min*16,
+                endOffs = max*16+15;
+            // TODO: Have a single call to change selection by a range.
+            changeSelectionByOffset(startOffs, false);
+            changeSelectionByOffset(endOffs, true);
 	}
 
 
@@ -596,51 +596,51 @@ class HexTable extends JTable {
 	 */
 	public void setSelectionByOffsets(int startOffs, int endOffs) {
 
-		startOffs = Math.max(0, startOffs);
-		startOffs= Math.min(startOffs, model.getByteCount()-1);
-		
-		// Clear the old selection (may not be necessary).
-		repaintSelection();
+            startOffs = Math.max(0, startOffs);
+            startOffs= Math.min(startOffs, model.getByteCount()-1);
 
-		anchorSelectionIndex = startOffs;
-		leadSelectionIndex = endOffs;
+            // Clear the old selection (may not be necessary).
+            repaintSelection();
 
-        // Scroll after changing the selection as blit scrolling is
-		// immediate, so that if we cause the repaint after the scroll we
-		// end up painting everything!
-		if (getAutoscrolls()) {
-			int endRow = endOffs/16;
-			int endCol = endOffs%16;
-			// Don't allow the user to select the "ascii dump" or any
-			// empty cells in the last row of the table.
-			endCol = adjustColumn(endRow, endCol);
-			if (endRow<0) {
-				endRow = 0;
-			}
-			ensureCellIsVisible(endRow, endCol);
-		}
+            anchorSelectionIndex = startOffs;
+            leadSelectionIndex = endOffs;
 
-		// Draw the new selection.
-		repaintSelection();
+            // Scroll after changing the selection as blit scrolling is
+            // immediate, so that if we cause the repaint after the scroll we
+            // end up painting everything!
+            if (getAutoscrolls()) {
+                int endRow = endOffs/16,
+                    endCol = endOffs%16;
+                // Don't allow the user to select the "ascii dump" or any
+                // empty cells in the last row of the table.
+                endCol = adjustColumn(endRow, endCol);
+                if (endRow<0) {
+                    endRow = 0;
+                }
+                ensureCellIsVisible(endRow, endCol);
+            }
+
+            // Draw the new selection.
+            repaintSelection();
 
 	}
 
-    public Color[] getColorMap() {
-        return colorMap;
-    }
+        public Color[] getColorMap() {
+            return colorMap;
+        }
 
-    public void setColorMap(Color[] colorMap) {
-        this.colorMap = colorMap;
-    }
+        public void setColorMap(Color[] colorMap) {
+            this.colorMap = colorMap;
+        }
 
-    /**
+        /**
 	 * Tries to undo the last action.
 	 *
 	 * @return Whether there is another action to undo after this one.
 	 * @see #redo()
 	 */
 	public boolean undo() {
-		return model.undo();
+            return model.undo();
 	}
 
 
@@ -648,52 +648,52 @@ class HexTable extends JTable {
 	 * Table cell editor that restricts input to byte values
 	 * (<code>0 - 255</code>).
 	 */
-	private static class CellEditor extends DefaultCellEditor
-									implements FocusListener {
+        //aparte
+	private static class CellEditor extends DefaultCellEditor implements FocusListener {
 
-		private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-		private boolean editable;
-		
-		public CellEditor() {
-			super(new JTextField());
-			AbstractDocument doc = (AbstractDocument)
-						((JTextComponent)editorComponent).getDocument();
-			doc.setDocumentFilter(new EditorDocumentFilter());
-			getComponent().addFocusListener(this);
-			editable = true;
-		}
+            private boolean editable;
 
-		public void focusGained(FocusEvent e) {
-			JTextField textField = (JTextField)getComponent();
-			textField.selectAll();
-		}
+            public CellEditor() {
+                super(new JTextField());
+                AbstractDocument doc = (AbstractDocument) ((JTextComponent)editorComponent).getDocument();
+                doc.setDocumentFilter(new EditorDocumentFilter());
+                getComponent().addFocusListener(this);
+                editable = true;
+            }
 
-		public void focusLost(FocusEvent e) {
-		}
+            @Override
+            public void focusGained(FocusEvent e) {
+                ((JTextField)getComponent()).selectAll();
+            }
 
-		public Component getTableCellEditorComponent(JTable table, Object value,
-				 					boolean selected, int row, int column) {
-			if (editable) {
-				return super.getTableCellEditorComponent(table, value, selected,
-									row, column);
-			}
-			return null;
-		}
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
 
-		public void setEditable(boolean editable) {
-			this.editable = editable;
-		}
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean selected, int row, int column) {
+                if (editable) {
+                    return super.getTableCellEditorComponent(table, value, selected, row, column);
+                }
+                return null;
+            }
 
-		public boolean stopCellEditing() {
-			// Prevent the user from entering empty string as a value.
-			String value = (String)getCellEditorValue();
-			if (value.length()==0) {
-				UIManager.getLookAndFeel().provideErrorFeedback(null);
-				return false;
-			}
-			return super.stopCellEditing();
-		}
+            public void setEditable(boolean editable) {
+                this.editable = editable;
+            }
+
+            @Override
+            public boolean stopCellEditing() {
+                // Prevent the user from entering empty string as a value.
+                String value = (String)getCellEditorValue();
+                if (value.length()==0) {
+                    UIManager.getLookAndFeel().provideErrorFeedback(null);
+                    return false;
+                }
+                return super.stopCellEditing();
+            }
 
 	}
 
@@ -709,6 +709,7 @@ class HexTable extends JTable {
 	 * @author Robert Futrell
 	 * @version 1.0
 	 */
+        //debe ir en clase nueva
 	private class CellRenderer extends DefaultTableCellRenderer {
 
 		private static final long serialVersionUID = 1L;
@@ -717,50 +718,44 @@ class HexTable extends JTable {
 		private Map desktopAAHints;
 
 		public CellRenderer() {
-			highlight = new Point();
-			desktopAAHints = getDesktopAntiAliasHints();
+                    highlight = new Point();
+                    desktopAAHints = getDesktopAntiAliasHints();
 		}
 
-		public Component getTableCellRendererComponent(JTable table,
-						Object value, boolean selected, boolean focus,
-						int row, int column) {
+                @Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, selected, focus, row, column);
 
-			super.getTableCellRendererComponent(table, value, selected, focus,
-												row, column);
+                    highlight.setLocation(-1, -1);
+                    if (column==table.getColumnCount()-1 && /* "Ascii dump" */ hexEditor.getHighlightSelectionInAsciiDump()) {
+                        int selStart = getSmallestSelectionIndex(),
+                            selEnd = getLargestSelectionIndex(),
+                            b1 = row*16,
+                            b2 = b1 + 15;
+                        boolean colorBG = hexEditor.getAlternateRowBG() && (row&1)>0;
 
-			highlight.setLocation(-1, -1);
-			if (column==table.getColumnCount()-1 && // "Ascii dump"
-					hexEditor.getHighlightSelectionInAsciiDump()) {
-				int selStart = getSmallestSelectionIndex();
-				int selEnd = getLargestSelectionIndex();
-				int b1 = row*16;
-				int b2 = b1 + 15;
-				if (selStart<=b2 && selEnd>=b1) {
-					int start = Math.max(selStart, b1) - b1;
-					int end = Math.min(selEnd, b2) - b1;
-					highlight.setLocation(start, end);
-				}
-				boolean colorBG = hexEditor.getAlternateRowBG() && (row&1)>0;
-				setBackground(colorBG ? ANTERNATING_CELL_COLOR :
-								table.getBackground());
-			}
-			else {
-				if (!selected) {
-					if ((hexEditor.getAlternateRowBG() && (row&1)>0) ^
-							(hexEditor.getAlternateColumnBG() && (column&1)>0)){
-						setBackground(ANTERNATING_CELL_COLOR);
-					}
-					else {
-						setBackground(table.getBackground());
-					}
-				}
-			}
+                        if (selStart<=b2 && selEnd>=b1) {
+                            int start = Math.max(selStart, b1) - b1,
+                                end = Math.min(selEnd, b2) - b1;
+                            highlight.setLocation(start, end);
+                        }
 
-            if (colorMap != null) 
-                setForeground(colorMap[row * 16 + column]);
+                        setBackground(colorBG ? ANTERNATING_CELL_COLOR : table.getBackground());
+                    } else {
+                        if (!selected) {
+                            if ((hexEditor.getAlternateRowBG() && (row&1)>0) ^ (hexEditor.getAlternateColumnBG() && (column&1)>0)) {
+                                setBackground(ANTERNATING_CELL_COLOR);
+                            } else {
+                                setBackground(table.getBackground());
+                            }
+                        }
+                    }
 
-			return this;
+                    if (colorMap != null) {
+                        setForeground(colorMap[row * 16 + column]);
+                    }
 
+                    return this;
 		}
 
                 @Override
@@ -800,7 +795,6 @@ class HexTable extends JTable {
                     if (desktopAAHints!=null) {
                         g2d.addRenderingHints((Map)oldHints);
                     }
-
 		}
 	}
 
@@ -812,42 +806,39 @@ class HexTable extends JTable {
 	 * @author Robert Futrell
 	 * @version 1.0
 	 */
+        //debe ir en clase nueva
 	private static class EditorDocumentFilter extends DocumentFilter {
 
-		private boolean ensureByteRepresented(String str) {
-			try {
-				int i = Integer.parseInt(str, 16);
-				if (i<0 || i>0xff) {
-					throw new NumberFormatException();
-				}
-			} catch (NumberFormatException nfe) {
-				UIManager.getLookAndFeel().provideErrorFeedback(null);
-				return false;
-			}
-			return true;
-		}
+            private boolean ensureByteRepresented(String str) {
+                boolean isRepresented=true;
+                try {
+                    int i = parseInt(str, 16);
+                    if (i<0 || i>0xff) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException nfe) {
+                    UIManager.getLookAndFeel().provideErrorFeedback(null);
+                    isRepresented=false;
+                }
+                return isRepresented;
+            }
 
-		public void insertString(FilterBypass fb, int offs, String string,
-								AttributeSet attr) throws BadLocationException {
-			Document doc = fb.getDocument();
-			String temp = doc.getText(0, offs) + string +
-								doc.getText(offs, doc.getLength()-offs);
-			if (ensureByteRepresented(temp)) {
-				fb.insertString(offs, temp, attr);
-			}
-		}
+            @Override
+            public void insertString(FilterBypass fb, int offs, String string, AttributeSet attr) throws BadLocationException {
+                Document doc = fb.getDocument();
+                String temp = doc.getText(0, offs) + string + doc.getText(offs, doc.getLength()-offs);
+                if (ensureByteRepresented(temp)) {
+                    fb.insertString(offs, temp, attr);
+                }
+            }
 
-		public void replace(FilterBypass fb, int offs, int len, String text,
-							AttributeSet attrs) throws BadLocationException {
-			Document doc = fb.getDocument();
-			String temp = doc.getText(0, offs) + text +
-						doc.getText(offs+len, doc.getLength()-(offs+len));
-			if (ensureByteRepresented(temp)) {
-				fb.replace(offs, len, text, attrs);
-			}
-		}
-
+            @Override
+            public void replace(FilterBypass fb, int offs, int len, String text, AttributeSet attrs) throws BadLocationException {
+                Document doc = fb.getDocument();
+                String temp = doc.getText(0, offs) + text + doc.getText(offs+len, doc.getLength()-(offs+len));
+                if (ensureByteRepresented(temp)) {
+                    fb.replace(offs, len, text, attrs);
+                }
+            }
 	}
-
-
 }
