@@ -36,8 +36,9 @@ import static java.util.EnumSet.noneOf;
 import java.util.Set;
 //</editor-fold>
 
-
 public class Prefs {
+    
+    //<editor-fold defaultstate="collapsed" desc="vars">
     public enum EepromInitMode {BLANK, 
                                 PERSISTENT, 
                                 LAST_LOADED}
@@ -92,77 +93,9 @@ public class Prefs {
 
     // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
     private int screenEmulatorRefreshIntervalMs;
-
+//</editor-fold>
     
-
-    private static File getPreferenceFile() {
-        return new File(getProperty("user.home") + separator + "." + getName());
-    }
-
-    public static void save(Prefs prefs) {
-        try {
-            XStreamUtils.save(prefs, new FileOutputStream(getPreferenceFile()), getPrefsXStream());
-        } catch (FileNotFoundException e) {
-        }
-    }
-
-    public static Prefs load() {
-        File preferenceFile = getPreferenceFile(),
-             lastKnownGoodFile = new File(preferenceFile.getAbsolutePath() + ".lastKnownGood"),
-             corruptFile = new File(preferenceFile.getAbsolutePath() + ".corrupt");
-        Prefs p = new Prefs();
-        
-        try {
-            p= loadFile(preferenceFile, lastKnownGoodFile);
-        }
-        catch (IOException e) {
-            out.println("Could not load preferences file. Attempting a rename to " + corruptFile.getName() + 
-                        " and trying to revert to " + lastKnownGoodFile.getName() + " instead...");
-            preferenceFile.renameTo(corruptFile);
-            
-            try {
-                p= loadFile(lastKnownGoodFile, preferenceFile);
-            } catch (IOException e1) {
-                out.println("Could not load " + lastKnownGoodFile.getName() + ". Starting with a blank preference file...");
-            }
-        }
-        return p;
-    }
-
-    private static Prefs loadFile(File file, File backupTargetFile) throws IOException {
-        Prefs prefs = new Prefs();
-        
-        if (file.exists()) {
-            XStream prefsXStream;
-            
-            try (FileInputStream inputStream = new FileInputStream(file)) {
-                prefsXStream = getPrefsXStreamIn();
-                prefs = (Prefs) XStreamUtils.load(inputStream, prefsXStream);
-            }
-            
-            convertExecutionMode(prefs);
-            
-            if (backupTargetFile != null) {
-                try ( // Parsing was OK. Back-up config
-                    FileOutputStream outputStream = new FileOutputStream(backupTargetFile)) {
-                    XStreamUtils.save(prefs, outputStream, prefsXStream);
-                }
-            }
-        } 
-        
-        return prefs;
-    }
-
-    /** @deprecated this is a temporary migration process */
-    private static void convertExecutionMode(Prefs prefs) {
-        if (prefs.altExecutionModeForSyncedCpuUponDebug == null || prefs.altExecutionModeForSyncedCpuUponDebug.length != 2) {
-            prefs.altExecutionModeForSyncedCpuUponDebug = new ExecutionMode[]{RUN, RUN};
-        }
-        if (prefs.altExecutionModeForSyncedCpuUponStep == null || prefs.altExecutionModeForSyncedCpuUponStep.length != 2) {
-            prefs.altExecutionModeForSyncedCpuUponStep = new ExecutionMode[]{RUN, RUN};
-        }
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="getters">
     public static XStream getPrefsXStreamIn() {
         XStream xStream = XStreamUtils.getBaseXStream();
         xStream.omitField(BreakTrigger.class, "function");
@@ -182,8 +115,6 @@ public class Prefs {
         xStream.omitField(Prefs.class, "altModeForSyncedCpuUponDebug");
         return xStream;
     }
-
-    //<editor-fold defaultstate="collapsed" desc="getters">
     public String getButtonSize() {
         return buttonSize;
     }
@@ -315,9 +246,109 @@ public class Prefs {
         }
         return codeStructureGraphOrientation[chip];
     }
+    
+    public int getDividerLocation() {
+        return dividerLocation;
+    }
+
+    public int getLastDividerLocation() {
+        return lastDividerLocation;
+    }
+    public int getSerialInterfaceFrameSelectedTab(int chip) {
+        if (this.serialInterfaceFrameSelectedTab == null || this.serialInterfaceFrameSelectedTab.length != 2) {
+            this.serialInterfaceFrameSelectedTab = new int[]{0, 0};
+        }
+        return serialInterfaceFrameSelectedTab[chip];
+    }
+    public int getGenericSerialFrameSelectedTab(int chip) {
+        if (this.genericSerialFrameSelectedTab == null || this.genericSerialFrameSelectedTab.length != 2) {
+            this.genericSerialFrameSelectedTab = new int[]{0, 0};
+        }
+        return genericSerialFrameSelectedTab[chip];
+    }
+    public int getIoPortsFrameSelectedTab(int chip) {
+        if (this.ioPortsFrameSelectedTab == null || this.ioPortsFrameSelectedTab.length != 2) {
+            this.ioPortsFrameSelectedTab = new int[]{0, 0};
+        }
+        return ioPortsFrameSelectedTab[chip];
+    }
+    public List<Integer> getAdValueList(int chip, String channelKey) {
+        if (adValueListMap == null || adValueListMap.length != 2) {
+            adValueListMap = new Map[]{new HashMap<String, ArrayList<Integer>>(), new HashMap<String, ArrayList<Integer>>()};
+        }
+        return adValueListMap[chip].get(channelKey);
+    }
+    public int getAdValue(int chip, String channelKey) {        
+        Integer value = adValueMap[chip].get(channelKey);
+
+        if (adValueMap == null || adValueMap.length != 2) {
+            adValueMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
+        return (value == null?0:value);
+    }
+    public EepromInitMode getEepromInitMode() {
+        EepromInitMode initMode;
+        if (eepromInitMode == null) {
+            initMode= LAST_LOADED;
+        }
+        else {
+            initMode= eepromInitMode;
+        }
+        return initMode;
+    }
+    public byte[] getLastEepromContents() {
+        return lastEepromContents;
+    }
+    public String getLastEepromFileName() {
+        return lastEepromFileName;
+    }
+    public Integer getPortInputValueOverride(int chip, int portNumber, int bitNumber) {
+        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
+            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
+        return ioValueOverrideMap[chip].get(portNumber + "-" + bitNumber);
+    }
+    public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponDebug(int chip) {
+        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
+            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        return altExecutionModeForSyncedCpuUponDebug[chip];
+    }
+    
+    public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponStep(int chip) {
+        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
+            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        return altExecutionModeForSyncedCpuUponStep[chip];
+    }
+    
+    public Integer getButtonState(String key) {
+        if (buttonsState == null) {
+            buttonsState = new HashMap<>();
+        }
+        return buttonsState.get(key);
+    }
+
+    public String getFirmwareFilename(int chip) {
+        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
+            this.firmwareFilename = new String[2];
+        }
+        return firmwareFilename[chip];
+    }
+    public int getRefreshIntervalMs() {
+        // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
+        if (screenEmulatorRefreshIntervalMs < 10 || screenEmulatorRefreshIntervalMs > 10000) {
+            screenEmulatorRefreshIntervalMs = 1000;
+        }
+        return screenEmulatorRefreshIntervalMs;
+    }
+
+    public String getFrontPanelName() {
+        return frontPanelName;
+    }
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="setters">
+    //<editor-fold defaultstate="collapsed" desc="setters">
     public void setButtonSize(String buttonSize) {
         this.buttonSize = buttonSize;
     }
@@ -451,10 +482,163 @@ public class Prefs {
             logSerialMessages = new boolean[]{false, false};
         }
         this.logSerialMessages[chip] = isLogSerialMessages;
+    }    
+    
+    public void setLogPinMessages(int chip, boolean isLogPinMessages) {
+        if (logPinMessages == null || logPinMessages.length != 2) {
+            logPinMessages = new boolean[]{true, true};
+        }
+        this.logPinMessages[chip] = isLogPinMessages;
+    }
+    public void setLogRegisterMessages(int chip, boolean isLogRegisterMessages) {
+        if (logRegisterMessages == null || logRegisterMessages.length != 2) {
+            logRegisterMessages = new boolean[]{true, true};
+        }
+        this.logRegisterMessages[chip] = isLogRegisterMessages;
+    }
+    public void setAdValueFromList(int chip, boolean isAdValueFromList) {
+        if (adValueFromList == null || adValueFromList.length != 2) {
+            adValueFromList = new boolean[]{true, true};
+        }
+        this.adValueFromList[chip] = isAdValueFromList;
+    }
+    public void setSerialInterfaceFrameSelectedTab(int chip, int serialInterfaceFrameSelectedTab) {
+        if (this.serialInterfaceFrameSelectedTab == null || this.serialInterfaceFrameSelectedTab.length != 2) {
+            this.serialInterfaceFrameSelectedTab = new int[]{0, 0};
+        }
+        this.serialInterfaceFrameSelectedTab[chip] = serialInterfaceFrameSelectedTab;
+    }
+
+    public void setGenericSerialFrameSelectedTab(int chip, int genericSerialFrameSelectedTab) {
+        if (this.genericSerialFrameSelectedTab == null || this.genericSerialFrameSelectedTab.length != 2) {
+            this.genericSerialFrameSelectedTab = new int[]{0, 0};
+        }
+        this.genericSerialFrameSelectedTab[chip] = genericSerialFrameSelectedTab;
+    }
+    public void setIoPortsFrameSelectedTab(int chip, int ioPortsFrameSelectedTab) {
+        if (this.ioPortsFrameSelectedTab == null || this.ioPortsFrameSelectedTab.length != 2) {
+            this.ioPortsFrameSelectedTab = new int[]{0, 0};
+        }
+        this.ioPortsFrameSelectedTab[chip] = ioPortsFrameSelectedTab;
+    }
+    public List<Integer> setAdValueList(int chip, String channelKey, List<Integer> values) {
+        if (adValueListMap == null || adValueListMap.length != 2) {
+            adValueListMap = new Map[]{new HashMap<String, ArrayList<Integer>>(), new HashMap<String, ArrayList<Integer>>()};
+        }
+        return adValueListMap[chip].put(channelKey, values);
+    }
+    
+    public void setEepromInitMode(EepromInitMode eepromInitMode) {
+        this.eepromInitMode = eepromInitMode;
+    }
+    public void setLastEepromContents(byte[] lastEepromContents) {
+        this.lastEepromContents = lastEepromContents;
+    }
+    public void setLastEepromFileName(String lastEepromFileName) {
+        this.lastEepromFileName = lastEepromFileName;
+    }
+    public void setSyncPlay(boolean syncPlay) {
+        this.syncPlay = syncPlay;
+    }
+    
+    public void setAltExecutionModeForSyncedCpuUponDebug(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponDebug) {
+        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
+            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        this.altExecutionModeForSyncedCpuUponDebug[chip] = altExecutionModeForSyncedCpuUponDebug;
+    }
+    
+    public void setAltExecutionModeForSyncedCpuUponStep(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponStep) {
+        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
+            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        this.altExecutionModeForSyncedCpuUponStep[chip] = altExecutionModeForSyncedCpuUponStep;
+    }
+
+    public void setButtonState(String key, Integer state) {
+        if (buttonsState == null) {
+            buttonsState = new HashMap<>();
+        }
+        buttonsState.put(key, state);
+    }
+    public void setFirmwareFilename(int chip, String firmwareFilename) {
+        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
+            this.firmwareFilename = new String[2];
+        }
+        this.firmwareFilename[chip] = firmwareFilename;
+    }
+    public void setRefreshIntervalMs(int refreshIntervalMs) {
+        // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
+        this.screenEmulatorRefreshIntervalMs = refreshIntervalMs;
+    }
+    public void setFrontPanelName(String frontPanelName) {
+        this.frontPanelName = frontPanelName;
+    }
+    
+    public void setAdValue(int chip, String channelKey, int value) {
+        if (adValueMap == null || adValueMap.length != 2) {
+            adValueMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
+        adValueMap[chip].put(channelKey, value);
+    }
+    public void setPortInputValueOverride(int chip, int portNumber, int bitNumber, int value) {
+        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
+            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
+        ioValueOverrideMap[chip].put(portNumber + "-" + bitNumber, value);
     }
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="functions">
+    //<editor-fold defaultstate="collapsed" desc="functions">
+    private static File getPreferenceFile() {
+        return new File(getProperty("user.home") + separator + "." + getName());
+    }
+    
+    public static Prefs load() {
+        File preferenceFile = getPreferenceFile(),
+             lastKnownGoodFile = new File(preferenceFile.getAbsolutePath() + ".lastKnownGood"),
+             corruptFile = new File(preferenceFile.getAbsolutePath() + ".corrupt");
+        Prefs p = new Prefs();
+        
+        try {
+            p= loadFile(preferenceFile, lastKnownGoodFile);
+        }
+        catch (IOException e) {
+            out.println("Could not load preferences file. Attempting a rename to " + corruptFile.getName() + 
+                        " and trying to revert to " + lastKnownGoodFile.getName() + " instead...");
+            preferenceFile.renameTo(corruptFile);
+            
+            try {
+                p= loadFile(lastKnownGoodFile, preferenceFile);
+            } catch (IOException e1) {
+                out.println("Could not load " + lastKnownGoodFile.getName() + ". Starting with a blank preference file...");
+            }
+        }
+        return p;
+    }
+    private static Prefs loadFile(File file, File backupTargetFile) throws IOException {
+        Prefs prefs = new Prefs();
+        
+        if (file.exists()) {
+            XStream prefsXStream;
+            
+            try (FileInputStream inputStream = new FileInputStream(file)) {
+                prefsXStream = getPrefsXStreamIn();
+                prefs = (Prefs) XStreamUtils.load(inputStream, prefsXStream);
+            }
+            
+            convertExecutionMode(prefs);
+            
+            if (backupTargetFile != null) {
+                try ( // Parsing was OK. Back-up config
+                    FileOutputStream outputStream = new FileOutputStream(backupTargetFile)) {
+                    XStreamUtils.save(prefs, outputStream, prefsXStream);
+                }
+            }
+        } 
+        
+        return prefs;
+    }
     public boolean isCloseAllWindowsOnStop() {
         return closeAllWindowsOnStop;
     }
@@ -518,120 +702,54 @@ public class Prefs {
         }
         return logMemoryMessages[chip];
     }
-//</editor-fold>
     
-
-    
-
-    public int getDividerLocation() {
-        return dividerLocation;
-    }
-
-    
-
-    public int getLastDividerLocation() {
-        return lastDividerLocation;
-    }
-
-    
-
     public boolean isLogSerialMessages(int chip) {
-        if (logSerialMessages == null || logSerialMessages.length != 2) logSerialMessages = new boolean[]{false, false};
+        if (logSerialMessages == null || logSerialMessages.length != 2) {
+            logSerialMessages = new boolean[]{false, false};
+        }
         return logSerialMessages[chip];
     }
-
-    
-
     public boolean isLogPinMessages(int chip) {
-        if (logPinMessages == null || logPinMessages.length != 2) logPinMessages = new boolean[]{false, false};
+        if (logPinMessages == null || logPinMessages.length != 2) {
+            logPinMessages = new boolean[]{false, false};
+        }
         return logPinMessages[chip];
     }
-
-    public void setLogPinMessages(int chip, boolean isLogPinMessages) {
-        if (logPinMessages == null || logPinMessages.length != 2) logPinMessages = new boolean[]{true, true};
-        this.logPinMessages[chip] = isLogPinMessages;
-    }
-
     public boolean isLogRegisterMessages(int chip) {
-        if (logRegisterMessages == null || logRegisterMessages.length != 2) logRegisterMessages = new boolean[]{true, true};
+        if (logRegisterMessages == null || logRegisterMessages.length != 2) {
+            logRegisterMessages = new boolean[]{true, true};
+        }
         return logRegisterMessages[chip];
     }
 
-    public void setLogRegisterMessages(int chip, boolean isLogRegisterMessages) {
-        if (logRegisterMessages == null || logRegisterMessages.length != 2) logRegisterMessages = new boolean[]{true, true};
-        this.logRegisterMessages[chip] = isLogRegisterMessages;
-    }
-
     public boolean isAdValueFromList(int chip) {
-        if (adValueFromList == null || adValueFromList.length != 2) adValueFromList = new boolean[]{true, true};
+        if (adValueFromList == null || adValueFromList.length != 2) {
+            adValueFromList = new boolean[]{true, true};
+        }
         return adValueFromList[chip];
     }
-
-    public void setAdValueFromList(int chip, boolean isAdValueFromList) {
-        if (adValueFromList == null || adValueFromList.length != 2) adValueFromList = new boolean[]{true, true};
-        this.adValueFromList[chip] = isAdValueFromList;
+    
+    public boolean isSyncPlay() {
+        return syncPlay;
     }
-
-    public int getSerialInterfaceFrameSelectedTab(int chip) {
-        if (this.serialInterfaceFrameSelectedTab == null || this.serialInterfaceFrameSelectedTab.length != 2) this.serialInterfaceFrameSelectedTab = new int[]{0, 0};
-        return serialInterfaceFrameSelectedTab[chip];
-    }
-
-    public void setSerialInterfaceFrameSelectedTab(int chip, int serialInterfaceFrameSelectedTab) {
-        if (this.serialInterfaceFrameSelectedTab == null || this.serialInterfaceFrameSelectedTab.length != 2) this.serialInterfaceFrameSelectedTab = new int[]{0, 0};
-        this.serialInterfaceFrameSelectedTab[chip] = serialInterfaceFrameSelectedTab;
-    }
-
-    public int getGenericSerialFrameSelectedTab(int chip) {
-        if (this.genericSerialFrameSelectedTab == null || this.genericSerialFrameSelectedTab.length != 2) this.genericSerialFrameSelectedTab = new int[]{0, 0};
-        return genericSerialFrameSelectedTab[chip];
-    }
-
-    public void setGenericSerialFrameSelectedTab(int chip, int genericSerialFrameSelectedTab) {
-        if (this.genericSerialFrameSelectedTab == null || this.genericSerialFrameSelectedTab.length != 2) this.genericSerialFrameSelectedTab = new int[]{0, 0};
-        this.genericSerialFrameSelectedTab[chip] = genericSerialFrameSelectedTab;
-    }
-
-    public int getIoPortsFrameSelectedTab(int chip) {
-        if (this.ioPortsFrameSelectedTab == null || this.ioPortsFrameSelectedTab.length != 2) this.ioPortsFrameSelectedTab = new int[]{0, 0};
-        return ioPortsFrameSelectedTab[chip];
-    }
-
-    public void setIoPortsFrameSelectedTab(int chip, int ioPortsFrameSelectedTab) {
-        if (this.ioPortsFrameSelectedTab == null || this.ioPortsFrameSelectedTab.length != 2) this.ioPortsFrameSelectedTab = new int[]{0, 0};
-        this.ioPortsFrameSelectedTab[chip] = ioPortsFrameSelectedTab;
-    }
-
-    public List<Integer> getAdValueList(int chip, String channelKey) {
-        if (adValueListMap == null || adValueListMap.length != 2) adValueListMap = new Map[]{new HashMap<String, ArrayList<Integer>>(), new HashMap<String, ArrayList<Integer>>()};
-        return adValueListMap[chip].get(channelKey);
-    }
-
-    public List<Integer> setAdValueList(int chip, String channelKey, List<Integer> values) {
-        if (adValueListMap == null || adValueListMap.length != 2) adValueListMap = new Map[]{new HashMap<String, ArrayList<Integer>>(), new HashMap<String, ArrayList<Integer>>()};
-        return adValueListMap[chip].put(channelKey, values);
-    }
-
-    public int getAdValue(int chip, String channelKey) {
-        if (adValueMap == null || adValueMap.length != 2) adValueMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
-        Integer value = adValueMap[chip].get(channelKey);
-        return (value == null?0:value);
-    }
-
-    public void setAdValue(int chip, String channelKey, int value) {
-        if (adValueMap == null || adValueMap.length != 2) adValueMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
-        adValueMap[chip].put(channelKey, value);
-    }
-
+//</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="procedimientos">
-    public void setPortInputValueOverride(int chip, int portNumber, int bitNumber, int value) {
-        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
-            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+    public static void save(Prefs prefs) {
+        try {
+            XStreamUtils.save(prefs, new FileOutputStream(getPreferenceFile()), getPrefsXStream());
+        } catch (FileNotFoundException e) {
         }
-        ioValueOverrideMap[chip].put(portNumber + "-" + bitNumber, value);
     }
-
+    /** @deprecated this is a temporary migration process */
+    private static void convertExecutionMode(Prefs prefs) {
+        if (prefs.altExecutionModeForSyncedCpuUponDebug == null || prefs.altExecutionModeForSyncedCpuUponDebug.length != 2) {
+            prefs.altExecutionModeForSyncedCpuUponDebug = new ExecutionMode[]{RUN, RUN};
+        }
+        if (prefs.altExecutionModeForSyncedCpuUponStep == null || prefs.altExecutionModeForSyncedCpuUponStep.length != 2) {
+            prefs.altExecutionModeForSyncedCpuUponStep = new ExecutionMode[]{RUN, RUN};
+        }
+    }
     public void removePortInputValueOverride(int chip, int portNumber, int bitNumber) {
         if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
             ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
@@ -640,125 +758,6 @@ public class Prefs {
     }
 //</editor-fold>
     
-
-    public boolean isSyncPlay() {
-        return syncPlay;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="getters">
-    public EepromInitMode getEepromInitMode() {
-        EepromInitMode initMode;
-        if (eepromInitMode == null) {
-            initMode= LAST_LOADED;
-        }
-        else {
-            initMode= eepromInitMode;
-        }
-        return initMode;
-    }
-    public byte[] getLastEepromContents() {
-        return lastEepromContents;
-    }
-    public String getLastEepromFileName() {
-        return lastEepromFileName;
-    }
-    public Integer getPortInputValueOverride(int chip, int portNumber, int bitNumber) {
-        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
-            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
-        }
-        return ioValueOverrideMap[chip].get(portNumber + "-" + bitNumber);
-    }
-    public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponDebug(int chip) {
-        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
-            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        return altExecutionModeForSyncedCpuUponDebug[chip];
-    }
-    
-    public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponStep(int chip) {
-        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
-            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        return altExecutionModeForSyncedCpuUponStep[chip];
-    }
-    
-    public Integer getButtonState(String key) {
-        if (buttonsState == null) {
-            buttonsState = new HashMap<>();
-        }
-        return buttonsState.get(key);
-    }
-
-    public String getFirmwareFilename(int chip) {
-        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
-            this.firmwareFilename = new String[2];
-        }
-        return firmwareFilename[chip];
-    }
-    public int getRefreshIntervalMs() {
-        // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
-        if (screenEmulatorRefreshIntervalMs < 10 || screenEmulatorRefreshIntervalMs > 10000) {
-            screenEmulatorRefreshIntervalMs = 1000;
-        }
-        return screenEmulatorRefreshIntervalMs;
-    }
-
-    public String getFrontPanelName() {
-        return frontPanelName;
-    }
-//</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="setters">
-    public void setEepromInitMode(EepromInitMode eepromInitMode) {
-        this.eepromInitMode = eepromInitMode;
-    }
-    public void setLastEepromContents(byte[] lastEepromContents) {
-        this.lastEepromContents = lastEepromContents;
-    }
-    public void setLastEepromFileName(String lastEepromFileName) {
-        this.lastEepromFileName = lastEepromFileName;
-    }
-    public void setSyncPlay(boolean syncPlay) {
-        this.syncPlay = syncPlay;
-    }
-    
-    public void setAltExecutionModeForSyncedCpuUponDebug(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponDebug) {
-        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
-            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        this.altExecutionModeForSyncedCpuUponDebug[chip] = altExecutionModeForSyncedCpuUponDebug;
-    }
-    
-    public void setAltExecutionModeForSyncedCpuUponStep(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponStep) {
-        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
-            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        this.altExecutionModeForSyncedCpuUponStep[chip] = altExecutionModeForSyncedCpuUponStep;
-    }
-
-    public void setButtonState(String key, Integer state) {
-        if (buttonsState == null) {
-            buttonsState = new HashMap<>();
-        }
-        buttonsState.put(key, state);
-    }
-    public void setFirmwareFilename(int chip, String firmwareFilename) {
-        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
-            this.firmwareFilename = new String[2];
-        }
-        this.firmwareFilename[chip] = firmwareFilename;
-    }
-    public void setRefreshIntervalMs(int refreshIntervalMs) {
-        // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
-        this.screenEmulatorRefreshIntervalMs = refreshIntervalMs;
-    }
-    public void setFrontPanelName(String frontPanelName) {
-        this.frontPanelName = frontPanelName;
-    }
-//</editor-fold>
-    
-
-
     /**
      * This is basically just a structure with an X Y value.
      * Now used for position but also for size
@@ -766,6 +765,7 @@ public class Prefs {
      */
     //nueva clase
     public class WindowPosition {
+        
         //<editor-fold defaultstate="collapsed" desc="vars">
         int x = 0,
             y = 0;
