@@ -26,13 +26,14 @@
  */
 package org.fife.ui.hex.swing;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import org.fife.ui.hex.event.SelectionChangedEvent;
 import org.fife.ui.hex.event.SelectionChangedListener;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import java.awt.AWTEvent;
+import static java.awt.AWTEvent.KEY_EVENT_MASK;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -47,6 +48,13 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_END;
+import static java.awt.event.KeyEvent.VK_HOME;
+import static java.awt.event.KeyEvent.VK_PAGE_DOWN;
+import static java.awt.event.KeyEvent.VK_PAGE_UP;
+import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.VK_UP;
 import java.io.IOException;
 import java.io.InputStream;
 import static java.lang.Integer.max;
@@ -56,7 +64,7 @@ import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import static javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION;
 import javax.swing.UIManager;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -65,6 +73,9 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.JTextComponent;
+import static org.fife.ui.hex.swing.HexEditor.DUMP_COLUMN_WIDTH;
+//</editor-fold>
+
 
 
 /**
@@ -76,16 +87,16 @@ import javax.swing.text.JTextComponent;
  */
 class HexTable extends JTable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final HexEditor hexEditor;
-	private HexTableModel model;
-	int leadSelectionIndex;
-	int anchorSelectionIndex;
+    private final HexEditor hexEditor;
+    private HexTableModel model;
+    int leadSelectionIndex,
+        anchorSelectionIndex;
 
-	private static final Color ANTERNATING_CELL_COLOR = new Color(240,240,240);
+    private static final Color ANTERNATING_CELL_COLOR = new Color(240,240,240);
 
-	private CellEditor cellEditor = new CellEditor();
+    private CellEditor cellEditor = new CellEditor();
     private Color[] colorMap;
 
 	/**
@@ -96,39 +107,38 @@ class HexTable extends JTable {
 	 */
 	public HexTable(HexEditor hexEditor, HexTableModel model) {
 
-		super(model);
-		this.hexEditor = hexEditor;
-		this.model = model;
-		enableEvents(AWTEvent.KEY_EVENT_MASK);
-		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		setFont(new Font("Monospaced", Font.PLAIN, 14));
-//setRowHeight(28);
-		setCellSelectionEnabled(true);
-		setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		setDefaultEditor(Object.class, cellEditor);
-		setDefaultRenderer(Object.class, new CellRenderer());
-		getTableHeader().setReorderingAllowed(false);
-		setShowGrid(false);
+            super(model);
+            
+            Font headerFont = UIManager.getFont("TableHeader.font");
+            FontMetrics fm = getFontMetrics(getFont()), headerFM = hexEditor.getFontMetrics(headerFont);
+            int w = fm.stringWidth("wwww"); // cell contents, 0-255
+            
+            this.hexEditor = hexEditor;
+            this.model = model;
+            enableEvents(KEY_EVENT_MASK);
+            setAutoResizeMode(AUTO_RESIZE_OFF);
+            setFont(new Font("Monospaced", Font.PLAIN, 14));
+            //setRowHeight(28);
+            setCellSelectionEnabled(true);
+            setSelectionMode(SINGLE_INTERVAL_SELECTION);
+            setDefaultEditor(Object.class, cellEditor);
+            setDefaultRenderer(Object.class, new CellRenderer());
+            getTableHeader().setReorderingAllowed(false);
+            setShowGrid(false);
 
-		FontMetrics fm = getFontMetrics(getFont());
-		Font headerFont = UIManager.getFont("TableHeader.font");
-		FontMetrics headerFM = hexEditor.getFontMetrics(headerFont);
-		int w = fm.stringWidth("wwww"); // cell contents, 0-255
-		w = Math.max(w, headerFM.stringWidth("+999"));
-		for (int i=0; i<getColumnCount(); i++) {
-			TableColumn column = getColumnModel().getColumn(i);
-			if (i<16) {
-				column.setPreferredWidth(w);
-			}
-			else {
-				column.setPreferredWidth(HexEditor.DUMP_COLUMN_WIDTH);
-			}
-		}
+            w = max(w, headerFM.stringWidth("+999"));
+            for (int i=0; i<getColumnCount(); i++) {
+                TableColumn column = getColumnModel().getColumn(i);
+                if (i<16) {
+                    column.setPreferredWidth(w);
+                } else {
+                    column.setPreferredWidth(DUMP_COLUMN_WIDTH);
+                }
+            }
 
-		setPreferredScrollableViewportSize(
-				new Dimension(w*16+HexEditor.DUMP_COLUMN_WIDTH, 25*getRowHeight()));
+            setPreferredScrollableViewportSize(new Dimension(w*16+DUMP_COLUMN_WIDTH, 25*getRowHeight()));
 
-		anchorSelectionIndex = leadSelectionIndex = 0;
+            anchorSelectionIndex = leadSelectionIndex = 0;
 
 	}
 
@@ -141,7 +151,7 @@ class HexTable extends JTable {
 	 * @see #removeSelectionChangedListener(org.fife.ui.hex.event.SelectionChangedListener)
 	 */
 	public void addSelectionChangedListener(SelectionChangedListener l) {
-		listenerList.add(SelectionChangedListener.class, l);
+            listenerList.add(SelectionChangedListener.class, l);
 	}
 
 
@@ -155,19 +165,20 @@ class HexTable extends JTable {
 	 * @return The column of the closest cell containing data.
 	 */
 	private int adjustColumn(int row, int col) {
-		if (col<0) {
-			return 0;
-		}
-		if (row==getRowCount()-1) {
-			int lastRowCount = model.getByteCount()%16;
-			if (lastRowCount==0) {
-				lastRowCount = 16;
-			}
-			if (lastRowCount<16) { // Last row's not entirely full
-				return Math.min(col, (model.getByteCount()%16)-1);
-			}
-		}
-		return Math.min(col, getColumnCount()-1-1);
+            int column = min(col, getColumnCount()-2);
+            if (col<0) {
+                column= 0;
+            }
+            if (row==getRowCount()-1) {
+                int lastRowCount = model.getByteCount()%16;
+                if (lastRowCount==0) {
+                    lastRowCount = 16;
+                }
+                if (lastRowCount<16) { // Last row's not entirely full
+                    column= min(col, (model.getByteCount()%16)-1);
+                }
+            }
+            return column;
 	}
 
 
@@ -183,14 +194,16 @@ class HexTable extends JTable {
 	 * @see #offsetToCell(int)
 	 */
 	public int cellToOffset(int row, int col) {
-		// Check row and column individually to prevent them being invalid
-		// values but still pointing to a valid offset in the buffer.
-		if (row<0 || row>=getRowCount() ||
-				col<0 || col>15) { // Don't include last column (ascii dump)
-			return -1;
-		}
-		int offs = row*16 + col;
-		return (offs>=0 && offs<model.getByteCount()) ? offs : -1;
+            // Check row and column individually to prevent them being invalid
+            // values but still pointing to a valid offset in the buffer.
+            int offs = row*16 + col,
+                offset=(offs>=0 && offs<model.getByteCount()) ? offs : -1;
+            
+            if (row<0 || row>=getRowCount() || col<0 || col>15) { // Don't include last column (ascii dump)
+                offset= -1;
+            }
+            
+            return offset;
 	}
 
 
@@ -205,41 +218,40 @@ class HexTable extends JTable {
 	 * @see #setSelectedRows(int, int)
 	 * @see #setSelectionByOffsets(int, int)
 	 */
-	public void changeSelection(int row, int col, boolean toggle,
-								boolean extend) {
+        @Override
+	public void changeSelection(int row, int col, boolean toggle, boolean extend) {
 	    
-	    // remind previous selection range
-		int prevSmallest = getSmallestSelectionIndex();
-		int prevLargest = getLargestSelectionIndex();
-	    
-		// Don't allow the user to select the "ascii dump" or any
-		// empty cells in the last row of the table.
-		col = adjustColumn(row, col);
-		if (row<0) {
-			row = 0;
-		}
+            // remind previous selection range
+            int prevSmallest = getSmallestSelectionIndex(),
+                prevLargest = getLargestSelectionIndex();
 
-		// Clear the old selection (may not be necessary).
-		repaintSelection();
+            // Don't allow the user to select the "ascii dump" or any
+            // empty cells in the last row of the table.
+            col = adjustColumn(row, col);
+            if (row<0) {
+                row = 0;
+            }
 
-		if (extend) {
-			leadSelectionIndex = cellToOffset(row, col);
-		}
-		else {
-			anchorSelectionIndex = leadSelectionIndex = cellToOffset(row, col);
-		}
+            // Clear the old selection (may not be necessary).
+            repaintSelection();
 
-        // Scroll after changing the selection as blit scrolling is
-		// immediate, so that if we cause the repaint after the scroll we
-		// end up painting everything!
-		if (getAutoscrolls()) {
-			ensureCellIsVisible(row, col);
-		}
+            if (extend) {
+                leadSelectionIndex = cellToOffset(row, col);
+            } else {
+                anchorSelectionIndex = leadSelectionIndex = cellToOffset(row, col);
+            }
 
-		// Draw the new selection.
-		repaintSelection();
+            // Scroll after changing the selection as blit scrolling is
+            // immediate, so that if we cause the repaint after the scroll we
+            // end up painting everything!
+            if (getAutoscrolls()) {
+                ensureCellIsVisible(row, col);
+            }
 
-		fireSelectionChangedEvent(prevSmallest, prevLargest);
+            // Draw the new selection.
+            repaintSelection();
+
+            fireSelectionChangedEvent(prevSmallest, prevLargest);
 
 	}
 
@@ -254,11 +266,9 @@ class HexTable extends JTable {
 	 * @see #setSelectionByOffsets(int, int)
 	 */
 	public void changeSelectionByOffset(int offset, boolean extend) {
-		offset = Math.max(0, offset);
-		offset = Math.min(offset, model.getByteCount()-1);
-		int row = offset/16;
-		int col = offset%16;
-		changeSelection(row, col, false, extend);
+            offset = max(0, offset);
+            offset = min(offset, model.getByteCount()-1);
+            changeSelection(offset/16, offset%16, false, extend);
 	}
 
 
@@ -266,14 +276,14 @@ class HexTable extends JTable {
 	 * Clears the selection.  The "lead" of the selection is set back to the
 	 * position of the "anchor."
 	 */
+        @Override
 	public void clearSelection() {
-		if (anchorSelectionIndex>-1) { // Always true unless an error
-			leadSelectionIndex = anchorSelectionIndex;
-		}
-		else {
-			anchorSelectionIndex = leadSelectionIndex = 0;
-		}
-		repaintSelection();
+            if (anchorSelectionIndex>-1) { // Always true unless an error
+                leadSelectionIndex = anchorSelectionIndex;
+            } else {
+                anchorSelectionIndex = leadSelectionIndex = 0;
+            }
+            repaintSelection();
 	}
 
 
@@ -284,10 +294,10 @@ class HexTable extends JTable {
 	 * @param col The column of the cell.
 	 */
 	private void ensureCellIsVisible(int row, int col) {
-		Rectangle cellRect = getCellRect(row, col, false);
-		if (cellRect != null) {
-			scrollRectToVisible(cellRect);
-		}
+            Rectangle cellRect = getCellRect(row, col, false);
+            if (cellRect != null) {
+                scrollRectToVisible(cellRect);
+            }
 	}
 
 
@@ -299,23 +309,20 @@ class HexTable extends JTable {
 	 */
 	private void fireSelectionChangedEvent(int prevSmallest, int prevLargest) {
 
-		// Lazily create the event
-		SelectionChangedEvent e = null;
+            // Lazily create the event
+            SelectionChangedEvent e = null;
 
-		// Guaranteed non-null array
-		Object[] listeners = listenerList.getListenerList();
-		// Process last to first
-		for (int i=listeners.length-2; i>=0; i-=2) {
-			if (listeners[i]==SelectionChangedListener.class) {
-				if (e==null) {
-				    e = new SelectionChangedEvent(this,
-				    	prevSmallest, prevLargest,
-				    	getSmallestSelectionIndex(), getLargestSelectionIndex());
-				}
-				((SelectionChangedListener)listeners[i+1]).selectionChanged(e);
-			}
-		}
-
+            // Guaranteed non-null array
+            Object[] listeners = listenerList.getListenerList();
+            // Process last to first
+            for (int i=listeners.length-2; i>=0; i-=2) {
+                if (listeners[i]==SelectionChangedListener.class) {
+                    if (e==null) {
+                        e = new SelectionChangedEvent(this, prevSmallest, prevLargest, getSmallestSelectionIndex(), getLargestSelectionIndex());
+                    }
+                    ((SelectionChangedListener)listeners[i+1]).selectionChanged(e);
+                }
+            }
 	}
 
 
@@ -326,7 +333,7 @@ class HexTable extends JTable {
 	 * @return The byte.
 	 */
 	public byte getByte(int offset) {
-		return model.getByte(offset);
+            return model.getByte(offset);
 	}
 
 
@@ -336,7 +343,7 @@ class HexTable extends JTable {
 	 * @return The number of bytes.
 	 */
 	public int getByteCount() {
-		return model.getByteCount();
+            return model.getByteCount();
 	}
 
 
@@ -348,7 +355,7 @@ class HexTable extends JTable {
 	 *         determined.
 	 */
 	private Map getDesktopAntiAliasHints() {
-		return (Map)getToolkit().getDesktopProperty("awt.font.desktophints");
+            return (Map)getToolkit().getDesktopProperty("awt.font.desktophints");
 	}
 
 
@@ -359,8 +366,7 @@ class HexTable extends JTable {
 	 * @see #getSmallestSelectionIndex()
 	 */
 	public int getLargestSelectionIndex() {
-		int index = Math.max(leadSelectionIndex, anchorSelectionIndex);
-		return Math.max(index, 0); // Don't return -1 if table is empty
+            return max(max(leadSelectionIndex, anchorSelectionIndex), 0); // Don't return -1 if table is empty
 	}
 
 
@@ -371,24 +377,27 @@ class HexTable extends JTable {
 	 * @see #getLargestSelectionIndex()
 	 */
 	public int getSmallestSelectionIndex() {
-		int index = Math.min(leadSelectionIndex, anchorSelectionIndex);
-		return Math.max(index, 0); // Don't return -1 if table is empty
+            return max(min(leadSelectionIndex, anchorSelectionIndex), 0); // Don't return -1 if table is empty
 	}
 
 
+        @Override
 	public boolean isCellEditable(int row, int col) {
-		return cellToOffset(row, col)>-1;
+            return cellToOffset(row, col)>-1;
 	}
 
 
+        @Override
 	public boolean isCellSelected(int row, int col) {
-		int offset = cellToOffset(row, col);
-		if (offset==-1) { // "Ascii dump" column
-			return false;
-		}
-		int start = getSmallestSelectionIndex();
-		int end = getLargestSelectionIndex();
-		return offset>=start && offset<=end;
+            int offset = cellToOffset(row, col),
+                start = getSmallestSelectionIndex(),
+                end = getLargestSelectionIndex();
+            boolean isSelected=offset>=start && offset<=end;
+            
+            if (offset==-1) { // "Ascii dump" column
+                isSelected= false;
+            }
+            return isSelected;
 	}
 
 
@@ -402,12 +411,12 @@ class HexTable extends JTable {
 	 * @see #cellToOffset(int, int)
 	 */
 	public Point offsetToCell(int offset) {
-		if (offset<0 || offset>=model.getByteCount()) {
-			return new Point(-1, -1);
-		}
-		int row = offset/16;
-		int col = offset%16;
-		return new Point(row, col);
+            int row = offset/16,
+                col = offset%16;
+            if (offset<0 || offset>=model.getByteCount()) {
+                return new Point(-1, -1);
+            }
+            return new Point(row, col);
 	}
 
 
@@ -419,7 +428,7 @@ class HexTable extends JTable {
 	 * @throws java.io.IOException If an IO error occurs.
 	 */
 	public void open(String fileName) throws IOException {
-		model.setBytes(fileName); // Fires tableDataChanged event
+            model.setBytes(fileName); // Fires tableDataChanged event
 	}
 
 
@@ -431,18 +440,17 @@ class HexTable extends JTable {
 	 * @throws java.io.IOException If an IO error occurs.
 	 */
 	public void open(InputStream in) throws IOException {
-		model.setBytes(in);
+            model.setBytes(in);
 	}
 
 
-	public Component prepareRenderer(TableCellRenderer renderer, int row,
-									int column) {
-		Object value = getValueAt(row, column);
-		boolean isSelected = isCellSelected(row, column);
-		boolean hasFocus = cellToOffset(row, column)==leadSelectionIndex;
+        @Override
+	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Object value = getValueAt(row, column);
+            boolean isSelected = isCellSelected(row, column),
+                    hasFocus = cellToOffset(row, column)==leadSelectionIndex;
 
-		return renderer.getTableCellRendererComponent(this, value,
-										isSelected, hasFocus, row, column);
+            return renderer.getTableCellRendererComponent(this, value, isSelected, hasFocus, row, column);
 	}
 
 
@@ -459,45 +467,45 @@ class HexTable extends JTable {
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                             break;
-                    case KeyEvent.VK_RIGHT:
+                    case VK_RIGHT:
                         extend = e.isShiftDown();
                         offs = min(leadSelectionIndex+1, model.getByteCount()-1);
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_UP:
+                    case VK_UP:
                         extend = e.isShiftDown();
                         offs = max(leadSelectionIndex-16, 0);
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_DOWN:
+                    case VK_DOWN:
                         extend = e.isShiftDown();
                         offs = min(leadSelectionIndex+16, model.getByteCount()-1);
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_PAGE_DOWN:
+                    case VK_PAGE_DOWN:
                         extend = e.isShiftDown();
                         int visibleRowCount = getVisibleRect().height/getRowHeight();
                         offs = min(leadSelectionIndex+visibleRowCount*16, model.getByteCount()-1);
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_PAGE_UP:
+                    case VK_PAGE_UP:
                         extend = e.isShiftDown();
                         visibleRowCount = getVisibleRect().height/getRowHeight();
                         offs = max(leadSelectionIndex-visibleRowCount*16, 0);
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_HOME:
+                    case VK_HOME:
                         extend = e.isShiftDown();
                         offs = (leadSelectionIndex/16)*16;
                         changeSelectionByOffset(offs, extend);
                         e.consume();
                         break;
-                    case KeyEvent.VK_END:
+                    case VK_END:
                         extend = e.isShiftDown();
                         offs = (leadSelectionIndex/16)*16 + 15;
                         offs = min(offs, model.getByteCount()-1);
@@ -761,34 +769,39 @@ class HexTable extends JTable {
                 @Override
 		protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
-
+                    
+                    Graphics2D g2d = (Graphics2D)g;
+                    Object oldHints = null;
+                    
                     g.setColor(getBackground());
                     g.fillRect(0, 0, getWidth(),getHeight());
 
                     if (highlight.x>-1) {
                         int w = getFontMetrics(HexTable.this.getFont()).charWidth('w'),
                             x = getInsets().left + highlight.x*w;
+                        
                         g.setColor(hexEditor.getHighlightSelectionInAsciiDumpColor());
                         
                         g.fillRect(x, 0, (highlight.y-highlight.x+1)*w, getRowHeight());
                     }
 
-                    Graphics2D g2d = (Graphics2D)g;
                     g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
-                    Object oldHints = null;
                     if (desktopAAHints!=null) {
                         oldHints = g2d.getRenderingHints();
                         g2d.addRenderingHints(desktopAAHints);
                     }
 
                     g.setColor(getForeground());
+                    
                     int x = 2;
                     String text = getText();
+                    
                     // not padding low bytes, and this one is in range 00-0f.
                     if (text.length()==1) {
                         x += g.getFontMetrics().charWidth('w');
                     }
+                    
                     g.drawString(text, x,11);
 
                     // Restore rendering hints appropriately.

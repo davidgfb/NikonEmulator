@@ -114,28 +114,26 @@ public class Format {
                     v = (v * 0x10) + ch - 'a' + 0x0a;
                 else if (ch >= 'A' && ch <= 'F')
                     v = (v * 0x10) + ch - 'A' + 0x0a;
-                else
+                else {
+                    //peligro
                     break;
-            }
-            else
-            {
-                if (ch >= '0' && ch <= '9')
+                }
+            } else {
+                if (ch >= '0' && ch <= '9') {
                     v = (v * 10) + ch - '0';
-                else
+                } else {
+                    //peligro
                     break;
+                }
             }
         }
 
-        if (i != value.length())
-        {
-            switch (value.charAt(i))
-            {
-                case 'k':
+        if (i != value.length()) {
+            switch (value.charAt(i)) {
                 case 'K':
                     v *= 1024;
                     i++;
                     break;
-                case 'm':
                 case 'M':
                     v *= 1048576;
                     i++;
@@ -143,8 +141,7 @@ public class Format {
             }
         }
 
-        if (i != value.length())
-        {
+        if (i != value.length()) {
             throw new ParsingException("Unrecognized value : " + value);
         }
 
