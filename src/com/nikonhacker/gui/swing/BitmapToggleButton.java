@@ -6,6 +6,9 @@ import com.nikonhacker.gui.component.frontPanel.StateChangeListener;
 import javax.imageio.ImageIO;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -137,6 +140,11 @@ public class BitmapToggleButton extends JComponent implements MouseMotionListene
 
     @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+        
         if(currentImage != null){
             g.drawImage(currentImage, 0, 0, this);
         }

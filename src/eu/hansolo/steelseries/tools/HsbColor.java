@@ -72,9 +72,9 @@ public class HsbColor {
     // <editor-fold defaultstate="collapsed" desc="Builder">
     public static class Builder {
         // mandatory parameter
-        private float hue = 0;
-        private float saturation = 0;
-        private float brightness = 0;
+        private float hue = 0,
+                      saturation = 0,
+                      brightness = 0;
         private int alpha = 255;
 
         public Builder(Color color) {

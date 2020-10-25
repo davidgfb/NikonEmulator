@@ -48,6 +48,12 @@ import java.awt.LinearGradientPaint;
 import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_RENDERING;
+import static java.awt.RenderingHints.KEY_STROKE_CONTROL;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_RENDER_QUALITY;
+import static java.awt.RenderingHints.VALUE_STROKE_NORMALIZE;
 import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -166,15 +172,17 @@ public class Led extends JComponent implements ActionListener {
     // <editor-fold defaultstate="collapsed" desc="Visualization">
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
         if (!initialized) {
             return;
         }
 
         final Graphics2D G2 = (Graphics2D) g.create();
 
-        G2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        G2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        G2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        G2.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+        G2.setRenderingHint(KEY_RENDERING, VALUE_RENDER_QUALITY);
+        G2.setRenderingHint(KEY_STROKE_CONTROL, VALUE_STROKE_NORMALIZE);
 
         G2.translate(INNER_BOUNDS.x, INNER_BOUNDS.y);
 

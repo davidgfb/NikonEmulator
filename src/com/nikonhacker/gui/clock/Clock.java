@@ -8,11 +8,16 @@ import static java.awt.Color.PINK;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
+import static java.util.Calendar.HOUR;
+import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.SECOND;
 import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////// Clock class
@@ -65,13 +70,14 @@ class Clock extends JComponent {
 
     //======================================================= paintComponent
     @Override public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
         //... The panel may have been resized, get current dimensions
-        int w = getWidth();
-        int h = getHeight();
+        int w = getWidth(),
+            h = getHeight();
         _diameter = ((w < h) ? w : h);
         _centerX = _diameter / 2;
         _centerY = _diameter / 2;
@@ -85,8 +91,7 @@ class Clock extends JComponent {
 
             //... Get a graphics context from this image
             Graphics2D g2a = _clockImage.createGraphics();
-            g2a.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2a.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
             drawClockFace(g2a);
         }
 
@@ -100,21 +105,24 @@ class Clock extends JComponent {
     //====================================== convenience method drawClockHands
     private void drawClockHands(Graphics2D g2) {
         //... Get the various time elements from the Calendar object.
-        int hours   = _now.get(Calendar.HOUR);
-        int minutes = _now.get(Calendar.MINUTE);
-        int seconds = _now.get(Calendar.SECOND);
-        int millis  = _now.get(Calendar.MILLISECOND);
+        int hours   = _now.get(HOUR),
+            minutes = _now.get(MINUTE),
+            seconds = _now.get(SECOND),
+            millis  = _now.get(MILLISECOND),
+        
+            handMin = _diameter / 8,    // Second hand doesn't start in middle.
+            handMax = _diameter / 2;    // Second hand extends to outer rim.
 
         //... second hand
-        int handMin = _diameter / 8;    // Second hand doesn't start in middle.
-        int handMax = _diameter / 2;    // Second hand extends to outer rim.
-        double fseconds = (seconds + (double)millis/1000) / 60.0;
+        
+        double fseconds = (seconds + (double)millis/1000) / 60.0,
+               fminutes = (minutes + fseconds) / 60.0;
         drawRadius(g2, fseconds, 0, handMax);
 
         //... minute hand
         handMin = 0;                    // Minute hand starts in middle.
         handMax = _diameter / 3;
-        double fminutes = (minutes + fseconds) / 60.0;
+        
         drawRadius(g2, fminutes, 0, handMax);
 
         //... hour hand

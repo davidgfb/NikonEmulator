@@ -19,11 +19,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener {
 
@@ -148,8 +152,12 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
         }
 
         // This method is called whenever the contents needs to be painted
+        @Override
         public void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+
             Graphics2D g2d = (Graphics2D) graphics;
+            g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
             if (img!=null) {
                 if (img.getWidth()!=screenWidth || img.getHeight()!=screenHeight || yuvAlign != previousYuvAlign) {
@@ -162,15 +170,15 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
                 img = lcd.getImage(screenWidth, screenHeight);
             if (img!=null) {
                 // Get size of JScrollPane
-                int w = getParent().getWidth();
-                int h = getParent().getHeight();
+                int w = getParent().getWidth(),
+                    h = getParent().getHeight();
 
                 // Create the resizing transform upon first call or resize
                 if (resizeTransform == null || previousW != w || previousH != h) {
                     resizeTransform = new AffineTransform();
-                    double scaleX = Math.max(0.5, (2 * w / screenWidth) / 2.0);
-                    double scaleY = Math.max(0.5, (2 * h / screenHeight) / 2.0);
-                    currentScale = Math.min(scaleX, scaleY);
+                    double scaleX = max(0.5, (2 * w / screenWidth) / 2.0),
+                           scaleY = max(0.5, (2 * h / screenHeight) / 2.0);
+                    currentScale = min(scaleX, scaleY);
                     resizeTransform.scale(currentScale, currentScale);
                     previousW = w;
                     previousH = h;

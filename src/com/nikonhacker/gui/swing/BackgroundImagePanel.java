@@ -1,9 +1,12 @@
 package com.nikonhacker.gui.swing;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.MediaTracker;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import javax.swing.JPanel;
 
 public class BackgroundImagePanel extends JPanel {
@@ -19,8 +22,13 @@ public class BackgroundImagePanel extends JPanel {
         setImage(backgroundImage);
     }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+        
         //int imwidth = backgroundImage.getWidth(null);
         //int imheight = backgroundImage.getHeight(null);
         g.drawImage(backgroundImage, 1, 1, null);
@@ -33,7 +41,6 @@ public class BackgroundImagePanel extends JPanel {
         try {
             mt.waitForAll();
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 

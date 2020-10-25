@@ -15,6 +15,8 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import static java.lang.Math.max;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,14 +157,15 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
 
 
     private class MemoryMapComponent extends JComponent {
-        private int activityMap[];
-
-        private int selectedX = NO_SELECTION;
-        private int selectedY = NO_SELECTION;
+        private int selectedX = NO_SELECTION,
+                    selectedY = NO_SELECTION,
+                    previousW, 
+                    previousH;
+        
+        private int[] activityMap;
 
         private AffineTransform resizeTransform;
-        private int previousW, previousH;
-
+        
         private MemoryMapComponent(int activityMap[]) {
             this.activityMap = activityMap;
             if (isMaster) {
@@ -171,27 +175,36 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
                 setPreferredSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
             }
 
+            //nueva clase para esto
             addMouseMotionListener(new MouseMotionListener() {
+                @Override
                 public void mouseDragged(MouseEvent e) {/* noop */ }
 
+                @Override
                 public void mouseMoved(MouseEvent e) {
                     selectedX = e.getX();
                     selectedY = e.getY();
                 }
             });
 
+            //nueva clase para esto
             addMouseListener(new MouseListener() {
 
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     openSubWindow(e.getX(), e.getY());
                 }
 
+                @Override
                 public void mousePressed(MouseEvent e) {/* noop */ }
 
+                @Override
                 public void mouseReleased(MouseEvent e) {/* noop */ }
 
+                @Override
                 public void mouseEntered(MouseEvent e) {/* noop */ }
 
+                @Override
                 public void mouseExited(MouseEvent e) {
                     selectedX = NO_SELECTION;
                     selectedY = NO_SELECTION;
@@ -200,18 +213,22 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
         }
 
         // This method is called whenever the contents needs to be painted
+        @Override
         public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
+            super.paintComponent(g);
 
-            int w = getWidth();
-            int h = getHeight();
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+
+            int w = getWidth(),
+                h = getHeight();
 
 
             // Create the resizing transform upon first call or resize
             if (resizeTransform == null || previousW != w || previousH != h) {
                 resizeTransform = new AffineTransform();
-                scaleX = Math.max((double) w / MAP_WIDTH, 1);
-                scaleY = Math.max((double) h / MAP_HEIGHT, 1);
+                scaleX = max((double) w / MAP_WIDTH, 1);
+                scaleY = max((double) h / MAP_HEIGHT, 1);
                 resizeTransform.scale(scaleX, scaleY);
                 previousW = w;
                 previousH = h;
@@ -225,13 +242,13 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
             g2d.drawImage(img, resizeTransform, null);
 
             if (selectedX != NO_SELECTION) {
-                int x = (int) (selectedX / scaleX);
-                int y = (int) (selectedY / scaleY);
+                int x = (int) (selectedX / scaleX),
+                    y = (int) (selectedY / scaleY),
+                    value = activityMap[y * MAP_WIDTH + x],
+                    reads = (value & 0xFF00) >>> 8,
+                    writes = (value & 0xFF0000) >>> 16,
+                    execs = (value & 0xFF);
                 FontMetrics fm = g.getFontMetrics();
-                int value = activityMap[y * MAP_WIDTH + x];
-                int reads = (value & 0xFF00) >>> 8;
-                int writes = (value & 0xFF0000) >>> 16;
-                int execs = (value & 0xFF);
                 String message = "0x" + (Format.asHex(getAddressFromPosition(x, y), 8) + " : green="
                         + reads + ((reads == 255) ? "+" : "") + " reads, red="
                         + writes + ((writes == 255) ? "+" : "") + " writes, blue="

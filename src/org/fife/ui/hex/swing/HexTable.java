@@ -42,6 +42,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -754,48 +756,52 @@ class HexTable extends JTable {
 				}
 			}
 
-            if (colorMap != null)
+            if (colorMap != null) 
                 setForeground(colorMap[row * 16 + column]);
 
 			return this;
 
 		}
 
+                @Override
 		protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
 
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(),getHeight());
+                    g.setColor(getBackground());
+                    g.fillRect(0, 0, getWidth(),getHeight());
 
-			if (highlight.x>-1) {
-				int w = getFontMetrics(HexTable.this.getFont()).charWidth('w');
-				g.setColor(hexEditor.getHighlightSelectionInAsciiDumpColor());
-				int x = getInsets().left + highlight.x*w;
-				g.fillRect(x, 0, (highlight.y-highlight.x+1)*w, getRowHeight());
-			}
+                    if (highlight.x>-1) {
+                        int w = getFontMetrics(HexTable.this.getFont()).charWidth('w'),
+                            x = getInsets().left + highlight.x*w;
+                        g.setColor(hexEditor.getHighlightSelectionInAsciiDumpColor());
+                        
+                        g.fillRect(x, 0, (highlight.y-highlight.x+1)*w, getRowHeight());
+                    }
 
-			Graphics2D g2d = (Graphics2D)g;
-			Object oldHints = null;
-			if (desktopAAHints!=null) {
-				oldHints = g2d.getRenderingHints();
-				g2d.addRenderingHints(desktopAAHints);
-			}
+                    Graphics2D g2d = (Graphics2D)g;
+                    g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
-			g.setColor(getForeground());
-			int x = 2;
-			String text = getText();
-			// not padding low bytes, and this one is in range 00-0f.
-			if (text.length()==1) {
-				x += g.getFontMetrics().charWidth('w');
-			}
-			g.drawString(text, x,11);
+                    Object oldHints = null;
+                    if (desktopAAHints!=null) {
+                        oldHints = g2d.getRenderingHints();
+                        g2d.addRenderingHints(desktopAAHints);
+                    }
 
-			// Restore rendering hints appropriately.
-			if (desktopAAHints!=null) {
-				g2d.addRenderingHints((Map)oldHints);
-			}
+                    g.setColor(getForeground());
+                    int x = 2;
+                    String text = getText();
+                    // not padding low bytes, and this one is in range 00-0f.
+                    if (text.length()==1) {
+                        x += g.getFontMetrics().charWidth('w');
+                    }
+                    g.drawString(text, x,11);
+
+                    // Restore rendering hints appropriately.
+                    if (desktopAAHints!=null) {
+                        g2d.addRenderingHints((Map)oldHints);
+                    }
 
 		}
-
 	}
 
 

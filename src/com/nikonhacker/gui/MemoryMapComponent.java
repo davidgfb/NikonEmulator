@@ -130,6 +130,8 @@ public class MemoryMapComponent extends JComponent {
     // This method is called whenever the contents needs to be painted
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
         
