@@ -36,7 +36,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.CYAN;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.YELLOW;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -119,14 +121,14 @@ public class ITronObjectFrame extends DocumentFrame {
                     TaskInformation.TaskState state = (TaskInformation.TaskState)getModel().getValueAt(modelRow, sysCallEnvironment.getTaskStateColumnNumber());
                     switch (state) {
                         case RUN:
-                            c.setBackground(Color.YELLOW);
+                            c.setBackground(YELLOW);
                             break;
                         case WAIT:
                         case WAIT_SUSPEND:
-                            c.setBackground(Color.CYAN);
+                            c.setBackground(CYAN);
                             break;
                         case DORMANT:
-                            c.setBackground(Color.LIGHT_GRAY);
+                            c.setBackground(LIGHT_GRAY);
                             break;
                         default:
                             c.setBackground(super.getBackground());

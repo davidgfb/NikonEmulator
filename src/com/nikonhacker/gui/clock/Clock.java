@@ -3,7 +3,8 @@ package com.nikonhacker.gui.clock;
 // Note   : Uses a BufferedImage for clock face so isn't drawn each time.
 // Author : Fred Swartz, 1999-2007, Placed in public domain.
 
-import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.PINK;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -125,9 +126,9 @@ class Clock extends JComponent {
     //======================================= convenience method drawClockFace
     private void drawClockFace(Graphics2D g2) {
         // ... Draw the clock face.  Probably into a buffer.        
-        g2.setColor(Color.PINK);
+        g2.setColor(PINK);
         g2.fillOval(0, 0, _diameter, _diameter);
-        g2.setColor(Color.BLACK);
+        g2.setColor(BLACK);
         g2.drawOval(0, 0, _diameter, _diameter);
 
         int radius = _diameter / 2;

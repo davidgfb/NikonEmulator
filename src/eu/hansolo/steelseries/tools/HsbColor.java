@@ -28,6 +28,8 @@
 package eu.hansolo.steelseries.tools;
 
 import java.awt.Color;
+import static java.awt.Color.HSBtoRGB;
+import static java.awt.Color.RGBtoHSB;
 
 
 public class HsbColor {
@@ -44,7 +46,7 @@ public class HsbColor {
         mHue = builder.getHue();
         mSaturation = builder.getSaturation();
         mBrightness = builder.getBrightness();
-        final Color TMP_COLOR = new Color(Color.HSBtoRGB(mHue, mSaturation, mBrightness));
+        final Color TMP_COLOR = new Color(HSBtoRGB(mHue, mSaturation, mBrightness));
         mColor = new Color(TMP_COLOR.getRed(), TMP_COLOR.getGreen(), TMP_COLOR.getBlue(), builder.getAlpha());
     }
     //</editor-fold>
@@ -76,7 +78,7 @@ public class HsbColor {
         private int alpha = 255;
 
         public Builder(Color color) {
-            final float[] HSB_VALUES = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+            final float[] HSB_VALUES = RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
             hue = HSB_VALUES[0];
             saturation = HSB_VALUES[1];
             brightness = HSB_VALUES[2];

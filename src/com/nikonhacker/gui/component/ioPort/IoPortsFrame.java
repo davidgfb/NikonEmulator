@@ -25,6 +25,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.GRAY;
+import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -115,12 +118,12 @@ public class IoPortsFrame extends DocumentFrame implements IoPortConfigListener 
                 pinInputs[portNumber][7 - bitNumber] = createInputComboBox(portNumber, bitNumber, pin);
                 pinDisabledInputs[portNumber][7 - bitNumber] = createLabel();
                 pinDisabledInputs[portNumber][7 - bitNumber].setText("dis.");
-                pinDisabledInputs[portNumber][7 - bitNumber].setForeground(Color.GRAY);
+                pinDisabledInputs[portNumber][7 - bitNumber].setForeground(GRAY);
 
                 // Prepare components for pin output
                 pinOutputs[portNumber][7 - bitNumber] = createLabel();
                 pinOutputs[portNumber][7 - bitNumber].setOpaque(true);
-                pinOutputs[portNumber][7 - bitNumber].setForeground(Color.WHITE);
+                pinOutputs[portNumber][7 - bitNumber].setForeground(WHITE);
 
                 // Insert a spy wire next to each pin
                 spyWires[portNumber][bitNumber] = createAndInsertSpyWire(portNumber, bitNumber, pin);
@@ -133,14 +136,14 @@ public class IoPortsFrame extends DocumentFrame implements IoPortConfigListener 
         addCommonLegend(valuePanel);
         JLabel label = new JLabel("OUT", SwingConstants.CENTER);
         label.setPreferredSize(PREFERRED_SIZE);
-        label.setBackground(Color.BLACK);
+        label.setBackground(BLACK);
         label.setOpaque(true);
-        label.setForeground(Color.WHITE);
-        label.setBorder(new MatteBorder(COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, Color.BLACK));
+        label.setForeground(WHITE);
+        label.setBorder(new MatteBorder(COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, BLACK));
         valuePanel.add(label);
         label = new JLabel("IN", SwingConstants.CENTER);
         label.setPreferredSize(PREFERRED_SIZE);
-        label.setBorder(new MatteBorder(COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, Color.BLACK));
+        label.setBorder(new MatteBorder(COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, COLOR_BORDER_SIZE, BLACK));
         valuePanel.add(label);
 
 

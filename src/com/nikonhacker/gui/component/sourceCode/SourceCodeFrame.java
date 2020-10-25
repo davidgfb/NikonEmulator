@@ -27,6 +27,12 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.CYAN;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -185,10 +191,10 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                     address = codeStructure.getAddressFromString(str);
                 }
                 if (address == null) {
-                    targetField.setBackground(Color.RED);
+                    targetField.setBackground(RED);
                 }
                 else {
-                    targetField.setBackground(Color.WHITE);
+                    targetField.setBackground(WHITE);
                     if (!exploreAddress(address, true)) {
                         JOptionPane.showMessageDialog(SourceCodeFrame.this, "No function found matching address 0x" + Format.asHex(address, 8), "Cannot explore function", JOptionPane.ERROR_MESSAGE);
                     }
@@ -318,10 +324,10 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
         listingArea.setAntiAliasingEnabled(true);
 
         listingArea.setMarkOccurrences(true);
-        listingArea.setMarkOccurrencesColor(Color.GREEN);
+        listingArea.setMarkOccurrencesColor(GREEN);
 //        // When one clicks on a term, highlight all occurrences (not only the ones within the same syntactic group)
 //        MarkAllOccurrencesSupport support = new MarkAllOccurrencesSupport();
-//        support.setColor(Color.GREEN);
+//        support.setColor(GREEN);
 //        support.install(listingArea);
 
         // Make current line transparent so PC line highlight passes through
@@ -342,11 +348,11 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
 
         Style addressStyle = (Style) functionStyle.clone();
         ss.setStyle(Token.LITERAL_NUMBER_HEXADECIMAL, addressStyle);
-        addressStyle.foreground = Color.BLACK;
+        addressStyle.foreground = BLACK;
 
         Style instructionStyle = (Style) functionStyle.clone();
         ss.setStyle(Token.ANNOTATION, instructionStyle);
-        instructionStyle.foreground = Color.LIGHT_GRAY;
+        instructionStyle.foreground = LIGHT_GRAY;
 
         Style variableStyle = ss.getStyle(Token.VARIABLE);
         variableStyle.foreground = new Color(155, 22, 188);
@@ -583,7 +589,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
         // they're not very useful until they are persisted anyway...
         gutter.setBookmarkingEnabled(false);
         // gutter.setBookmarkIcon(bookmarkIcon);
-        gutter.setLineNumberColor(Color.LIGHT_GRAY);
+        gutter.setLineNumberColor(LIGHT_GRAY);
 
         return scrollPane;
     }
@@ -613,7 +619,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                 exploreAddress(cpuState.pc,false);
             }
             if (lineFromAddress != null) {
-                pcHighlightTag = listingArea.addLineHighlight(lineFromAddress, Color.CYAN);
+                pcHighlightTag = listingArea.addLineHighlight(lineFromAddress, CYAN);
                 setLineContextVisible(lineFromAddress);
             }
         } catch (BadLocationException e) {
@@ -654,7 +660,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
         try {
             Integer lineFromAddress = getLineFromAddress(cpuState.pc);
             if (lineFromAddress != null) {
-                pcHighlightTag = listingArea.addLineHighlight(lineFromAddress, Color.CYAN);
+                pcHighlightTag = listingArea.addLineHighlight(lineFromAddress, CYAN);
             }
         } catch (BadLocationException e) {
             pcHighlightTag = null;

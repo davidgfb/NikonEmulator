@@ -6,6 +6,7 @@ import com.nikonhacker.gui.swing.DocumentFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.GREEN;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
@@ -87,7 +88,7 @@ public class ProgrammableTimersFrame extends DocumentFrame {
         // Change label/button
         statusLabel.setText("Timer emulation is " + (active ? "active" : "inactive"));
         enableButton.setText(active ? "Disable" : "Enable");
-        topPanel.setBackground(active ? Color.GREEN : new Color(255, 128, 128));
+        topPanel.setBackground(active ? GREEN : new Color(255, 128, 128));
     }
 
     private void updateList() {

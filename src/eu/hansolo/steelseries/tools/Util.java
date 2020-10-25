@@ -30,6 +30,8 @@ package eu.hansolo.steelseries.tools;
 import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import static java.awt.Color.RGBtoHSB;
+import static java.awt.Color.getHSBColor;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
@@ -823,7 +825,7 @@ public enum Util {
      * @return Color with a given hue
      */
     public Color setHue(final Color COLOR, final float HUE) {
-        final float HSB_VALUES[] = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        final float HSB_VALUES[] = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
         return Color.getHSBColor(HUE, HSB_VALUES[1], HSB_VALUES[2]);
     }
 
@@ -836,7 +838,7 @@ public enum Util {
      * @return Color with a given saturation
      */
     public Color setSaturation(final Color COLOR, final float SATURATION) {
-        final float HSB_VALUES[] = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        final float HSB_VALUES[] = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
         return Color.getHSBColor(HSB_VALUES[0], SATURATION, HSB_VALUES[2]);
     }
 
@@ -847,7 +849,7 @@ public enum Util {
      * @return Color with the given brightness
      */
     public Color setBrightness(final Color COLOR, final float BRIGHTNESS) {
-        final float HSB_VALUES[] = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        final float HSB_VALUES[] = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
         return Color.getHSBColor(HSB_VALUES[0], HSB_VALUES[1], BRIGHTNESS);
     }
 
@@ -859,8 +861,8 @@ public enum Util {
      * @return the given COLOR with the given HUE and SATURATION
      */
     public Color setHueSaturation(final Color COLOR, final float HUE, final float SATURATION) {
-        final float HSB_VALUES[] = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
-        return Color.getHSBColor(HUE, SATURATION, HSB_VALUES[2]);
+        final float HSB_VALUES[] = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        return getHSBColor(HUE, SATURATION, HSB_VALUES[2]);
     }
 
     /**
@@ -871,8 +873,8 @@ public enum Util {
      * @return the given COLOR with the given SATURATION and BRIGHTNESS
      */
     public Color setSaturationBrightness(final Color COLOR, final float SATURATION, final float BRIGHTNESS) {
-        final float HSB_VALUES[] = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
-        return Color.getHSBColor(HSB_VALUES[0], SATURATION, BRIGHTNESS);
+        final float HSB_VALUES[] = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        return getHSBColor(HSB_VALUES[0], SATURATION, BRIGHTNESS);
     }
 
     /**
@@ -1003,7 +1005,7 @@ public enum Util {
      * @return a list of 9 shades of the given color, 4 darker, the original and 4 brighter colors
      */
     public LinkedList<Color> createShades(final float INTENSITY, final Color COLOR) {
-        final float[] HSB = Color.RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
+        final float[] HSB = RGBtoHSB(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), null);
         final float SATURATION_STEPSIZE = HSB[1] / INTENSITY;
         final float BRIGHTNESS_STEPSIZE = HSB[2] / INTENSITY;
         LinkedList<Color> colorShades = new LinkedList<Color>();

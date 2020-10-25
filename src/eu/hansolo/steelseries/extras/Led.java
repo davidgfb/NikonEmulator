@@ -38,6 +38,8 @@ import eu.hansolo.steelseries.tools.Util;
 
 import javax.swing.border.Border;
 import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -94,7 +96,7 @@ public class Led extends JComponent implements ActionListener {
         super();
         INNER_BOUNDS        = new Rectangle(16, 16);
         ledColor            = LedColor.RED_LED;
-        customLedColor      = new CustomLedColor(Color.RED);
+        customLedColor      = new CustomLedColor(RED);
         ledImageOff         = create_LED_Image(16, 0, ledColor, LedType.ROUND);
         ledImageOn          = create_LED_Image(16, 1, ledColor, LedType.ROUND);
         currentLedImage     = ledImageOff;
@@ -626,11 +628,11 @@ public class Led extends JComponent implements ActionListener {
                         break;
 
                     case RECT_VERTICAL:
-                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_ON_GRADIENT, 0, 0.65f, Color.BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.3421052632), (int) (IMAGE_HEIGHT * 0.1052631579), null);
+                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_ON_GRADIENT, 0, 0.65f, BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.3421052632), (int) (IMAGE_HEIGHT * 0.1052631579), null);
                         break;
 
                     case RECT_HORIZONTAL:
-                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_ON_GRADIENT, 0, 0.65f, Color.BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.1052631579), (int) (IMAGE_HEIGHT * 0.3421052632), null);
+                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_ON_GRADIENT, 0, 0.65f, BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.1052631579), (int) (IMAGE_HEIGHT * 0.3421052632), null);
                         break;
                 }
                 G2.setPaint(LED_LIGHTREFLEX_GRADIENT);
@@ -650,11 +652,11 @@ public class Led extends JComponent implements ActionListener {
                         break;
 
                     case RECT_VERTICAL:
-                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_OFF_GRADIENT, 0, 0.65f, Color.BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.3421052632), (int) (IMAGE_HEIGHT * 0.1052631579), null);
+                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_OFF_GRADIENT, 0, 0.65f, BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.3421052632), (int) (IMAGE_HEIGHT * 0.1052631579), null);
                         break;
 
                     case RECT_HORIZONTAL:
-                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_OFF_GRADIENT, 0, 0.65f, Color.BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.1052631579), (int) (IMAGE_HEIGHT * 0.3421052632), null);
+                        G2.drawImage(Shadow.INSTANCE.createInnerShadow(LED, LED_OFF_GRADIENT, 0, 0.65f, BLACK, 20, 315), (int) (IMAGE_WIDTH * 0.1052631579), (int) (IMAGE_HEIGHT * 0.3421052632), null);
                         break;
                 }
                 G2.setPaint(LED_LIGHTREFLEX_GRADIENT);

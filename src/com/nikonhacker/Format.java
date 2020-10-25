@@ -5,7 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
-import java.awt.Color;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
 import java.io.File;
 
 public class Format {
@@ -48,10 +49,10 @@ public class Format {
             if (value < 0 || value > 0xFFFFFFFFL) {
                 throw new NumberFormatException("Value out of range");
             }
-            textField.setBackground(Color.WHITE);
+            textField.setBackground(WHITE);
             return (int) value;
         } catch (NumberFormatException e) {
-            textField.setBackground(Color.RED);
+            textField.setBackground(RED);
             throw(e);
         }
     }
@@ -70,10 +71,10 @@ public class Format {
             if (value < 0 || value > 0xFFFFFFFFL){
                 throw new NumberFormatException("Value out of range");
             }
-            textField.setBackground(Color.WHITE);
+            textField.setBackground(WHITE);
             return (int) value;
         } catch (NumberFormatException e) {
-            textField.setBackground(Color.RED);
+            textField.setBackground(RED);
             throw(e);
         }
     }
@@ -81,10 +82,10 @@ public class Format {
     public static int parseUnsignedField(JTextField textField) throws ParsingException {
         try {
             int value = parseUnsigned(textField.getText());
-            textField.setBackground(Color.WHITE);
+            textField.setBackground(WHITE);
             return value;
         } catch (ParsingException e) {
-            textField.setBackground(Color.RED);
+            textField.setBackground(RED);
             throw(e);
         }
     }

@@ -8,7 +8,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.text.BadLocationException;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.CYAN;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +41,7 @@ public class TextEditorDemo extends JFrame {
         textArea.setText("//test\nint main() {\n\tSystem.out.println();\n}\n");
 
         try {
-            Object tag = textArea.addLineHighlight(3, Color.CYAN);
+            Object tag = textArea.addLineHighlight(3, CYAN);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }

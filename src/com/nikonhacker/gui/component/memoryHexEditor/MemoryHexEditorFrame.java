@@ -36,6 +36,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.WHITE;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -327,7 +329,7 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
 
     private void loadPage(int baseAddress) {
         this.baseAddress = baseAddress;
-        addressField.setBackground(Color.WHITE);
+        addressField.setBackground(WHITE);
 
         tabbedPane.setTitleAt(0, "Page 0x" + Format.asHex(baseAddress, 8) + " - 0x" + Format.asHex(baseAddress + memory.getPageSize() - 1, 8)) ;
 
@@ -353,14 +355,14 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
             colorMap = new Color[0x10000];
             if (cellActivityMap == null) {
                 // Memory is tracked, but this is page has never been accessed
-                Arrays.fill(colorMap, Color.LIGHT_GRAY);
+                Arrays.fill(colorMap, LIGHT_GRAY);
             }
             else {
                 // Memory is tracked, set cell color according to access
                 for (int i = 0; i < cellActivityMap.length; i++) {
                     int activity = cellActivityMap[i];
                     if (activity == 0 ) {
-                        colorMap[i] = Color.LIGHT_GRAY;
+                        colorMap[i] = LIGHT_GRAY;
                     }
                     else {
                         colorMap[i] = new Color((activity & 0xFF0000) == 0?0:0xFF, (activity & 0xFF00) == 0?0:0x7F, (activity & 0xFF) == 0?0:0xFF);

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.ORANGE;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -143,7 +143,7 @@ public class TxInterruptControllerFrame extends InterruptControllerFrame {
         JValueButton button = new JValueButton(symbolicName, value);
         if (symbolicName == null) {
             button.setText("-");
-            button.setForeground(Color.ORANGE.darker());
+            button.setForeground(ORANGE.darker());
         }
 
         button.setToolTipText("0x" + Format.asHex(value, 2) + " " + interruptDescription.description);

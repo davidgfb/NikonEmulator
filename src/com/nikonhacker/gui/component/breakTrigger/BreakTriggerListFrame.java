@@ -28,7 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.GRAY;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.WHITE;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -83,9 +86,9 @@ public class BreakTriggerListFrame extends DocumentFrame {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 boolean triggerEnabled = breakTriggers.get(row).isEnabled();
-                c.setForeground(triggerEnabled?Color.BLACK:Color.GRAY);
+                c.setForeground(triggerEnabled?BLACK:GRAY);
                 if (!isRowSelected(row)) {
-                    c.setBackground(triggerEnabled?Color.WHITE:Color.LIGHT_GRAY);
+                    c.setBackground(triggerEnabled?WHITE:LIGHT_GRAY);
                 }
                 return c;
             }

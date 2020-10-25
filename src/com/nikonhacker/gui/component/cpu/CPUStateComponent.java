@@ -12,10 +12,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
+import static java.awt.Color.CYAN;
+import static java.awt.Color.WHITE;
 
 public abstract class CPUStateComponent extends JComponent {
-    public static final Color COLOR_UNCHANGED = Color.WHITE;
-    public static final Color COLOR_CHANGED   = Color.CYAN;
+    public static final Color COLOR_UNCHANGED = WHITE;
+    public static final Color COLOR_CHANGED   = CYAN;
 
     protected CPUState cpuState;
     protected CPUState cpuStateValidityFlags;

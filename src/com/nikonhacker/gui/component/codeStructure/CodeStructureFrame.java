@@ -30,7 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -117,10 +118,10 @@ public class CodeStructureFrame extends DocumentFrame
                     address = codeStructure.getAddressFromString(str);
                 }
                 if (address == null) {
-                    targetField.setBackground(Color.RED);
+                    targetField.setBackground(RED);
                 }
                 else {
-                    targetField.setBackground(Color.WHITE);
+                    targetField.setBackground(WHITE);
                     Function function = codeStructure.getFunction(address);
                     if (function == null) {
                         function = codeStructure.findFunctionIncluding(address);
@@ -293,7 +294,7 @@ public class CodeStructureFrame extends DocumentFrame
 
     private void savePng(File file) throws IOException {
         // Creates the image for the PNG file
-        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, Color.WHITE, true, null, graphComponent.getCanvas());
+        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, WHITE, true, null, graphComponent.getCanvas());
 
         // Creates the URL-encoded XML data
         mxPngEncodeParam param = mxPngEncodeParam.getDefaultEncodeParam(image);

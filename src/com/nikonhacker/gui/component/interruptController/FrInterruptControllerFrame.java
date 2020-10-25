@@ -19,6 +19,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.BLUE;
+import static java.awt.Color.ORANGE;
+import static java.awt.Color.RED;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -83,7 +86,7 @@ public class FrInterruptControllerFrame extends InterruptControllerFrame {
         JPanel standardButtonGrid = new JPanel(new GridLayout(0,4));
 
         JValueButton nmiButton = createInterruptButton("INT 0x0F = NMI", 0x0F);
-        nmiButton.setForeground(Color.RED);
+        nmiButton.setForeground(RED);
         nmiButton.setMargin(buttonInsets);
         nmiButton.addActionListener(standardInterruptButtonListener);
         standardButtonGrid.add(nmiButton);
@@ -231,11 +234,11 @@ public class FrInterruptControllerFrame extends InterruptControllerFrame {
         String tooltip = "INT 0x" + Format.asHex(interruptNumber,2);
         switch (interruptNumber) {
             case 0x00:
-                button.setForeground(Color.RED.darker());
+                button.setForeground(RED.darker());
                 tooltip = "Reset";
                 break;
             case 0x01:
-                button.setForeground(Color.ORANGE.darker());
+                button.setForeground(ORANGE.darker());
                 tooltip = "System reserved or Mode Vector";
                 break;
             case 0x02:
@@ -243,31 +246,31 @@ public class FrInterruptControllerFrame extends InterruptControllerFrame {
             case 0x04:
             case 0x05:
             case 0x06:
-                button.setForeground(Color.ORANGE.darker());
+                button.setForeground(ORANGE.darker());
                 tooltip = "System reserved";
                 break;
             case 0x09:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Emulator Exception";
                 break;
             case 0x0A:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Instruction break trap";
                 break;
             case 0x0B:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Operand break trap";
                 break;
             case 0x0C:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Step trace break trap";
                 break;
             case 0x0D:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Emulator exception";
                 break;
             case 0x0E:
-                button.setForeground(Color.BLUE);
+                button.setForeground(BLUE);
                 tooltip = "Undefined instruction exception";
                 break;
             case 0x0F:
@@ -275,7 +278,7 @@ public class FrInterruptControllerFrame extends InterruptControllerFrame {
                 break;
             case 0x40:
             case 0x41:
-                button.setForeground(Color.ORANGE.darker());
+                button.setForeground(ORANGE.darker());
                 tooltip = "System reserved";
                 break;
         }

@@ -9,7 +9,8 @@ import com.nikonhacker.gui.swing.DocumentFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.JComponent;
 import javax.swing.Timer;
-import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -216,7 +217,7 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
                 previousH = h;
             }
 
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(WHITE);
             g2d.fillRect(0, 0, w, h);
 
             img.setRGB(0, 0, MAP_WIDTH, MAP_HEIGHT, activityMap, 0, MAP_WIDTH);
@@ -238,12 +239,12 @@ public class MemoryActivityViewerFrame extends DocumentFrame {
                 Rectangle2D stringBounds = fm.getStringBounds(message, g);
                 if (y < MAP_HEIGHT / 2) {
                     g2d.fillRect(0, (int) (h - stringBounds.getHeight()), fm.stringWidth(message), (int) (stringBounds.getHeight()));
-                    g2d.setPaint(Color.BLACK);
+                    g2d.setPaint(BLACK);
                     g2d.drawString(message, 0, h - fm.getDescent());
                 }
                 else {
                     g2d.fillRect(0, 0, fm.stringWidth(message), fm.getHeight());
-                    g2d.setPaint(Color.BLACK);
+                    g2d.setPaint(BLACK);
                     g2d.drawString(message, 0, (int) stringBounds.getHeight() - fm.getDescent());
                 }
             }

@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -124,13 +124,13 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
         }
         // width and alignment must be always even
         if ((width&0x1)!=0) {
-            widthField.setBackground(Color.RED);
+            widthField.setBackground(RED);
             throw new NumberFormatException("Image width must be even");
         } else {
             this.screenWidth = width;
         }
         if ((align&0x1)!=0) {
-            yuvAlignField.setBackground(Color.RED);
+            yuvAlignField.setBackground(RED);
             throw new NumberFormatException("Image alignment must be even");
         } else {
             this.yuvAlign = align;

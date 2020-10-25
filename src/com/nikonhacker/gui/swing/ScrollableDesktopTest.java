@@ -6,7 +6,8 @@ package com.nikonhacker.gui.swing;
  */
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -60,7 +61,7 @@ public class ScrollableDesktopTest extends JFrame {
         setJMenuBar(createMenuBar());
 
         JDesktopPane test = createAndPopulateScrollableDesktop();
-        test.setBackground(Color.RED);
+        test.setBackground(RED);
         test.setOpaque(true);
 
         JPanel forcedStretchPanel = new JPanel(new BorderLayout());
@@ -103,7 +104,7 @@ public class ScrollableDesktopTest extends JFrame {
         contentPane.add(scrollPane, BorderLayout.CENTER);
         JLabel statusBar = new JLabel("status");
         statusBar.setOpaque(true);
-        statusBar.setBackground(Color.GREEN);
+        statusBar.setBackground(GREEN);
         contentPane.add(statusBar, BorderLayout.SOUTH);
         return contentPane;
     }

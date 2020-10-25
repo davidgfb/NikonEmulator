@@ -4,6 +4,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.PINK;
+import static java.awt.Color.YELLOW;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -196,8 +199,8 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
     private int performSearch(String searchText, int startPosition, SearchDirection direction, boolean searchTextChanged) {
         if (searchEnabled) {
             searchTextField.setBackground(defaultSearchFieldBgColor);
-            DefaultHighlighter.DefaultHighlightPainter nonSelectedHighlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-            DefaultHighlighter.DefaultHighlightPainter selectedHighlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+            DefaultHighlighter.DefaultHighlightPainter nonSelectedHighlighter = new DefaultHighlighter.DefaultHighlightPainter(YELLOW);
+            DefaultHighlighter.DefaultHighlightPainter selectedHighlighter = new DefaultHighlighter.DefaultHighlightPainter(GREEN);
 
             Cursor previousCursor = textArea.getCursor();
             boolean previousEditableStatus = textArea.isEditable();
@@ -292,7 +295,7 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                 }
             }
             else {
-                searchTextField.setBackground(Color.PINK);
+                searchTextField.setBackground(PINK);
             }
             selectedHighlightPosition = matchOffset;
 

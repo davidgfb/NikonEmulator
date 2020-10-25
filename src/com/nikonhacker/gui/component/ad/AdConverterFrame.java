@@ -11,7 +11,8 @@ import com.nikonhacker.gui.swing.DocumentFrame;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
-import java.awt.Color;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -110,13 +111,13 @@ public class AdConverterFrame extends DocumentFrame {
             try {
                 list.add(Format.parseUnsigned(value));
             } catch (ParsingException e) {
-                valueListField.setBackground(Color.RED);
+                valueListField.setBackground(RED);
                 return;
             }
         }
         ui.getPrefs().setAdValueList(chip, channelKey, list);
         valueListField.setText(formatList(list));
-        valueListField.setBackground(Color.WHITE);
+        valueListField.setBackground(WHITE);
     }
 
     private String formatList(List<Integer> adValueList) {
