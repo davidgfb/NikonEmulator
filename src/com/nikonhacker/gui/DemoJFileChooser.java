@@ -1,5 +1,6 @@
 package com.nikonhacker.gui;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -9,43 +10,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import static java.lang.System.exit;
+import static java.lang.System.out;
+import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
+//</editor-fold>
+
 
 
 public class DemoJFileChooser extends JPanel implements ActionListener {
-    JButton go;
-
-    JFileChooser chooser;
-    String choosertitle;
-
+    
     public DemoJFileChooser() {
-        go = new JButton("Do it");
+        JButton go = new JButton("Do it");
         go.addActionListener(this);
         add(go);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        int result;
-
-        chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle(choosertitle);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
+        chooser.setDialogTitle("");
+        chooser.setFileSelectionMode(DIRECTORIES_ONLY);
         //
         // disable the "All files" option.
         //
         chooser.setAcceptAllFileFilterUsed(false);
         //
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            System.out.println("getCurrentDirectory(): "
-                    +  chooser.getCurrentDirectory());
-            System.out.println("getSelectedFile() : "
-                    +  chooser.getSelectedFile());
-        }
-        else {
-            System.out.println("No Selection ");
+            out.println("getCurrentDirectory(): " +  chooser.getCurrentDirectory()+
+                        "\ngetSelectedFile() : " +  chooser.getSelectedFile());
+        } else {
+            out.println("No Selection ");
         }
     }
 
+    @Override
     public Dimension getPreferredSize(){
         return new Dimension(200, 200);
     }
@@ -53,10 +53,12 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
     public static void main(String s[]) {
         JFrame frame = new JFrame("");
         DemoJFileChooser panel = new DemoJFileChooser();
+        //nueva
         frame.addWindowListener(
                 new WindowAdapter() {
+                    @Override
                     public void windowClosing(WindowEvent e) {
-                        System.exit(0);
+                        exit(0);
                     }
                 }
         );

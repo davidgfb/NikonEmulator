@@ -103,28 +103,20 @@ public class Format {
 
         long v = 0;
         int i = isHex ? 2 : 0;
-        for (; i < value.length(); i++)
-        {
+        for (; i < value.length(); i++) {
             char ch = value.charAt(i);
-            if (isHex)
-            {
-                if (ch >= '0' && ch <= '9')
+            if (isHex) {
+                if (ch >= '0' && ch <= '9') {
                     v = (v * 0x10) + ch - '0';
-                else if (ch >= 'a' && ch <= 'f')
+                } else if (ch >= 'a' && ch <= 'f') {
                     v = (v * 0x10) + ch - 'a' + 0x0a;
-                else if (ch >= 'A' && ch <= 'F')
+                } else if (ch >= 'A' && ch <= 'F') {
                     v = (v * 0x10) + ch - 'A' + 0x0a;
-                else {
-                    //peligro
-                    break;
-                }
+                } 
             } else {
                 if (ch >= '0' && ch <= '9') {
                     v = (v * 10) + ch - '0';
-                } else {
-                    //peligro
-                    break;
-                }
+                } 
             }
         }
 

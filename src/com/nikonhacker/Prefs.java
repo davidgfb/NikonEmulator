@@ -1,6 +1,7 @@
 package com.nikonhacker;
 
-
+//<editor-fold defaultstate="collapsed" desc="imports">
+import static com.nikonhacker.ApplicationInfo.getName;
 import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.Register32;
@@ -8,128 +9,143 @@ import com.nikonhacker.disassembly.WriteListenerRegister32;
 import com.nikonhacker.disassembly.tx.NullRegister32;
 import com.nikonhacker.emu.AddressRange;
 import com.nikonhacker.emu.EmulationFramework;
+import com.nikonhacker.emu.EmulationFramework.ExecutionMode;
 import com.nikonhacker.emu.trigger.BreakTrigger;
 import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.memoryHexEditor.MemoryWatch;
 import com.thoughtworks.xstream.XStream;
 
 import java.io.File;
+import static java.io.File.separator;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import static java.lang.System.getProperty;
+import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.List;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Set;
+//</editor-fold>
+
 
 public class Prefs {
-    public enum EepromInitMode {
-        BLANK, PERSISTENT, LAST_LOADED
-    }
+    public enum EepromInitMode {BLANK, 
+                                PERSISTENT, 
+                                LAST_LOADED}
 
     private static final String KEY_WINDOW_MAIN = "MAIN";
 
     // Common
-    private String  buttonSize            = EmulatorUI.getBUTTON_SIZE_SMALL();
-    private boolean closeAllWindowsOnStop = false;
-    private HashMap<String, WindowPosition> windowPositionMap;
-    private HashMap<String, WindowPosition> windowSizeMap;
-    private int                             dividerLocation;
-    private int                             lastDividerLocation;
-    private boolean                         dividerKeepHidden;
-
+    private String                          buttonSize            = EmulatorUI.getBUTTON_SIZE_SMALL(),
+                                            frontPanelName;
+    private boolean                         closeAllWindowsOnStop = false,
+                                            dividerKeepHidden,
+                                            syncPlay = true;
+    private HashMap<String, WindowPosition> windowPositionMap,
+                                            windowSizeMap;
+    private int                             dividerLocation,
+                                            lastDividerLocation;
+    
     // Per chip
     private List<BreakTrigger>[]         triggers;
     private List<AddressRange>[]         disassemblyAddressRanges;
     private List<MemoryWatch>[]          memoryWatches;
     private EnumSet<OutputOption>[]      outputOptions;
-    private boolean[]                    autoUpdateITronObjectWindow;
-    private boolean[]                    callStackHideJumps;
-    private int[]                        sleepTick;
-    private boolean[]                    writeDisassemblyToFile;
-    private boolean[]                    sourceCodeFollowsPc;
-    private String[]                     codeStructureGraphOrientation;
-    private boolean[]                    firmwareWriteProtected;
-    private boolean[]                    dmaSynchronous;
-    private boolean[]                    autoEnableTimers;
-    private boolean[]                    logMemoryMessages;
-    private boolean[]                    logSerialMessages;
-    private boolean[]                    logPinMessages;
-    private boolean[]                    logRegisterMessages;
-    private boolean[]                    adValueFromList;
+    private String[]                     codeStructureGraphOrientation,
+                                         firmwareFilename;
+    private boolean[]                    autoUpdateITronObjectWindow,
+                                         callStackHideJumps,
+                                         writeDisassemblyToFile,
+                                         sourceCodeFollowsPc,
+                                         firmwareWriteProtected,
+                                         dmaSynchronous,
+                                         autoEnableTimers,
+                                         logMemoryMessages,
+                                         logSerialMessages,
+                                         logPinMessages,
+                                         logRegisterMessages,
+                                         adValueFromList;
     private Map<String, List<Integer>>[] adValueListMap;
-    private Map<String, Integer>[]       adValueMap;
+    private Map<String, Integer>[]       adValueMap,
+                                         ioValueOverrideMap;
     private EepromInitMode               eepromInitMode;
     private byte[]                       lastEepromContents;
     private String                       lastEepromFileName;
-    private Map<String, Integer>[]       ioValueOverrideMap;
-    private boolean syncPlay = true;
-    private int[]                              serialInterfaceFrameSelectedTab;
-    private int[]                              genericSerialFrameSelectedTab;
-    private int[]                              ioPortsFrameSelectedTab;
-    private EmulationFramework.ExecutionMode[] altExecutionModeForSyncedCpuUponDebug;
-    private EmulationFramework.ExecutionMode[] altExecutionModeForSyncedCpuUponStep;
-    private Map<String, Integer>               buttonsState;
-    private String[]                           firmwareFilename;
+    
+    private int[]                        serialInterfaceFrameSelectedTab,
+                                         genericSerialFrameSelectedTab,
+                                         ioPortsFrameSelectedTab,
+                                         sleepTick;
+    private ExecutionMode[]              altExecutionModeForSyncedCpuUponDebug,
+                                         altExecutionModeForSyncedCpuUponStep;
+    private Map<String, Integer>         buttonsState;
+    
 
     // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
     private int screenEmulatorRefreshIntervalMs;
 
-    private String frontPanelName;
+    
 
     private static File getPreferenceFile() {
-        return new File(System.getProperty("user.home") + File.separator + "." + ApplicationInfo.getName());
+        return new File(getProperty("user.home") + separator + "." + getName());
     }
 
     public static void save(Prefs prefs) {
         try {
             XStreamUtils.save(prefs, new FileOutputStream(getPreferenceFile()), getPrefsXStream());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
     public static Prefs load() {
-        File preferenceFile = getPreferenceFile();
-        File lastKnownGoodFile = new File(preferenceFile.getAbsolutePath() + ".lastKnownGood");
-        File corruptFile = new File(preferenceFile.getAbsolutePath() + ".corrupt");
+        File preferenceFile = getPreferenceFile(),
+             lastKnownGoodFile = new File(preferenceFile.getAbsolutePath() + ".lastKnownGood"),
+             corruptFile = new File(preferenceFile.getAbsolutePath() + ".corrupt");
+        Prefs p = new Prefs();
+        
         try {
-            return loadFile(preferenceFile, lastKnownGoodFile);
+            p= loadFile(preferenceFile, lastKnownGoodFile);
         }
-        catch (Exception e) {
-            System.out.println("Could not load preferences file. Attempting a rename to " + corruptFile.getName() + " and trying to revert to " + lastKnownGoodFile.getName() + " instead...");
-            e.printStackTrace();
+        catch (IOException e) {
+            out.println("Could not load preferences file. Attempting a rename to " + corruptFile.getName() + 
+                        " and trying to revert to " + lastKnownGoodFile.getName() + " instead...");
             preferenceFile.renameTo(corruptFile);
+            
             try {
-                return loadFile(lastKnownGoodFile, preferenceFile);
+                p= loadFile(lastKnownGoodFile, preferenceFile);
             } catch (IOException e1) {
-                System.out.println("Could not load " + lastKnownGoodFile.getName() + ". Starting with a blank preference file...");
+                out.println("Could not load " + lastKnownGoodFile.getName() + ". Starting with a blank preference file...");
             }
         }
-        return new Prefs();
+        return p;
     }
 
     private static Prefs loadFile(File file, File backupTargetFile) throws IOException {
+        Prefs prefs = new Prefs();
+        
         if (file.exists()) {
-            FileInputStream inputStream = new FileInputStream(file);
-            XStream prefsXStream = getPrefsXStreamIn();
-            Prefs prefs = (Prefs) XStreamUtils.load(inputStream, prefsXStream);
-            inputStream.close();
-            convertExecutionMode(prefs);
-            if (backupTargetFile != null) {
-                // Parsing was OK. Back-up config
-                FileOutputStream outputStream = new FileOutputStream(backupTargetFile);
-                XStreamUtils.save(prefs, outputStream, prefsXStream);
-                outputStream.close();
+            XStream prefsXStream;
+            
+            try (FileInputStream inputStream = new FileInputStream(file)) {
+                prefsXStream = getPrefsXStreamIn();
+                prefs = (Prefs) XStreamUtils.load(inputStream, prefsXStream);
             }
-            return prefs;
-        }
-        else {
-            return new Prefs();
-        }
+            
+            convertExecutionMode(prefs);
+            
+            if (backupTargetFile != null) {
+                try ( // Parsing was OK. Back-up config
+                    FileOutputStream outputStream = new FileOutputStream(backupTargetFile)) {
+                    XStreamUtils.save(prefs, outputStream, prefsXStream);
+                }
+            }
+        } 
+        
+        return prefs;
     }
 
     /** @deprecated this is a temporary migration process */
