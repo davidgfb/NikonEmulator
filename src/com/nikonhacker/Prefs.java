@@ -2,6 +2,8 @@ package com.nikonhacker;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 import static com.nikonhacker.ApplicationInfo.getName;
+import static com.nikonhacker.Constants.CHIP_LABEL;
+import static com.nikonhacker.Prefs.EepromInitMode.LAST_LOADED;
 import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.Register32;
@@ -10,6 +12,7 @@ import com.nikonhacker.disassembly.tx.NullRegister32;
 import com.nikonhacker.emu.AddressRange;
 import com.nikonhacker.emu.EmulationFramework;
 import com.nikonhacker.emu.EmulationFramework.ExecutionMode;
+import static com.nikonhacker.emu.EmulationFramework.ExecutionMode.RUN;
 import com.nikonhacker.emu.trigger.BreakTrigger;
 import com.nikonhacker.gui.EmulatorUI;
 import com.nikonhacker.gui.component.memoryHexEditor.MemoryWatch;
@@ -28,6 +31,8 @@ import java.util.List;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.ArrayList;
+import static java.util.EnumSet.allOf;
+import static java.util.EnumSet.noneOf;
 import java.util.Set;
 //</editor-fold>
 
@@ -151,10 +156,10 @@ public class Prefs {
     /** @deprecated this is a temporary migration process */
     private static void convertExecutionMode(Prefs prefs) {
         if (prefs.altExecutionModeForSyncedCpuUponDebug == null || prefs.altExecutionModeForSyncedCpuUponDebug.length != 2) {
-            prefs.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+            prefs.altExecutionModeForSyncedCpuUponDebug = new ExecutionMode[]{RUN, RUN};
         }
         if (prefs.altExecutionModeForSyncedCpuUponStep == null || prefs.altExecutionModeForSyncedCpuUponStep.length != 2) {
-            prefs.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+            prefs.altExecutionModeForSyncedCpuUponStep = new ExecutionMode[]{RUN, RUN};
         }
     }
 
@@ -178,58 +183,26 @@ public class Prefs {
         return xStream;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="getters">
     public String getButtonSize() {
         return buttonSize;
     }
-
-    public void setButtonSize(String buttonSize) {
-        this.buttonSize = buttonSize;
-    }
-
-    public boolean isCloseAllWindowsOnStop() {
-        return closeAllWindowsOnStop;
-    }
-
-    public void setCloseAllWindowsOnStop(boolean closeAllWindowsOnStop) {
-        this.closeAllWindowsOnStop = closeAllWindowsOnStop;
-    }
-
-    public boolean isWriteDisassemblyToFile(int chip) {
-        if (writeDisassemblyToFile == null  || writeDisassemblyToFile.length != 2) writeDisassemblyToFile = new boolean[2];
-        return writeDisassemblyToFile[chip];
-    }
-
-    public void setWriteDisassemblyToFile(int chip, boolean value) {
-        if (writeDisassemblyToFile == null || writeDisassemblyToFile.length != 2) writeDisassemblyToFile = new boolean[2];
-        this.writeDisassemblyToFile[chip] = value;
-    }
-
-    public boolean isSourceCodeFollowsPc(int chip) {
-        if (sourceCodeFollowsPc == null || sourceCodeFollowsPc.length != 2) sourceCodeFollowsPc = new boolean[]{true, true};
-        return sourceCodeFollowsPc[chip];
-    }
-
-    public void setSourceCodeFollowsPc(int chip, boolean value) {
-        if (sourceCodeFollowsPc == null || sourceCodeFollowsPc.length != 2) sourceCodeFollowsPc = new boolean[]{true, true};
-        this.sourceCodeFollowsPc[chip] = value;
-    }
-
+    
     public int getSleepTick(int chip) {
-        if (sleepTick == null || sleepTick.length != 2) sleepTick = new int[2];
+        if (sleepTick == null || sleepTick.length != 2) {
+            sleepTick = new int[2];
+        }
         return sleepTick[chip];
     }
-
-    public void setSleepTick(int chip, int value) {
-        if (sleepTick == null || sleepTick.length != 2) sleepTick = new int[2];
-        this.sleepTick[chip] = value;
-    }
-
+    
     public Set<OutputOption> getOutputOptions(int chip) {
-        if (outputOptions == null) outputOptions = new EnumSet[2];
+        if (outputOptions == null) {
+            outputOptions = new EnumSet[2];
+        }
         if (outputOptions[chip]==null) {
             // Prepare a new outputOptions containing only default values
-            outputOptions[chip] = EnumSet.noneOf(OutputOption.class);
-            for (OutputOption option : EnumSet.allOf(OutputOption.class)) {
+            outputOptions[chip] = noneOf(OutputOption.class);
+            for (OutputOption option : allOf(OutputOption.class)) {
                 if (option.isDefaultValue()) {
                     outputOptions[chip].add(option);
                 }
@@ -237,7 +210,143 @@ public class Prefs {
         }
         return outputOptions[chip];
     }
+    
+    public List<BreakTrigger> getTriggers(int chip) {
+        if (triggers == null) {
+            triggers = new List[2];
+        }
+        if (triggers[chip] == null) {
+            triggers[chip] = new ArrayList<BreakTrigger>();
+        }
+        return triggers[chip];
+    }
+    
+    public List<AddressRange> getDisassemblyAddressRange(int chip) {
+        if (disassemblyAddressRanges == null) {
+            disassemblyAddressRanges = new List[2];
+        }
+        if (disassemblyAddressRanges[chip] == null) {
+            disassemblyAddressRanges[chip] = new ArrayList<AddressRange>();
+        }
+        return disassemblyAddressRanges[chip];
+    }
+    
+    public List<MemoryWatch> getWatches(int chip) {
+        if (memoryWatches == null) {
+            memoryWatches = new List[2];
+        }
+        if (memoryWatches[chip] == null) {
+            memoryWatches[chip] = new ArrayList<MemoryWatch>();
+        }
+        return memoryWatches[chip];
+    }
+    
+    private String getKey(String windowName, int chip) {
+        return windowName + "_" + CHIP_LABEL[chip];
+    }
+    
+    public int getWindowPositionX(String windowName, int chip) {
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowPosition = windowPositionMap.get(getKey(windowName, chip));
+        return (windowPosition==null)?0:windowPosition.getX();
+    }
+    
+    public int getWindowPositionY(String windowName, int chip) {
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowPosition = windowPositionMap.get(getKey(windowName, chip));
+        return (windowPosition==null)?0:windowPosition.getY();
+    }
+    
+    public int getMainWindowPositionX() {
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowPosition = windowPositionMap.get(KEY_WINDOW_MAIN);
+        return (windowPosition==null)?0:windowPosition.getX();
+    }
+    
+    public int getMainWindowPositionY() {
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowPosition = windowPositionMap.get(KEY_WINDOW_MAIN);
+        return (windowPosition==null)?0:windowPosition.getY();
+    }
+    
+    public int getWindowSizeX(String windowName, int chip) {
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowSize = windowSizeMap.get(getKey(windowName, chip));
+        return (windowSize==null)?0:windowSize.getX();
+    }
 
+    public int getWindowSizeY(String windowName, int chip) {
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowSize = windowSizeMap.get(getKey(windowName, chip));
+        return (windowSize==null)?0:windowSize.getY();
+    }
+    
+    public int getMainWindowSizeX() {
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowSize = windowSizeMap.get(KEY_WINDOW_MAIN);
+        return (windowSize==null)?0:windowSize.getX();
+    }
+
+    public int getMainWindowSizeY() {
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
+        WindowPosition windowSize = windowSizeMap.get(KEY_WINDOW_MAIN);
+        return (windowSize==null)?0:windowSize.getY();
+    }
+    
+    public String getCodeStructureGraphOrientation(int chip) {
+        if (codeStructureGraphOrientation == null || codeStructureGraphOrientation.length != 2) {
+            codeStructureGraphOrientation = new String[2];
+        }
+        return codeStructureGraphOrientation[chip];
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="setters">
+    public void setButtonSize(String buttonSize) {
+        this.buttonSize = buttonSize;
+    }
+    
+    public void setCloseAllWindowsOnStop(boolean closeAllWindowsOnStop) {
+        this.closeAllWindowsOnStop = closeAllWindowsOnStop;
+    }
+    
+    public void setWriteDisassemblyToFile(int chip, boolean value) {
+        if (writeDisassemblyToFile == null || writeDisassemblyToFile.length != 2) {
+            writeDisassemblyToFile = new boolean[2];
+        }
+        this.writeDisassemblyToFile[chip] = value;
+    }
+    
+    public void setSourceCodeFollowsPc(int chip, boolean value) {
+        if (sourceCodeFollowsPc == null || sourceCodeFollowsPc.length != 2) {
+            sourceCodeFollowsPc = new boolean[]{true, true};
+        }
+        this.sourceCodeFollowsPc[chip] = value;
+    }
+    
+    public void setSleepTick(int chip, int value) {
+        if (sleepTick == null || sleepTick.length != 2) {
+            sleepTick = new int[2];
+        }
+        this.sleepTick[chip] = value;
+    }
+    
     public void setOutputOption(int chip, OutputOption outputOption, boolean value) {
         getOutputOptions(chip);
         if (value) {
@@ -247,205 +356,191 @@ public class Prefs {
             outputOptions[chip].remove(outputOption);
         }
     }
-
-    public List<BreakTrigger> getTriggers(int chip) {
-        if (triggers == null) triggers = new List[2];
-        if (triggers[chip] == null) triggers[chip] = new ArrayList<BreakTrigger>();
-        return triggers[chip];
-    }
-
-    public List<AddressRange> getDisassemblyAddressRange(int chip) {
-        if (disassemblyAddressRanges == null) disassemblyAddressRanges = new List[2];
-        if (disassemblyAddressRanges[chip] == null) disassemblyAddressRanges[chip] = new ArrayList<AddressRange>();
-
-        return disassemblyAddressRanges[chip];
-    }
-
-    public List<MemoryWatch> getWatches(int chip) {
-        if (memoryWatches == null) memoryWatches = new List[2];
-        if (memoryWatches[chip] == null) memoryWatches[chip] = new ArrayList<MemoryWatch>();
-        return memoryWatches[chip];
-    }
-
-    private String getKey(String windowName, int chip) {
-        return windowName + "_" + Constants.CHIP_LABEL[chip];
-    }
-
-    public int getWindowPositionX(String windowName, int chip) {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowPosition = windowPositionMap.get(getKey(windowName, chip));
-        return (windowPosition==null)?0:windowPosition.getX();
-    }
-
-    public int getWindowPositionY(String windowName, int chip) {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowPosition = windowPositionMap.get(getKey(windowName, chip));
-        return (windowPosition==null)?0:windowPosition.getY();
-    }
-
+    
     public void setWindowPosition(String windowName, int chip, int x, int y) {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
         windowPositionMap.put(getKey(windowName, chip), new WindowPosition(x, y));
     }
 
-
-    public int getMainWindowPositionX() {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowPosition = windowPositionMap.get(KEY_WINDOW_MAIN);
-        return (windowPosition==null)?0:windowPosition.getX();
-    }
-
-    public int getMainWindowPositionY() {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowPosition = windowPositionMap.get(KEY_WINDOW_MAIN);
-        return (windowPosition==null)?0:windowPosition.getY();
-    }
-
     public void setMainWindowPosition(int x, int y) {
-        if (windowPositionMap==null) windowPositionMap = new HashMap<String, WindowPosition>();
+        if (windowPositionMap==null) {
+            windowPositionMap = new HashMap<String, WindowPosition>();
+        }
         windowPositionMap.put(KEY_WINDOW_MAIN, new WindowPosition(x, y));
     }
 
-
-    public int getWindowSizeX(String windowName, int chip) {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowSize = windowSizeMap.get(getKey(windowName, chip));
-        return (windowSize==null)?0:windowSize.getX();
-    }
-
-    public int getWindowSizeY(String windowName, int chip) {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowSize = windowSizeMap.get(getKey(windowName, chip));
-        return (windowSize==null)?0:windowSize.getY();
-    }
-
     public void setWindowSize(String windowName, int chip, int x, int y) {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
         windowSizeMap.put(getKey(windowName, chip), new WindowPosition(x, y));
     }
 
-
-    public int getMainWindowSizeX() {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowSize = windowSizeMap.get(KEY_WINDOW_MAIN);
-        return (windowSize==null)?0:windowSize.getX();
-    }
-
-    public int getMainWindowSizeY() {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
-        WindowPosition windowSize = windowSizeMap.get(KEY_WINDOW_MAIN);
-        return (windowSize==null)?0:windowSize.getY();
-    }
-
     public void setMainWindowSize(int x, int y) {
-        if (windowSizeMap==null) windowSizeMap = new HashMap<String, WindowPosition>();
+        if (windowSizeMap==null) {
+            windowSizeMap = new HashMap<String, WindowPosition>();
+        }
         windowSizeMap.put(KEY_WINDOW_MAIN, new WindowPosition(x, y));
     }
 
-
-    public String getCodeStructureGraphOrientation(int chip) {
-        if (codeStructureGraphOrientation == null || codeStructureGraphOrientation.length != 2) codeStructureGraphOrientation = new String[2];
-        return codeStructureGraphOrientation[chip];
-    }
-
     public void setCodeStructureGraphOrientation(int chip, String value) {
-        if (codeStructureGraphOrientation == null || codeStructureGraphOrientation.length != 2) codeStructureGraphOrientation = new String[2];
+        if (codeStructureGraphOrientation == null || codeStructureGraphOrientation.length != 2) {
+            codeStructureGraphOrientation = new String[2];
+        }
         this.codeStructureGraphOrientation[chip] = value;
     }
 
     public void setFirmwareWriteProtected(int chip, boolean isFirmwareWriteProtected) {
-        if (firmwareWriteProtected == null || firmwareWriteProtected.length != 2) firmwareWriteProtected = new boolean[2];
+        if (firmwareWriteProtected == null || firmwareWriteProtected.length != 2) {
+            firmwareWriteProtected = new boolean[2];
+        }
         this.firmwareWriteProtected[chip] = isFirmwareWriteProtected;
+    }
+    
+    public void setAutoUpdateITronObjects(int chip, boolean autoUpdateITronObjects) {
+        if (autoUpdateITronObjectWindow == null) {
+            autoUpdateITronObjectWindow = new boolean[2];
+        }
+        this.autoUpdateITronObjectWindow[chip] = autoUpdateITronObjects;
+    }
+    
+    public void setCallStackHideJumps(int chip, boolean value) {
+        if (callStackHideJumps == null) {
+            callStackHideJumps = new boolean[2];
+        }
+        this.callStackHideJumps[chip] = value;
+    }
+    
+    public void setDividerLocation(int dividerLocation) {
+        this.dividerLocation = dividerLocation;
+    }
+    
+    public void setLastDividerLocation(int lastDividerLocation) {
+        this.lastDividerLocation = lastDividerLocation;
+    }
+    
+    public void setDividerKeepHidden(boolean dividerKeepHidden) {
+        this.dividerKeepHidden = dividerKeepHidden;
+    }
+    
+    public void setDmaSynchronous(int chip, boolean isDmaSynchronous) {
+        if (dmaSynchronous == null || dmaSynchronous.length != 2) {
+            dmaSynchronous = new boolean[]{true, true};
+        }
+        this.dmaSynchronous[chip] = isDmaSynchronous;
+    }
+    
+    public void setAutoEnableTimers(int chip, boolean isAutoEnableTimers) {
+        if (autoEnableTimers == null || autoEnableTimers.length != 2) {
+            autoEnableTimers = new boolean[]{true, true};
+        }
+        this.autoEnableTimers[chip] = isAutoEnableTimers;
+    }
+
+    public void setLogMemoryMessages(int chip, boolean isLogMemoryMessages) {
+        if (logMemoryMessages == null || logMemoryMessages.length != 2) {
+            logMemoryMessages = new boolean[]{false, false};
+        }
+        this.logMemoryMessages[chip] = isLogMemoryMessages;
+    }
+    
+    public void setLogSerialMessages(int chip, boolean isLogSerialMessages) {
+        if (logSerialMessages == null || logSerialMessages.length != 2) {
+            logSerialMessages = new boolean[]{false, false};
+        }
+        this.logSerialMessages[chip] = isLogSerialMessages;
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="functions">
+    public boolean isCloseAllWindowsOnStop() {
+        return closeAllWindowsOnStop;
+    }
+
+    public boolean isWriteDisassemblyToFile(int chip) {
+        if (writeDisassemblyToFile == null  || writeDisassemblyToFile.length != 2) {
+            writeDisassemblyToFile = new boolean[2];
+        }
+        return writeDisassemblyToFile[chip];
+    }
+
+    public boolean isSourceCodeFollowsPc(int chip) {
+        if (sourceCodeFollowsPc == null || sourceCodeFollowsPc.length != 2) {
+            sourceCodeFollowsPc = new boolean[]{true, true};
+        }
+        return sourceCodeFollowsPc[chip];
     }
 
     public boolean isFirmwareWriteProtected(int chip) {
-        if (firmwareWriteProtected == null || firmwareWriteProtected.length != 2) firmwareWriteProtected = new boolean[2];
+        if (firmwareWriteProtected == null || firmwareWriteProtected.length != 2) {
+            firmwareWriteProtected = new boolean[2];
+        }
         return firmwareWriteProtected[chip];
     }
 
-    public void setAutoUpdateITronObjects(int chip, boolean autoUpdateITronObjects) {
-        if (autoUpdateITronObjectWindow == null) autoUpdateITronObjectWindow = new boolean[2];
-        this.autoUpdateITronObjectWindow[chip] = autoUpdateITronObjects;
-    }
-
     public boolean isAutoUpdateITronObjects(int chip) {
-        if (autoUpdateITronObjectWindow == null) autoUpdateITronObjectWindow = new boolean[2];
+        if (autoUpdateITronObjectWindow == null) {
+            autoUpdateITronObjectWindow = new boolean[2];
+        }
         return autoUpdateITronObjectWindow[chip];
     }
 
     public boolean isCallStackHideJumps(int chip) {
-        if (callStackHideJumps == null) callStackHideJumps = new boolean[2];
+        if (callStackHideJumps == null) {
+            callStackHideJumps = new boolean[2];
+        }
         return callStackHideJumps[chip];
     }
-
-    public void setCallStackHideJumps(int chip, boolean value) {
-        if (callStackHideJumps == null) callStackHideJumps = new boolean[2];
-        this.callStackHideJumps[chip] = value;
+    
+    public boolean isDividerKeepHidden() {
+        return dividerKeepHidden;
     }
+
+    public boolean isDmaSynchronous(int chip) {
+        if (dmaSynchronous == null || dmaSynchronous.length != 2) {
+            dmaSynchronous = new boolean[]{true, true};
+        }
+        return dmaSynchronous[chip];
+    }
+    
+    public boolean isAutoEnableTimers(int chip) {
+        if (autoEnableTimers == null || autoEnableTimers.length != 2) {
+            autoEnableTimers = new boolean[]{true, true};
+        }
+        return autoEnableTimers[chip];
+    }
+    
+    public boolean isLogMemoryMessages(int chip) {
+        if (logMemoryMessages == null || logMemoryMessages.length != 2) {
+            logMemoryMessages = new boolean[]{false, false};
+        }
+        return logMemoryMessages[chip];
+    }
+//</editor-fold>
+    
+
+    
 
     public int getDividerLocation() {
         return dividerLocation;
     }
 
-    public void setDividerLocation(int dividerLocation) {
-        this.dividerLocation = dividerLocation;
-    }
+    
 
     public int getLastDividerLocation() {
         return lastDividerLocation;
     }
 
-    public void setLastDividerLocation(int lastDividerLocation) {
-        this.lastDividerLocation = lastDividerLocation;
-    }
-
-    public boolean isDividerKeepHidden() {
-        return dividerKeepHidden;
-    }
-
-    public void setDividerKeepHidden(boolean dividerKeepHidden) {
-        this.dividerKeepHidden = dividerKeepHidden;
-    }
-
-    public boolean isDmaSynchronous(int chip) {
-        if (dmaSynchronous == null || dmaSynchronous.length != 2) dmaSynchronous = new boolean[]{true, true};
-        return dmaSynchronous[chip];
-    }
-
-    public void setDmaSynchronous(int chip, boolean isDmaSynchronous) {
-        if (dmaSynchronous == null || dmaSynchronous.length != 2) dmaSynchronous = new boolean[]{true, true};
-        this.dmaSynchronous[chip] = isDmaSynchronous;
-    }
-
-    public boolean isAutoEnableTimers(int chip) {
-        if (autoEnableTimers == null || autoEnableTimers.length != 2) autoEnableTimers = new boolean[]{true, true};
-        return autoEnableTimers[chip];
-    }
-
-    public void setAutoEnableTimers(int chip, boolean isAutoEnableTimers) {
-        if (autoEnableTimers == null || autoEnableTimers.length != 2) autoEnableTimers = new boolean[]{true, true};
-        this.autoEnableTimers[chip] = isAutoEnableTimers;
-    }
-
-    public boolean isLogMemoryMessages(int chip) {
-        if (logMemoryMessages == null || logMemoryMessages.length != 2) logMemoryMessages = new boolean[]{false, false};
-        return logMemoryMessages[chip];
-    }
-
-    public void setLogMemoryMessages(int chip, boolean isLogMemoryMessages) {
-        if (logMemoryMessages == null || logMemoryMessages.length != 2) logMemoryMessages = new boolean[]{false, false};
-        this.logMemoryMessages[chip] = isLogMemoryMessages;
-    }
+    
 
     public boolean isLogSerialMessages(int chip) {
         if (logSerialMessages == null || logSerialMessages.length != 2) logSerialMessages = new boolean[]{false, false};
         return logSerialMessages[chip];
     }
 
-    public void setLogSerialMessages(int chip, boolean isLogSerialMessages) {
-        if (logSerialMessages == null || logSerialMessages.length != 2) logSerialMessages = new boolean[]{false, false};
-        this.logSerialMessages[chip] = isLogSerialMessages;
-    }
+    
 
     public boolean isLogPinMessages(int chip) {
         if (logPinMessages == null || logPinMessages.length != 2) logPinMessages = new boolean[]{false, false};
@@ -528,107 +623,78 @@ public class Prefs {
         adValueMap[chip].put(channelKey, value);
     }
 
-    public EepromInitMode getEepromInitMode() {
-        if (eepromInitMode == null) {
-            return EepromInitMode.LAST_LOADED;
-        }
-        else {
-            return eepromInitMode;
-        }
-    }
-
-    public void setEepromInitMode(EepromInitMode eepromInitMode) {
-        this.eepromInitMode = eepromInitMode;
-    }
-
-    public byte[] getLastEepromContents() {
-        return lastEepromContents;
-    }
-
-    public void setLastEepromContents(byte[] lastEepromContents) {
-        this.lastEepromContents = lastEepromContents;
-    }
-
-    public String getLastEepromFileName() {
-        return lastEepromFileName;
-    }
-
-    public void setLastEepromFileName(String lastEepromFileName) {
-        this.lastEepromFileName = lastEepromFileName;
-    }
-
-    public Integer getPortInputValueOverride(int chip, int portNumber, int bitNumber) {
-        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
-        return ioValueOverrideMap[chip].get(portNumber + "-" + bitNumber);
-    }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="procedimientos">
     public void setPortInputValueOverride(int chip, int portNumber, int bitNumber, int value) {
-        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
+            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
         ioValueOverrideMap[chip].put(portNumber + "-" + bitNumber, value);
     }
 
     public void removePortInputValueOverride(int chip, int portNumber, int bitNumber) {
-        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
+            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
         ioValueOverrideMap[chip].remove(portNumber + "-" + bitNumber);
     }
+//</editor-fold>
+    
 
     public boolean isSyncPlay() {
         return syncPlay;
     }
 
-    public void setSyncPlay(boolean syncPlay) {
-        this.syncPlay = syncPlay;
+    //<editor-fold defaultstate="collapsed" desc="getters">
+    public EepromInitMode getEepromInitMode() {
+        EepromInitMode initMode;
+        if (eepromInitMode == null) {
+            initMode= LAST_LOADED;
+        }
+        else {
+            initMode= eepromInitMode;
+        }
+        return initMode;
     }
-
-
+    public byte[] getLastEepromContents() {
+        return lastEepromContents;
+    }
+    public String getLastEepromFileName() {
+        return lastEepromFileName;
+    }
+    public Integer getPortInputValueOverride(int chip, int portNumber, int bitNumber) {
+        if (ioValueOverrideMap == null || ioValueOverrideMap.length != 2) {
+            ioValueOverrideMap = new Map[]{new HashMap<String, Integer>(), new HashMap<String, Integer>()};
+        }
+        return ioValueOverrideMap[chip].get(portNumber + "-" + bitNumber);
+    }
     public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponDebug(int chip) {
         if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
             this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
         }
         return altExecutionModeForSyncedCpuUponDebug[chip];
     }
-
-    public void setAltExecutionModeForSyncedCpuUponDebug(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponDebug) {
-        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
-            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        this.altExecutionModeForSyncedCpuUponDebug[chip] = altExecutionModeForSyncedCpuUponDebug;
-    }
-
+    
     public EmulationFramework.ExecutionMode getAltExecutionModeForSyncedCpuUponStep(int chip) {
         if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
             this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
         }
         return altExecutionModeForSyncedCpuUponStep[chip];
     }
-
-    public void setAltExecutionModeForSyncedCpuUponStep(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponStep) {
-        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
-            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
-        }
-        this.altExecutionModeForSyncedCpuUponStep[chip] = altExecutionModeForSyncedCpuUponStep;
-    }
-
-    public void setButtonState(String key, Integer state) {
-        if (buttonsState == null) buttonsState = new HashMap<>();
-        buttonsState.put(key, state);
-    }
-
+    
     public Integer getButtonState(String key) {
-        if (buttonsState == null) buttonsState = new HashMap<>();
+        if (buttonsState == null) {
+            buttonsState = new HashMap<>();
+        }
         return buttonsState.get(key);
     }
 
     public String getFirmwareFilename(int chip) {
-        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) this.firmwareFilename = new String[2];
+        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
+            this.firmwareFilename = new String[2];
+        }
         return firmwareFilename[chip];
     }
-
-    public void setFirmwareFilename(int chip, String firmwareFilename) {
-        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) this.firmwareFilename = new String[2];
-        this.firmwareFilename[chip] = firmwareFilename;
-    }
-
     public int getRefreshIntervalMs() {
         // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
         if (screenEmulatorRefreshIntervalMs < 10 || screenEmulatorRefreshIntervalMs > 10000) {
@@ -637,18 +703,60 @@ public class Prefs {
         return screenEmulatorRefreshIntervalMs;
     }
 
+    public String getFrontPanelName() {
+        return frontPanelName;
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="setters">
+    public void setEepromInitMode(EepromInitMode eepromInitMode) {
+        this.eepromInitMode = eepromInitMode;
+    }
+    public void setLastEepromContents(byte[] lastEepromContents) {
+        this.lastEepromContents = lastEepromContents;
+    }
+    public void setLastEepromFileName(String lastEepromFileName) {
+        this.lastEepromFileName = lastEepromFileName;
+    }
+    public void setSyncPlay(boolean syncPlay) {
+        this.syncPlay = syncPlay;
+    }
+    
+    public void setAltExecutionModeForSyncedCpuUponDebug(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponDebug) {
+        if (this.altExecutionModeForSyncedCpuUponDebug == null || this.altExecutionModeForSyncedCpuUponDebug.length != 2) {
+            this.altExecutionModeForSyncedCpuUponDebug = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        this.altExecutionModeForSyncedCpuUponDebug[chip] = altExecutionModeForSyncedCpuUponDebug;
+    }
+    
+    public void setAltExecutionModeForSyncedCpuUponStep(int chip, EmulationFramework.ExecutionMode altExecutionModeForSyncedCpuUponStep) {
+        if (this.altExecutionModeForSyncedCpuUponStep == null || this.altExecutionModeForSyncedCpuUponStep.length != 2) {
+            this.altExecutionModeForSyncedCpuUponStep = new EmulationFramework.ExecutionMode[]{EmulationFramework.ExecutionMode.RUN, EmulationFramework.ExecutionMode.RUN};
+        }
+        this.altExecutionModeForSyncedCpuUponStep[chip] = altExecutionModeForSyncedCpuUponStep;
+    }
+
+    public void setButtonState(String key, Integer state) {
+        if (buttonsState == null) {
+            buttonsState = new HashMap<>();
+        }
+        buttonsState.put(key, state);
+    }
+    public void setFirmwareFilename(int chip, String firmwareFilename) {
+        if (this.firmwareFilename == null || this.firmwareFilename.length != 2) {
+            this.firmwareFilename = new String[2];
+        }
+        this.firmwareFilename[chip] = firmwareFilename;
+    }
     public void setRefreshIntervalMs(int refreshIntervalMs) {
         // Note: that field has a name that does not reflect its current use but it's kept for prefs backwards compatibility
         this.screenEmulatorRefreshIntervalMs = refreshIntervalMs;
     }
-
-    public String getFrontPanelName() {
-        return frontPanelName;
-    }
-
     public void setFrontPanelName(String frontPanelName) {
         this.frontPanelName = frontPanelName;
     }
+//</editor-fold>
+    
 
 
     /**
@@ -656,29 +764,39 @@ public class Prefs {
      * Now used for position but also for size
      * java.awt.Point looks similar but has double as getters :-(. Moreover, it would break current config files
      */
+    //nueva clase
     public class WindowPosition {
-        int x = 0;
-        int y = 0;
-
+        //<editor-fold defaultstate="collapsed" desc="vars">
+        int x = 0,
+            y = 0;
+//</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="constructor">
         public WindowPosition(int x, int y) {
+            setX(x);
+            setY(y); 
+        }
+//</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="setters">
+        private void setX(int x) {
             this.x = x;
+        }
+        
+        private void setY(int y) {
             this.y = y;
         }
-
+//</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="getters">
+        //necesario?
         public int getX() {
             return x;
-        }
-
-        public void setX(int x) {
-            this.x = x;
         }
 
         public int getY() {
             return y;
         }
-
-        public void setY(int y) {
-            this.y = y;
-        }
+//</editor-fold>
     }
 }
