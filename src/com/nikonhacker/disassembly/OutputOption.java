@@ -1,6 +1,7 @@
 package com.nikonhacker.disassembly;
 
 import com.nikonhacker.Constants;
+import static java.lang.System.err;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -120,7 +121,7 @@ public enum OutputOption {
 
     public static boolean parseFlag(int chip, Set<OutputOption> outputOptions, Character option, String optionValue) throws ParsingException {
         if ("?".equals(optionValue)) {
-            System.err.println(getFullHelp(chip, option));
+            err.println(getFullHelp(chip, option));
             return false;
         }
 

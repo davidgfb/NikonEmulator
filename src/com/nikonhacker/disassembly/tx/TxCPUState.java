@@ -10,6 +10,8 @@ import com.nikonhacker.emu.interrupt.InterruptRequest;
 import com.nikonhacker.emu.interrupt.tx.TxInterruptRequest;
 import com.nikonhacker.emu.interrupt.tx.Type;
 import com.nikonhacker.emu.peripherials.interruptController.tx.TxInterruptController;
+import static java.lang.System.arraycopy;
+import static java.lang.System.out;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -298,16 +300,16 @@ public class TxCPUState extends CPUState {
      */
     static {
         registerLabels = new String[REG_LABEL[0].length];
-        System.arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
+        arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
     }
 
     public static void initRegisterLabels(Set<OutputOption> outputOptions) {
         // Patch names if requested
         if (outputOptions.contains(OutputOption.REGISTER)) {
-            System.arraycopy(REG_LABEL[1], 0, registerLabels, 0, REG_LABEL[1].length);
+            arraycopy(REG_LABEL[1], 0, registerLabels, 0, REG_LABEL[1].length);
         }
         else {
-            System.arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
+            arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
         }
     }
 
@@ -1152,7 +1154,7 @@ public class TxCPUState extends CPUState {
     @Override
     public boolean accepts(InterruptRequest interruptRequest) {
         if (interruptController == null) {
-            System.out.println("TxCPUState.accepts() called while no InterruptController was defined");
+            out.println("TxCPUState.accepts() called while no InterruptController was defined");
             return false;
         }
         // Note: this could be optimized by directly masking IE/ERL/EXL here instead of using methods that call a method that does bitshifting

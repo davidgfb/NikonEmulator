@@ -1,5 +1,6 @@
 package com.nikonhacker.disassembly;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.ApplicationInfo;
 import com.nikonhacker.Format;
 import com.nikonhacker.Constants;
@@ -19,6 +20,10 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
+import static java.lang.System.err;
+import static java.lang.System.exit;
+import static java.lang.System.lineSeparator;
+import static java.lang.System.out;
 import java.util.Set;
 import java.util.EnumSet;
 import java.util.List;
@@ -28,6 +33,8 @@ import java.util.TreeSet;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
+//</editor-fold>
+
 
 public abstract class Disassembler {
 
@@ -46,7 +53,7 @@ public abstract class Disassembler {
      */
     private String outputFileName = "";
 
-    private PrintWriter debugPrintWriter = new PrintWriter(new OutputStreamWriter(System.err));
+    private PrintWriter debugPrintWriter = new PrintWriter(new OutputStreamWriter(err));
     private SortedSet<Range> fileRanges = new TreeSet<Range>();
     private SortedSet<Range> memRanges = new TreeSet<Range>();
     private String startTime = "";
@@ -76,7 +83,7 @@ public abstract class Disassembler {
             writer.write("(" + Format.asHex(address - memoryFileOffset, 8) + ") ");
         }
 
-        writer.write(statement.toString(options) + System.lineSeparator());
+        writer.write(statement.toString(options) + lineSeparator());
     }
 
     protected void usage() {
@@ -97,9 +104,7 @@ public abstract class Disassembler {
                         + "Numbers are C-style (16 or 0x10) and can be followed by the K or M multipliers.\n"
                         + "A range is start-end or start,length.\n";
 
-        System.err.println("Usage: " + getClass().getSimpleName() + " [options] filename");
-        System.err.println("Options:");
-        System.err.println(help);
+        err.println("Usage: " + getClass().getSimpleName() + " [options] filename\nOptions:\n"+help);
     }
 
     public void setOutputOptions(Set<OutputOption> outputOptions) {
@@ -138,7 +143,7 @@ public abstract class Disassembler {
         try {
             debugPrintWriter.write(s);
         } catch (Exception e) {
-            System.err.println(s);
+            err.println(s);
         }
     }
 
@@ -319,8 +324,8 @@ public abstract class Disassembler {
                 case 'm':
                     argument = optionHandler.getArgument();
                     if ("?".equals(argument)) {
-                        System.err.println(OptionHandler.getFullHelp());
-                        System.exit(1);
+                        err.println(OptionHandler.getFullHelp());
+                        exit(1);
                     }
                     memRanges.add(OptionHandler.parseTypeRange(option, argument));
                     break;
@@ -374,7 +379,7 @@ public abstract class Disassembler {
                         return false;
                     }
                     if (!OutputOption.parseFlag(chip, outputOptions, option, argument)) {
-                        System.exit(1);
+                        exit(1);
                     }
                     break;
 
@@ -589,7 +594,7 @@ public abstract class Disassembler {
         if (inputFileName == null && memory == null) {
             log(getClass().getSimpleName() + ": no input file\n");
             usage();
-            System.exit(1);
+            exit(1);
         }
 
         openOutput(0, false, "asm");
@@ -610,7 +615,7 @@ public abstract class Disassembler {
     protected void execute(String[] args) throws ParsingException, IOException, DisassemblyException {
         if (args.length == 0) {
             usage();
-            System.exit(1);
+            exit(1);
         }
         if (!processOptions(args))
             throw new ParsingException("Incorrect options");
@@ -619,7 +624,7 @@ public abstract class Disassembler {
             // try to load default file
             String defaultFilename = FilenameUtils.removeExtension(args[args.length - 1]) + "." + getClass().getSimpleName().toLowerCase() + ".txt";
             if (!new File(defaultFilename).exists()) {
-                System.out.println("No options file given and no default options file " + defaultFilename + " found.");
+                out.println("No options file given and no default options file " + defaultFilename + " found.");
             }
             else {
                 readOptions(defaultFilename);
@@ -632,11 +637,11 @@ public abstract class Disassembler {
 
         cleanup();
 
-        System.out.println("Disassembly done.");
+        out.println("Disassembly done.");
 
         if (outputOptions.contains(OutputOption.FUNCREFS)) {
             dumpFunctionReferences(codeStructure);
-            System.out.println("Function references dump done.");
+            out.println("Function references dump done.");
         }
     }
 

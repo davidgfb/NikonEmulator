@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.Writer;
+import static java.lang.System.lineSeparator;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -267,7 +268,7 @@ public abstract class CodeStructure {
                 writer.write(" " + Format.asHex(callerFunction.getAddress(), 8) );
             }
 
-            writer.write(System.lineSeparator());
+            writer.write(lineSeparator());
         }
 
     }

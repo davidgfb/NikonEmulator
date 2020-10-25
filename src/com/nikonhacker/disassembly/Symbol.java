@@ -50,10 +50,10 @@ public class Symbol {
                 Parameter parameter = new Parameter(paramString, registerLabels);
                 addParameter(parameter);
             }
-//            System.out.println("** Name:" + name);
-//            System.out.println("   Comment:" + comment);
-//            System.out.println("   CleanComment:" + cleanComment);
-//            System.out.println("   Parameters:" + parameterList);
+//            out.println("** Name:" + name);
+//            out.println("   Comment:" + comment);
+//            out.println("   CleanComment:" + cleanComment);
+//            out.println("   Parameters:" + parameterList);
         }
         else {
             this.name = cleanText;

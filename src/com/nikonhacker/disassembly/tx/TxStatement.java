@@ -9,6 +9,7 @@ import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.Statement;
 import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.memory.Memory;
+import static java.lang.System.err;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.EnumSet;
@@ -554,7 +555,7 @@ public class TxStatement extends Statement {
                     }
                     break;
                 default:
-                    System.err.println("bad action '" + actionChar + "' in " + instruction + " at " + Format.asHex(context.cpuState.pc, 8));
+                    err.println("bad action '" + actionChar + "' in " + instruction + " at " + Format.asHex(context.cpuState.pc, 8));
                     break;
             }
         }
@@ -999,7 +1000,7 @@ public class TxStatement extends Statement {
                 try {
                     setInstruction(TxInstructionSet.getJalInstructionForStatement(fullStatement));
                 } catch (DisassemblyException e) {
-                    System.err.println("Could not decode statement 0x" + Format.asHex(getBinaryStatement(), 4) + " at 0x" + Format.asHex(pc, 8) + ": " + e.getClass().getName());
+                    err.println("Could not decode statement 0x" + Format.asHex(getBinaryStatement(), 4) + " at 0x" + Format.asHex(pc, 8) + ": " + e.getClass().getName());
                 }
                 break;
             default:
@@ -1015,6 +1016,7 @@ public class TxStatement extends Statement {
         setInstruction(TxInstructionSet.getInstructionFor32BitStatement(binaryStatement32));
     }
 
+    @Override
     public boolean isPotentialStuffing() {
         return      (numBytes == 2 && getBinaryStatement() == 0xFFFF) /* TX 0xFFFF stuffing in 16-bit ISA mode*/
                 ||  (numBytes == 4 && getBinaryStatement() == 0x00000000) /* TX NOP stuffing in 32-bit ISA mode*/

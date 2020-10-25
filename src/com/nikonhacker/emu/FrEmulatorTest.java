@@ -5,6 +5,7 @@ import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.peripherials.interruptController.fr.FrInterruptController;
 import com.nikonhacker.emu.trigger.condition.AlwaysBreakCondition;
 import com.nikonhacker.emu.trigger.condition.BreakPointCondition;
+import static java.lang.System.out;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.StringUtils;
 
@@ -76,10 +77,12 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkRegister(int registerNumber, int expectedValue) {
         if (cpuState.getReg(registerNumber)==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : " + FrCPUState.registerLabels[registerNumber] + "=" + toHexString(cpuState.getReg(registerNumber), 8));
+            if (!STAY_SILENT_IF_OK) {
+                out.println(" OK    : " + FrCPUState.registerLabels[registerNumber] + "=" + toHexString(cpuState.getReg(registerNumber), 8));
+            }
         }
         else {
-            System.out.println(" ERROR : " + FrCPUState.registerLabels[registerNumber] + "=" + toHexString(cpuState.getReg(registerNumber), 8)
+            out.println(" ERROR : " + FrCPUState.registerLabels[registerNumber] + "=" + toHexString(cpuState.getReg(registerNumber), 8)
                     + ", should be " + toHexString(expectedValue, 8) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -87,10 +90,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkILM(int expectedValue) {
         if (cpuState.getILM()==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : ILM=" + toBinString(cpuState.getILM(), 5));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : ILM=" + toBinString(cpuState.getILM(), 5));
         }
         else {
-            System.out.println(" ERROR : ILM=" + toBinString(cpuState.getILM(), 5)
+            out.println(" ERROR : ILM=" + toBinString(cpuState.getILM(), 5)
                     + ", should be " + toBinString(expectedValue, 5) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -98,10 +101,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkCCR(int expectedValue) {
         if (cpuState.getCCR()==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : CCR=" + toBinString(cpuState.getCCR(), 4));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : CCR=" + toBinString(cpuState.getCCR(), 4));
         }
         else {
-            System.out.println(" ERROR : CCR=" + toBinString(cpuState.getCCR(), 4)
+            out.println(" ERROR : CCR=" + toBinString(cpuState.getCCR(), 4)
                     + ", should be " + toBinString(expectedValue, 4) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -109,10 +112,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkSCR(int expectedValue) {
         if (cpuState.getSCR()==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : SCR=" + toBinString(cpuState.getSCR(), 3));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : SCR=" + toBinString(cpuState.getSCR(), 3));
         }
         else {
-            System.out.println(" ERROR : SCR=" + toBinString(cpuState.getSCR(), 3)
+            out.println(" ERROR : SCR=" + toBinString(cpuState.getSCR(), 3)
                     + ", should be " + toBinString(expectedValue, 3) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -120,10 +123,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkPS(int expectedValue) {
         if (cpuState.getPS()==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : PS=" + toBinString(cpuState.getPS(), 32));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : PS=" + toBinString(cpuState.getPS(), 32));
         }
         else {
-            System.out.println(" ERROR : PS=" + toBinString(cpuState.getPS(), 32)
+            out.println(" ERROR : PS=" + toBinString(cpuState.getPS(), 32)
                     + ", should be " + toBinString(expectedValue, 32) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -131,10 +134,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkMemory32(int address, int expectedValue) {
         if (memory.load32(address)==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.load32(address), 8));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.load32(address), 8));
         }
         else {
-            System.out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.load32(address), 8)
+            out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.load32(address), 8)
                     + ", should be " + toHexString(expectedValue, 8) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -142,10 +145,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkMemory16(int address, int expectedValue) {
         if (memory.loadUnsigned16(address)==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned16(address), 4));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned16(address), 4));
         }
         else {
-            System.out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned16(address), 4)
+            out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned16(address), 4)
                     + ", should be " + toHexString(expectedValue, 4) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -153,10 +156,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkMemory8(int address, int expectedValue) {
         if (memory.loadUnsigned8(address)==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned8(address), 2));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned8(address), 2));
         }
         else {
-            System.out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned8(address), 2)
+            out.println(" ERROR : (" + toHexString(address, 8) + ")=" + toHexString(memory.loadUnsigned8(address), 2)
                     + ", should be " + toHexString(expectedValue, 2) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -164,10 +167,10 @@ public class FrEmulatorTest extends TestCase {
 
     private void checkPC(int expectedValue) {
         if (cpuState.pc==expectedValue) {
-            if (!STAY_SILENT_IF_OK) System.out.println(" OK    : PC=" + toHexString(cpuState.pc, 8));
+            if (!STAY_SILENT_IF_OK) out.println(" OK    : PC=" + toHexString(cpuState.pc, 8));
         }
         else {
-            System.out.println(" ERROR : PC=" + toHexString(cpuState.pc, 8)
+            out.println(" ERROR : PC=" + toHexString(cpuState.pc, 8)
                     + ", should be " + toHexString(expectedValue, 8) + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             if (STOP_ON_ERROR) fail();
         }
@@ -191,7 +194,7 @@ public class FrEmulatorTest extends TestCase {
      */
 
     public void testADD_A6() throws EmulationException {
-        System.out.println("EmulatorTest.testADD_A6");
+        out.println("EmulatorTest.testADD_A6");
         initCpu();
 
         setInstruction(0xa623); // 0b1010011000100011
@@ -208,7 +211,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADD_A4() throws EmulationException {
-        System.out.println("EmulatorTest.testADD_A4");
+        out.println("EmulatorTest.testADD_A4");
         initCpu();
 
         setInstruction(0xa423); // 0b1010010000100011
@@ -223,7 +226,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADD2() throws EmulationException {
-        System.out.println("EmulatorTest.testADD2");
+        out.println("EmulatorTest.testADD2");
         initCpu();
 
         setInstruction(0xa5e3); // 0b1010010111100011
@@ -238,7 +241,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADDC() throws EmulationException {
-        System.out.println("EmulatorTest.testADDC");
+        out.println("EmulatorTest.testADDC");
         initCpu();
 
         setInstruction(0xa723); // 0b1010011100100011
@@ -257,7 +260,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testADDN_A2() throws EmulationException {
-        System.out.println("EmulatorTest.testADDN_A2");
+        out.println("EmulatorTest.testADDN_A2");
         initCpu();
 
         setInstruction(0xa223); // 0b1010001000100011
@@ -274,7 +277,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADDN_A1() throws EmulationException {
-        System.out.println("EmulatorTest.testADDN_A1");
+        out.println("EmulatorTest.testADDN_A1");
         initCpu();
 
         setInstruction(0xa023); // 0b1010000000100011
@@ -289,7 +292,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADDN2() throws EmulationException {
-        System.out.println("EmulatorTest.testADDN2");
+        out.println("EmulatorTest.testADDN2");
         initCpu();
 
         setInstruction(0xa1e3); // 0b1010000111100011
@@ -306,7 +309,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testSUB() throws EmulationException {
-        System.out.println("EmulatorTest.testSUB");
+        out.println("EmulatorTest.testSUB");
         initCpu();
 
         setInstruction(0xac23); // 0b1010110000100011
@@ -324,7 +327,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testSUBC() throws EmulationException {
-        System.out.println("EmulatorTest.testSUBC");
+        out.println("EmulatorTest.testSUBC");
         initCpu();
 
         setInstruction(0xad23); // 0b1010110100100011
@@ -341,7 +344,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSUBN() throws EmulationException {
-        System.out.println("EmulatorTest.testSUBN");
+        out.println("EmulatorTest.testSUBN");
         initCpu();
 
         setInstruction(0xae23); // 0b1010111000100011
@@ -360,7 +363,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testCMP_AA() throws EmulationException {
-        System.out.println("EmulatorTest.testCMP_AA");
+        out.println("EmulatorTest.testCMP_AA");
         initCpu();
 
         setInstruction(0xaa23); // 0b1010101000100011
@@ -377,7 +380,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCMP_AAbis() throws EmulationException {
-        System.out.println("EmulatorTest.testCMP_AAbis");
+        out.println("EmulatorTest.testCMP_AAbis");
         initCpu();
 
         setInstruction(0xaa23); // 0b1010101000100011
@@ -392,7 +395,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCMP_A8() throws EmulationException {
-        System.out.println("EmulatorTest.testCMP_A8");
+        out.println("EmulatorTest.testCMP_A8");
         initCpu();
 
         setInstruction(0xa833); // 0b1010100000110011
@@ -407,7 +410,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCMP2() throws EmulationException {
-        System.out.println("EmulatorTest.testCMP2");
+        out.println("EmulatorTest.testCMP2");
         initCpu();
 
         setInstruction(0xa9d3); // 0b1010100111010011
@@ -424,7 +427,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testAND_82() throws EmulationException {
-        System.out.println("EmulatorTest.testAND_82");
+        out.println("EmulatorTest.testAND_82");
         initCpu();
 
         setInstruction(0x8223); // 0b1000001000100011
@@ -441,7 +444,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testAND_84() throws EmulationException {
-        System.out.println("EmulatorTest.testAND_84");
+        out.println("EmulatorTest.testAND_84");
         initCpu();
 
         setInstruction(0x8423); // 0b1000010000100011
@@ -461,7 +464,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testANDH() throws EmulationException {
-        System.out.println("EmulatorTest.testANDH");
+        out.println("EmulatorTest.testANDH");
         initCpu();
 
         setInstruction(0x8523); // 0b1000010100100011
@@ -480,7 +483,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testANDB() throws EmulationException {
-        System.out.println("EmulatorTest.testANDB");
+        out.println("EmulatorTest.testANDB");
         initCpu();
 
         setInstruction(0x8623); // 0b1000011000100011
@@ -501,7 +504,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testOR_92() throws EmulationException {
-        System.out.println("EmulatorTest.testOR_92");
+        out.println("EmulatorTest.testOR_92");
         initCpu();
 
         setInstruction(0x9223); // 0b1001001000100011
@@ -518,7 +521,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testOR_94() throws EmulationException {
-        System.out.println("EmulatorTest.testOR_92");
+        out.println("EmulatorTest.testOR_92");
         initCpu();
 
         setInstruction(0x9423); // 0b1001010000100011
@@ -537,7 +540,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testORH() throws EmulationException {
-        System.out.println("EmulatorTest.testORH");
+        out.println("EmulatorTest.testORH");
         initCpu();
 
         setInstruction(0x9523); // 0b1001010100100011
@@ -556,7 +559,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testORB() throws EmulationException {
-        System.out.println("EmulatorTest.testORB");
+        out.println("EmulatorTest.testORB");
         initCpu();
 
         setInstruction(0x9623); // 0b1001011000100011
@@ -577,7 +580,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testEOR_9A() throws EmulationException {
-        System.out.println("EmulatorTest.testEOR_9A");
+        out.println("EmulatorTest.testEOR_9A");
         initCpu();
 
         setInstruction(0x9a23); // 0b1001101000100011
@@ -594,7 +597,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEOR_9C() throws EmulationException {
-        System.out.println("EmulatorTest.testEOR_9C");
+        out.println("EmulatorTest.testEOR_9C");
         initCpu();
 
         setInstruction(0x9c23); // 0b1001110000100011
@@ -613,7 +616,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEORH() throws EmulationException {
-        System.out.println("EmulatorTest.testEORH");
+        out.println("EmulatorTest.testEORH");
         initCpu();
 
         setInstruction(0x9d23); // 0b1001110100100011
@@ -632,7 +635,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEORB() throws EmulationException {
-        System.out.println("EmulatorTest.testEORB");
+        out.println("EmulatorTest.testEORB");
         initCpu();
 
         setInstruction(0x9e23); // 0b1001111000100011
@@ -653,7 +656,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testBANDL() throws EmulationException {
-        System.out.println("EmulatorTest.testBANDL");
+        out.println("EmulatorTest.testBANDL");
         initCpu();
 
         setInstruction(0x8003); // 0b1000000000000011
@@ -670,7 +673,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBANDH() throws EmulationException {
-        System.out.println("EmulatorTest.testBANDH");
+        out.println("EmulatorTest.testBANDH");
         initCpu();
 
         setInstruction(0x8103); // 0b1000000100000011
@@ -689,7 +692,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testBORL() throws EmulationException {
-        System.out.println("EmulatorTest.testBORL");
+        out.println("EmulatorTest.testBORL");
         initCpu();
 
         setInstruction(0x9013); // 0b1001000000010011
@@ -706,7 +709,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBORH() throws EmulationException {
-        System.out.println("EmulatorTest.testBORH");
+        out.println("EmulatorTest.testBORH");
         initCpu();
 
         setInstruction(0x9113); // 0b1001000100010011
@@ -725,7 +728,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testBEORL() throws EmulationException {
-        System.out.println("EmulatorTest.testBEORL");
+        out.println("EmulatorTest.testBEORL");
         initCpu();
 
         setInstruction(0x9813); // 0b1001100000010011
@@ -742,7 +745,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBEORH() throws EmulationException {
-        System.out.println("EmulatorTest.testBEORH");
+        out.println("EmulatorTest.testBEORH");
         initCpu();
 
         setInstruction(0x9913); // 0b1001100100010011
@@ -761,7 +764,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testBTSTL() throws EmulationException {
-        System.out.println("EmulatorTest.testBTSTL");
+        out.println("EmulatorTest.testBTSTL");
         initCpu();
 
         setInstruction(0x8813); // 0b1000100000010011 BTSTL #1, @R3
@@ -778,7 +781,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBTSTH() throws EmulationException {
-        System.out.println("EmulatorTest.testBTSTH");
+        out.println("EmulatorTest.testBTSTH");
         initCpu();
 
         setInstruction(0x8913); // 0b1000100100010011
@@ -797,7 +800,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testMUL() throws EmulationException {
-        System.out.println("EmulatorTest.testMUL");
+        out.println("EmulatorTest.testMUL");
         initCpu();
 
         setInstruction(0xaf23); // 0b1010111100100011
@@ -816,7 +819,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMULU() throws EmulationException {
-        System.out.println("EmulatorTest.testMULU");
+        out.println("EmulatorTest.testMULU");
         initCpu();
 
         setInstruction(0xab23); // 0b1010101100100011
@@ -835,7 +838,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMULH() throws EmulationException {
-        System.out.println("EmulatorTest.testMULH");
+        out.println("EmulatorTest.testMULH");
         initCpu();
 
         setInstruction(0xbf23); // 0b1011111100100011
@@ -853,7 +856,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMULUH() throws EmulationException {
-        System.out.println("EmulatorTest.testMULUH");
+        out.println("EmulatorTest.testMULUH");
         initCpu();
 
         setInstruction(0xbb23); // 0b1011101100100011
@@ -871,7 +874,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDIV0S() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV0S");
+        out.println("EmulatorTest.testDIV0S");
         initCpu();
 
         setInstruction(0x9742); // 0b1001011101000010
@@ -890,7 +893,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDIV0U() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV0U");
+        out.println("EmulatorTest.testDIV0U");
         initCpu();
 
         setInstruction(0x9752); // 0b1001011101010010
@@ -909,7 +912,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDIV1() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV1");
+        out.println("EmulatorTest.testDIV1");
         initCpu();
 
         setInstruction(0x9762); // 0b1001011101100010
@@ -934,7 +937,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testDIV2() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV2");
+        out.println("EmulatorTest.testDIV2");
         initCpu();
 
         setInstruction(0x9772); // 0b1001011101110010
@@ -955,7 +958,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDIV3() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV3");
+        out.println("EmulatorTest.testDIV3");
         initCpu();
 
         setInstruction(0x9f60); // 0b1001111101100000
@@ -976,7 +979,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDIV4S() throws EmulationException {
-        System.out.println("EmulatorTest.testDIV4S");
+        out.println("EmulatorTest.testDIV4S");
         initCpu();
 
         setInstruction(0x9f70); // 0b1001111101110000
@@ -1000,7 +1003,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testFullDIVS() throws EmulationException {
-        System.out.println("EmulatorTest.testFullDIVS");
+        out.println("EmulatorTest.testFullDIVS");
         initCpu();
 
         memory.store16(BASE_ADDRESS     , 0x9742); // 0b1001011101000010 DIV0S R2
@@ -1111,12 +1114,12 @@ public class FrEmulatorTest extends TestCase {
         int correctRemainder = dividend % divisor;
 
         if ((correctQuotient != foundQuotient) || (correctRemainder != foundRemainder)) {
-            System.out.println("Error : found " + dividend + "=" + foundQuotient + "x" + divisor + " + " + foundRemainder);
+            out.println("Error : found " + dividend + "=" + foundQuotient + "x" + divisor + " + " + foundRemainder);
         }
     }
 
     public void testMultipleSignedDivisions() throws EmulationException {
-        System.out.println("EmulatorTest.testMultipleUnsignedDivisions");
+        out.println("EmulatorTest.testMultipleUnsignedDivisions");
         Random random = new Random();
         for (int i = 0; i < 1000; i++) {
             int dividend = (int) (random.nextLong());
@@ -1132,7 +1135,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testFullDIVU() throws EmulationException {
-        System.out.println("EmulatorTest.testFullDIVU");
+        out.println("EmulatorTest.testFullDIVU");
         initCpu();
 
         memory.store16(BASE_ADDRESS     , 0x9752); // 0b1001011101010010 DIV0U R2
@@ -1236,13 +1239,13 @@ public class FrEmulatorTest extends TestCase {
         long correctRemainder = (dividend & 0xFFFFFFFFL) % (divisor & 0xFFFFFFFFL);
         
         if ((correctQuotient != foundQuotient) || (correctRemainder != foundRemainder)) {
-            System.out.println("Error : found " + (dividend & 0xFFFFFFFFL) + "=" + foundQuotient + "x" + (divisor & 0xFFFFFFFFL) + " + " + foundRemainder);
+            out.println("Error : found " + (dividend & 0xFFFFFFFFL) + "=" + foundQuotient + "x" + (divisor & 0xFFFFFFFFL) + " + " + foundRemainder);
         }
         
     }
 
     public void testMultipleUnsignedDivisions() throws EmulationException {
-        System.out.println("EmulatorTest.testMultipleUnsignedDivisions");
+        out.println("EmulatorTest.testMultipleUnsignedDivisions");
         Random random = new Random();
         for (int i = 0; i < 1000; i++) {
             int dividend = (int) (random.nextLong()); // Using long to have more than Integer.MAX_VALUE
@@ -1255,7 +1258,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testLSL_B6() throws EmulationException {
-        System.out.println("EmulatorTest.testLSL_B6");
+        out.println("EmulatorTest.testLSL_B6");
         initCpu();
 
         setInstruction(0xb623); // 0b1011011000100011
@@ -1272,7 +1275,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLSL_B4() throws EmulationException {
-        System.out.println("EmulatorTest.testLSL_B4");
+        out.println("EmulatorTest.testLSL_B4");
         initCpu();
 
         setInstruction(0xb483); // 0b1011010010000011
@@ -1287,7 +1290,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLSL2() throws EmulationException {
-        System.out.println("EmulatorTest.testLSL2");
+        out.println("EmulatorTest.testLSL2");
         initCpu();
 
         setInstruction(0xb583); // 0b1011010110000011
@@ -1304,7 +1307,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testLSR_B2() throws EmulationException {
-        System.out.println("EmulatorTest.testLSR_B6");
+        out.println("EmulatorTest.testLSR_B6");
         initCpu();
 
         setInstruction(0xb223); // 0b1011001000100011
@@ -1321,7 +1324,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLSR_B0() throws EmulationException {
-        System.out.println("EmulatorTest.testLSR_B0");
+        out.println("EmulatorTest.testLSR_B0");
         initCpu();
 
         setInstruction(0xb083); // 0b1011000010000011
@@ -1336,7 +1339,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLSR2() throws EmulationException {
-        System.out.println("EmulatorTest.testLSR2");
+        out.println("EmulatorTest.testLSR2");
         initCpu();
 
         setInstruction(0xb183); // 0b1011000110000011
@@ -1353,7 +1356,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testASR_BA() throws EmulationException {
-        System.out.println("EmulatorTest.testASR_BA");
+        out.println("EmulatorTest.testASR_BA");
         initCpu();
 
         setInstruction(0xba23); // 0b1011101000100011
@@ -1370,7 +1373,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testASR_B8() throws EmulationException {
-        System.out.println("EmulatorTest.testASR_B8");
+        out.println("EmulatorTest.testASR_B8");
         initCpu();
 
         setInstruction(0xb883); // 0b1011100010000011
@@ -1385,7 +1388,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testASR2() throws EmulationException {
-        System.out.println("EmulatorTest.testASR2");
+        out.println("EmulatorTest.testASR2");
         initCpu();
 
         setInstruction(0xb983); // 0b1011100110000011
@@ -1402,7 +1405,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testLDI32() throws EmulationException {
-        System.out.println("EmulatorTest.testLDI32");
+        out.println("EmulatorTest.testLDI32");
         initCpu();
 
         memory.store16(BASE_ADDRESS    , 0x9f83); // 0b1001111110000011
@@ -1417,7 +1420,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDI20() throws EmulationException {
-        System.out.println("EmulatorTest.testLDI20");
+        out.println("EmulatorTest.testLDI20");
         initCpu();
 
         memory.store16(BASE_ADDRESS    , 0x9b53); // 0b1001101101010011
@@ -1431,7 +1434,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDI8() throws EmulationException {
-        System.out.println("EmulatorTest.testLDI8");
+        out.println("EmulatorTest.testLDI8");
         initCpu();
 
         setInstruction(0xc213); // 0b1100001000010011
@@ -1444,7 +1447,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_04() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_04");
+        out.println("EmulatorTest.testLD_04");
         initCpu();
 
         setInstruction(0x423); // 0b0000010000100011
@@ -1461,7 +1464,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_00() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_00");
+        out.println("EmulatorTest.testLD_00");
         initCpu();
 
         setInstruction(0x23); // 0b0000000000100011
@@ -1480,7 +1483,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_20() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_20");
+        out.println("EmulatorTest.testLD_20");
         initCpu();
 
         setInstruction(0x2013); // 0b0010000000010011
@@ -1497,7 +1500,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_03() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_03");
+        out.println("EmulatorTest.testLD_03");
         initCpu();
 
         setInstruction(0x313); // 0b0000001100010011
@@ -1514,7 +1517,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_070() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_070");
+        out.println("EmulatorTest.testLD_070");
         initCpu();
 
         setInstruction(0x703); // 0b0000011100000011
@@ -1531,7 +1534,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_078() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_078");
+        out.println("EmulatorTest.testLD_078");
         initCpu();
         setInstruction(0x784); // 0b0000011110000100
 
@@ -1547,7 +1550,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLD_079() throws EmulationException {
-        System.out.println("EmulatorTest.testLD_079");
+        out.println("EmulatorTest.testLD_079");
         initCpu();
         setInstruction(0x790); // 0b0000011110010000
 
@@ -1566,7 +1569,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUH_05() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUH_05");
+        out.println("EmulatorTest.testLDUH_05");
         initCpu();
         setInstruction(0x523); // 0b0000010100100011
 
@@ -1582,7 +1585,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUH_01() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUH_01");
+        out.println("EmulatorTest.testLDUH_01");
         initCpu();
         setInstruction(0x123); // 0b0000000100100011
 
@@ -1600,7 +1603,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUH_40() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUH_40");
+        out.println("EmulatorTest.testLDUH_40");
         initCpu();
         setInstruction(0x4013); // 0b0100000000010011
 
@@ -1616,7 +1619,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUB_06() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUB_06");
+        out.println("EmulatorTest.testLDUB_06");
         initCpu();
         setInstruction(0x623); // 0b0000011000100011
 
@@ -1632,7 +1635,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUB_02() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUB_02");
+        out.println("EmulatorTest.testLDUB_02");
         initCpu();
         setInstruction(0x223); // 0b0000001000100011
 
@@ -1650,7 +1653,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDUB_60() throws EmulationException {
-        System.out.println("EmulatorTest.testLDUB_60");
+        out.println("EmulatorTest.testLDUB_60");
         initCpu();
         setInstruction(0x6013); // 0b0110000000010011
 
@@ -1668,7 +1671,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testST_14() throws EmulationException {
-        System.out.println("EmulatorTest.testST_14");
+        out.println("EmulatorTest.testST_14");
         initCpu();
 
         setInstruction(0x1423); // 0b0001010000100011
@@ -1685,7 +1688,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_10() throws EmulationException {
-        System.out.println("EmulatorTest.testST_10");
+        out.println("EmulatorTest.testST_10");
         initCpu();
 
         setInstruction(0x1023); // 0b0001000000100011
@@ -1704,7 +1707,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_30() throws EmulationException {
-        System.out.println("EmulatorTest.testST_30");
+        out.println("EmulatorTest.testST_30");
         initCpu();
 
         setInstruction(0x3013); // 0b0011000000010011
@@ -1721,7 +1724,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_13() throws EmulationException {
-        System.out.println("EmulatorTest.testST_13");
+        out.println("EmulatorTest.testST_13");
         initCpu();
 
         setInstruction(0x1313); // 0b0001001100010011
@@ -1738,7 +1741,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_170() throws EmulationException {
-        System.out.println("EmulatorTest.testST_170");
+        out.println("EmulatorTest.testST_170");
         initCpu();
 
         setInstruction(0x1703); // 0b0001011100000011
@@ -1755,7 +1758,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_178() throws EmulationException {
-        System.out.println("EmulatorTest.testST_178");
+        out.println("EmulatorTest.testST_178");
         initCpu();
 
         setInstruction(0x1784); // 0b0001011110000100
@@ -1772,7 +1775,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testST_179() throws EmulationException {
-        System.out.println("EmulatorTest.testST_179");
+        out.println("EmulatorTest.testST_179");
         initCpu();
 
         setInstruction(0x1790); // 0b0001011110010000
@@ -1791,7 +1794,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTH_15() throws EmulationException {
-        System.out.println("EmulatorTest.testSTH_15");
+        out.println("EmulatorTest.testSTH_15");
         initCpu();
 
         setInstruction(0x1523); // 0b0001010100100011
@@ -1808,7 +1811,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTH_11() throws EmulationException {
-        System.out.println("EmulatorTest.testSTH_11");
+        out.println("EmulatorTest.testSTH_11");
         initCpu();
 
         setInstruction(0x1123); // 0b0001000100100011
@@ -1827,7 +1830,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTH_50() throws EmulationException {
-        System.out.println("EmulatorTest.testSTH_50");
+        out.println("EmulatorTest.testSTH_50");
         initCpu();
 
         setInstruction(0x5013); // 0b0101000000010011
@@ -1844,7 +1847,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTB_16() throws EmulationException {
-        System.out.println("EmulatorTest.testSTB_16");
+        out.println("EmulatorTest.testSTB_16");
         initCpu();
 
         setInstruction(0x1623); // 0b0001011000100011
@@ -1861,7 +1864,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTB_12() throws EmulationException {
-        System.out.println("EmulatorTest.testSTB_12");
+        out.println("EmulatorTest.testSTB_12");
         initCpu();
 
         setInstruction(0x1223); // 0b0001001000100011
@@ -1880,7 +1883,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTB_70() throws EmulationException {
-        System.out.println("EmulatorTest.testSTB_70");
+        out.println("EmulatorTest.testSTB_70");
         initCpu();
 
         setInstruction(0x7013); // 0b0111000000010011
@@ -1899,7 +1902,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testMOV_8B() throws EmulationException {
-        System.out.println("EmulatorTest.testMOV_8B");
+        out.println("EmulatorTest.testMOV_8B");
         initCpu();
 
         setInstruction(0x8b23); // 0b1000101100100011
@@ -1914,7 +1917,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMOV_B7() throws EmulationException {
-        System.out.println("EmulatorTest.testMOV_B7");
+        out.println("EmulatorTest.testMOV_B7");
         initCpu();
 
         setInstruction(0xb753); // 0b1011011101010011
@@ -1929,7 +1932,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMOV_17() throws EmulationException {
-        System.out.println("EmulatorTest.testMOV_17");
+        out.println("EmulatorTest.testMOV_17");
         initCpu();
 
         setInstruction(0x1713); // 0b0001011100010011
@@ -1946,7 +1949,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMOV_B3() throws EmulationException {
-        System.out.println("EmulatorTest.testMOV_B3");
+        out.println("EmulatorTest.testMOV_B3");
         initCpu();
 
         setInstruction(0xb353); // 0b1011001101010011
@@ -1961,7 +1964,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testMOV_07() throws EmulationException {
-        System.out.println("EmulatorTest.testMOV_07");
+        out.println("EmulatorTest.testMOV_07");
         initCpu();
 
         setInstruction(0x713); // 0b0000011100010011
@@ -1979,7 +1982,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testJMP() throws EmulationException {
-        System.out.println("EmulatorTest.testJMP");
+        out.println("EmulatorTest.testJMP");
         initCpu();
 
         memory.store16(0xFF800000, 0x9701); // 0b1001011100000001
@@ -1994,7 +1997,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCALL_D0() throws EmulationException {
-        System.out.println("EmulatorTest.testCALL_D0");
+        out.println("EmulatorTest.testCALL_D0");
         initCpu();
 
         memory.store16(0xFF800000, 0xd090); // 0b1101000010010000
@@ -2014,7 +2017,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCALL_97() throws EmulationException {
-        System.out.println("EmulatorTest.testCALL_97");
+        out.println("EmulatorTest.testCALL_97");
         initCpu();
 
         memory.store16(0x8000FFFE, 0x9711); // 0b1001011100010001
@@ -2031,7 +2034,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testRET() throws EmulationException {
-        System.out.println("EmulatorTest.testRET");
+        out.println("EmulatorTest.testRET");
         initCpu();
 
         memory.store16(0xFFF08820, 0x9720); // 0b1001011100100000
@@ -2046,7 +2049,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testINT() throws EmulationException {
-        System.out.println("EmulatorTest.testINT");
+        out.println("EmulatorTest.testINT");
         initCpu();
 
         memory.store16(0x80888086, 0x1f20); // 0b0001111100100000
@@ -2083,7 +2086,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testINTE() throws EmulationException {
-        System.out.println("EmulatorTest.testINTE");
+        out.println("EmulatorTest.testINTE");
         initCpu();
 
         memory.store16(0x80888086, 0x9f30); // 0b1001111100110000
@@ -2122,7 +2125,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testRETI() throws EmulationException {
-        System.out.println("EmulatorTest.testRETI");
+        out.println("EmulatorTest.testRETI");
         initCpu();
 
         memory.store16(0xFF0090BC, 0x9730); // 0b1001011100110000
@@ -2156,7 +2159,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBcc() throws EmulationException {
-        System.out.println("EmulatorTest.testBcc");
+        out.println("EmulatorTest.testBcc");
         initCpu();
 
         memory.store16(0xFF800000, 0xef28); // 0b1110111100101000
@@ -2173,7 +2176,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testJMP_D() throws EmulationException {
-        System.out.println("EmulatorTest.testJMP_D");
+        out.println("EmulatorTest.testJMP_D");
         initCpu();
 
         memory.store16(0xFF800000, 0x9f01); // 0b1001111100000001 JMP:D @Ri
@@ -2191,7 +2194,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCALL_D_D8() throws EmulationException {
-        System.out.println("EmulatorTest.testCALL_D_D8");
+        out.println("EmulatorTest.testCALL_D_D8");
         initCpu();
 
         memory.store16(0xFF800000, 0xd890); // 0b1101100010010000 CALL:D (+0x122)
@@ -2211,7 +2214,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testCALL_D_9F() throws EmulationException {
-        System.out.println("EmulatorTest.testCALL_D_97");
+        out.println("EmulatorTest.testCALL_D_97");
         initCpu();
 
         memory.store16(0x8000FFFE, 0x9f11); // 0b1001111100010001 CALL:D @R1
@@ -2231,7 +2234,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testRET_D() throws EmulationException {
-        System.out.println("EmulatorTest.testRET_D");
+        out.println("EmulatorTest.testRET_D");
         initCpu();
 
         memory.store16(0xFFF08820, 0x9f20); // 0b1001111100100000 RET:D
@@ -2253,7 +2256,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testBcc_D() throws EmulationException {
-        System.out.println("EmulatorTest.testBcc_D");
+        out.println("EmulatorTest.testBcc_D");
         initCpu();
 
         memory.store16(0xFF800000, 0xff28); // 0b1111111100101000 CALL:D (+0x50)
@@ -2275,7 +2278,7 @@ public class FrEmulatorTest extends TestCase {
 
 
     public void testDMOV_08() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_08");
+        out.println("EmulatorTest.testDMOV_08");
         initCpu();
 
         setInstruction(0x822); // 0b0000100000100010
@@ -2294,7 +2297,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOV_18() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_18");
+        out.println("EmulatorTest.testDMOV_18");
         initCpu();
 
         setInstruction(0x1815); // 0b0001100000010101
@@ -2313,7 +2316,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOV_0C() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_0C");
+        out.println("EmulatorTest.testDMOV_0C");
         initCpu();
 
         setInstruction(0xc22); // 0b0000110000100010
@@ -2332,7 +2335,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOV_1C() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_1C");
+        out.println("EmulatorTest.testDMOV_1C");
         initCpu();
 
         setInstruction(0x1c15); // 0b0001110000010101
@@ -2351,7 +2354,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOV_0B() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_0B");
+        out.println("EmulatorTest.testDMOV_0B");
         initCpu();
 
         setInstruction(0xb0b); // 0b0000101100001011
@@ -2370,7 +2373,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOV_1B() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOV_1B");
+        out.println("EmulatorTest.testDMOV_1B");
         initCpu();
 
         setInstruction(0x1b0e); // 0b0001101100001110
@@ -2389,7 +2392,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVH_09() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVH_09");
+        out.println("EmulatorTest.testDMOVH_09");
         initCpu();
 
         setInstruction(0x944); // 0b0000100101000100
@@ -2408,7 +2411,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVH_19() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVH_19");
+        out.println("EmulatorTest.testDMOVH_19");
         initCpu();
 
         setInstruction(0x1929); // 0b0001100100101001
@@ -2427,7 +2430,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVH_0D() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVH_0D");
+        out.println("EmulatorTest.testDMOVH_0D");
         initCpu();
 
         setInstruction(0xd44); // 0b0000110101000100
@@ -2446,7 +2449,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVH_1D() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVH_1D");
+        out.println("EmulatorTest.testDMOVH_1D");
         initCpu();
 
         setInstruction(0x1d29); // 0b0001110100101001
@@ -2465,7 +2468,7 @@ public class FrEmulatorTest extends TestCase {
     }
     
     public void testDMOVB_0A() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVB_0A");
+        out.println("EmulatorTest.testDMOVB_0A");
         initCpu();
 
         setInstruction(0xa91); // 0b0000101010010001
@@ -2484,7 +2487,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVB_1A() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVB_1A");
+        out.println("EmulatorTest.testDMOVB_1A");
         initCpu();
 
         setInstruction(0x1a53); // 0b0001101001010011
@@ -2503,7 +2506,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVB_0E() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVB_0E");
+        out.println("EmulatorTest.testDMOVB_0E");
         initCpu();
 
         setInstruction(0xe71); // 0b0000111001110001
@@ -2522,7 +2525,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testDMOVB_1E() throws EmulationException {
-        System.out.println("EmulatorTest.testDMOVB_1E");
+        out.println("EmulatorTest.testDMOVB_1E");
         initCpu();
 
         setInstruction(0x1e57); // 0b0001111001010111
@@ -2545,7 +2548,7 @@ public class FrEmulatorTest extends TestCase {
     // TODO FUTURE COPROCESSOR TESTS 
 
     public void testNOP() throws EmulationException {
-        System.out.println("EmulatorTest.testNOP");
+        out.println("EmulatorTest.testNOP");
         initCpu();
 
         memory.store16(0x8343834A, 0x9fa0); // 0b1001111110100000
@@ -2557,7 +2560,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testANDCCR() throws EmulationException {
-        System.out.println("EmulatorTest.testANDCCR");
+        out.println("EmulatorTest.testANDCCR");
         initCpu();
 
         setInstruction(0x83fe); // 0b1000001111111110
@@ -2570,7 +2573,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testORCCR() throws EmulationException {
-        System.out.println("EmulatorTest.testORCCR");
+        out.println("EmulatorTest.testORCCR");
         initCpu();
 
         setInstruction(0x9310); // 0b1001001100010000
@@ -2583,7 +2586,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTILM() throws EmulationException {
-        System.out.println("EmulatorTest.testSTILM");
+        out.println("EmulatorTest.testSTILM");
         initCpu();
 
         setInstruction(0x8714); // 0b1000011100010100
@@ -2596,7 +2599,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testADDSP() throws EmulationException {
-        System.out.println("EmulatorTest.testADDSP");
+        out.println("EmulatorTest.testADDSP");
         initCpu();
 
         setInstruction(0xa3ff); // 0b1010001111111111
@@ -2609,7 +2612,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEXTSB() throws EmulationException {
-        System.out.println("EmulatorTest.testEXTSB");
+        out.println("EmulatorTest.testEXTSB");
         initCpu();
 
         setInstruction(0x9781); // 0b1001011110000001
@@ -2622,7 +2625,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEXTUB() throws EmulationException {
-        System.out.println("EmulatorTest.testEXTUB");
+        out.println("EmulatorTest.testEXTUB");
         initCpu();
 
         setInstruction(0x9791); // 0b1001011110010001
@@ -2635,7 +2638,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEXTSH() throws EmulationException {
-        System.out.println("EmulatorTest.testEXTSH");
+        out.println("EmulatorTest.testEXTSH");
         initCpu();
 
         setInstruction(0x97a1); // 0b1001011110100001
@@ -2648,7 +2651,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testEXTUH() throws EmulationException {
-        System.out.println("EmulatorTest.testEXTUH");
+        out.println("EmulatorTest.testEXTUH");
         initCpu();
 
         setInstruction(0x97b1); // 0b1001011110110001
@@ -2661,7 +2664,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSRCH0() throws EmulationException {
-        System.out.println("EmulatorTest.testSRCH0");
+        out.println("EmulatorTest.testSRCH0");
         initCpu();
 
         setInstruction(0x97c2); // 0b1001011111000010
@@ -2674,7 +2677,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSRCH1() throws EmulationException {
-        System.out.println("EmulatorTest.testSRCH1");
+        out.println("EmulatorTest.testSRCH1");
         initCpu();
 
         setInstruction(0x97d2); // 0b1001011111010010
@@ -2687,7 +2690,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSRCHC() throws EmulationException {
-        System.out.println("EmulatorTest.testSRCHC");
+        out.println("EmulatorTest.testSRCHC");
         initCpu();
 
         setInstruction(0x97e2); // 0b1001011111100010
@@ -2700,7 +2703,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDM0() throws EmulationException {
-        System.out.println("EmulatorTest.testLDM0");
+        out.println("EmulatorTest.testLDM0");
         initCpu();
 
         setInstruction(0x8c18); // 0b1000110000011000
@@ -2723,7 +2726,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLDM1() throws EmulationException {
-        System.out.println("EmulatorTest.testLDM1");
+        out.println("EmulatorTest.testLDM1");
         initCpu();
 
         setInstruction(0x8d1c); // 0b1000110100011100
@@ -2750,7 +2753,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTM0() throws EmulationException {
-        System.out.println("EmulatorTest.testSTM0");
+        out.println("EmulatorTest.testSTM0");
         initCpu();
 
         setInstruction(0x8e30); // 0b1000111000110000
@@ -2773,7 +2776,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testSTM1() throws EmulationException {
-        System.out.println("EmulatorTest.testSTM1");
+        out.println("EmulatorTest.testSTM1");
         initCpu();
 
         setInstruction(0x8f38); // 0b1000111100111000
@@ -2800,7 +2803,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testENTER() throws EmulationException {
-        System.out.println("EmulatorTest.testENTER");
+        out.println("EmulatorTest.testENTER");
         initCpu();
 
         setInstruction(0xf03); // 0b0000111100000011
@@ -2827,7 +2830,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testLEAVE() throws EmulationException {
-        System.out.println("EmulatorTest.testLEAVE");
+        out.println("EmulatorTest.testLEAVE");
         initCpu();
 
         setInstruction(0x9f90); // 0b1001111110010000
@@ -2854,7 +2857,7 @@ public class FrEmulatorTest extends TestCase {
     }
 
     public void testXCHB() throws EmulationException {
-        System.out.println("EmulatorTest.testXCHB");
+        out.println("EmulatorTest.testXCHB");
         initCpu();
 
         setInstruction(0x8a10); // 0b1000101000010000
@@ -2877,7 +2880,7 @@ public class FrEmulatorTest extends TestCase {
 
     // ************** TEMPLATE *********************
     public void test() throws EmulationException {
-        System.out.println("EmulatorTest.test");
+        out.println("EmulatorTest.test");
         initCpu();
 
         setInstruction(0); //

@@ -8,6 +8,7 @@ import com.nikonhacker.disassembly.RangeType;
 import com.nikonhacker.disassembly.Statement;
 import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.memory.Memory;
+import static java.lang.System.err;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -237,7 +238,7 @@ public class ArmStatement extends Statement {
             switch (s)
             {
                 default:
-                    System.err.println("bad action '" + s + "' in " + instruction + " at " + Format.asHex(context.cpuState.pc, 8));
+                    err.println("bad action '" + s + "' in " + instruction + " at " + Format.asHex(context.cpuState.pc, 8));
                     break;
             }
         }

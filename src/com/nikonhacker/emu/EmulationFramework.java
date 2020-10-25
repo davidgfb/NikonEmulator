@@ -91,6 +91,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import static java.lang.System.err;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -187,7 +188,7 @@ public class EmulationFramework {
 
     public void initialize(final int chip, File imageFile) {
 
-        //System.err.println("Loading image for " + Constants.CHIP_LABEL[chip]);
+        //err.println("Loading image for " + Constants.CHIP_LABEL[chip]);
         try {
 
             // 1. CLEANUP
@@ -344,7 +345,7 @@ public class EmulationFramework {
                             eeprom.loadArray(lastEepromContents);
                         }
                         else {
-                            System.err.println("Attempt at loading previous eeprom values failed. No stored values...");
+                            err.println("Attempt at loading previous eeprom values failed. No stored values...");
                             eeprom.clear();
                         }
                         break;
@@ -354,12 +355,12 @@ public class EmulationFramework {
                             try {
                                 eeprom.loadBinary(new File(lastEepromFileName));
                             } catch (IOException e) {
-                                System.err.println("Error reloading last eeprom contents from file '" + lastEepromFileName + "': " + e.getMessage());
+                                err.println("Error reloading last eeprom contents from file '" + lastEepromFileName + "': " + e.getMessage());
                                 eeprom.clear();
                             }
                         }
                         else {
-                            System.err.println("No eeprom was ever loaded. Skipping reload...");
+                            err.println("No eeprom was ever loaded. Skipping reload...");
                             eeprom.clear();
                         }
                         break;
@@ -730,7 +731,7 @@ public class EmulationFramework {
      * @param endAddress if not null, stop when reaching this address
      */
     public void prepareBreakTriggers(int chip, ExecutionMode executionMode, Integer endAddress) {
-        //System.err.println("Play request for " + Constants.CHIP_LABEL[chip]);
+        //err.println("Play request for " + Constants.CHIP_LABEL[chip]);
         if (!isImageLoaded[chip]) {
             throw new RuntimeException("No Image loaded !");
         }
@@ -764,7 +765,7 @@ public class EmulationFramework {
     }
 
     public void prepareEmulation(final int chip) {
-        //System.err.println("Preparing emulation of " + Constants.CHIP_LABEL[chip]);
+        //err.println("Preparing emulation of " + Constants.CHIP_LABEL[chip]);
         isEmulatorPlaying[chip] = true;
         emulator[chip].setOutputOptions(prefs.getOutputOptions(chip));
         masterClock.enableClockable(emulator[chip]);
@@ -774,7 +775,7 @@ public class EmulationFramework {
 
     public void playOneFunction(int chip, int address, boolean debugMode) {
         if (chip == Constants.CHIP_TX) {
-            System.err.println("Not implemented for TX");
+            err.println("Not implemented for TX");
             // TODO : implement the equivalent for TX
         }
         else {
@@ -936,7 +937,7 @@ public class EmulationFramework {
                 ((TxDmaController)framework.getPlatform(Constants.CHIP_TX).getDmaController()).setPrefs(prefs);
                 // TODO add FR DMA when implemented
                 if (framework.getPlatform(Constants.CHIP_FR).getDmaController()!=null) {
-                    System.err.println("!!! add code for load FR DMA");
+                    err.println("!!! add code for load FR DMA");
                 }
                 for (AdUnit adUnit : framework.getPlatform(Constants.CHIP_TX).getAdConverter().getUnits()) {
                     for (int i = 0; i < adUnit.getNumChannels(); i++) {

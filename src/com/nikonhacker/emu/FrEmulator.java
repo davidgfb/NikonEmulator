@@ -2,6 +2,7 @@ package com.nikonhacker.emu;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
+import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.ParsingException;
 import com.nikonhacker.disassembly.fr.FrCPUState;
@@ -16,6 +17,9 @@ import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
 
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.err;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -155,17 +159,15 @@ public class FrEmulator extends Emulator {
                 sleep();
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.err.println(platform.cpuState);
+        catch (DisassemblyException | EmulationException e) {
+            err.println(e.getMessage()+"\n"+platform.cpuState);
             try {
                 statement.formatOperandsAndComment(context, false, outputOptions);
-                System.err.println("Offending instruction : " + statement);
-            } catch (Exception e1) {
-                System.err.println("Cannot disassemble offending instruction :" + statement.getFormattedBinaryStatement());
+                err.println("Offending instruction : " + statement);
+            } catch (DisassemblyException e1) {
+                err.println("Cannot disassemble offending instruction :" + statement.getFormattedBinaryStatement());
             }
-            System.err.println("(on or before PC=0x" + Format.asHex(platform.cpuState.pc, 8) + ")");
+            err.println("(on or before PC=0x" + Format.asHex(platform.cpuState.pc, 8) + ")");
             throw new EmulationException(e);
         }
         return null;
@@ -174,9 +176,8 @@ public class FrEmulator extends Emulator {
 
     public static void main(String[] args) throws IOException, EmulationException, ParsingException {
         if (args.length < 2) {
-            System.err.println("Usage Emulator <file> <initialPc>");
-            System.err.println(" e.g. Emulator fw.bin 0x40000");
-            System.exit(1);
+            err.println("Usage Emulator <file> <initialPc>\n e.g. Emulator fw.bin 0x40000");
+            exit(1);
         }
         int initialPc = Format.parseUnsigned(args[1]);
 
@@ -194,7 +195,7 @@ public class FrEmulator extends Emulator {
         FrEmulator emulator = new FrEmulator(platform);
 
         emulator.setContext(memory, cpuState, new FrInterruptController(platform));
-        emulator.setDisassemblyLogger(new DisassemblyLogger(System.out));
+        emulator.setDisassemblyLogger(new DisassemblyLogger(out));
 
         masterClock.add(new FrEmulator(platform));
     }

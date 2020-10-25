@@ -1,5 +1,6 @@
 package com.nikonhacker.disassembly;
 
+import static java.lang.System.lineSeparator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -142,7 +143,7 @@ public abstract class Statement {
             out += StringUtils.leftPad("; " + commentString, 22);
         }
         if (mustInsertLineBreak) {
-            out += System.lineSeparator();
+            out += lineSeparator();
         }
         return out;
     }

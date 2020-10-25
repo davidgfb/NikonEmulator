@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.currentTimeMillis;
 import java.util.SortedSet;
 import java.util.Map;
 import java.util.List;
@@ -197,7 +198,7 @@ public abstract class CodeAnalyzer {
 
 
         debugPrintWriter.println("Generating names for labels...");
-        long start = System.currentTimeMillis();
+        long start = currentTimeMillis();
         int labelNumber = 1;
         // First give names to labels linked to function start/segments (if they were spotted as targets already)
 
@@ -270,7 +271,7 @@ public abstract class CodeAnalyzer {
             }
         }
 
-        debugPrintWriter.println("Label generation took " + (System.currentTimeMillis() - start) + "ms");
+        debugPrintWriter.println("Label generation took " + (currentTimeMillis() - start) + "ms");
 
     }
 

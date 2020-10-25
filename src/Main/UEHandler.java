@@ -5,8 +5,11 @@
  */
 package Main;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import static java.lang.System.exit;
 import java.lang.Thread.UncaughtExceptionHandler;
+//</editor-fold>
+
 
 /**
  *

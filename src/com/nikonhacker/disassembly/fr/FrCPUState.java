@@ -6,6 +6,7 @@ import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.Register32;
 import com.nikonhacker.emu.interrupt.InterruptRequest;
 import com.nikonhacker.emu.interrupt.fr.FrInterruptRequest;
+import static java.lang.System.arraycopy;
 
 import java.util.Set;
 
@@ -98,16 +99,16 @@ public class FrCPUState extends CPUState {
      */
     static {
         registerLabels = new String[REG_LABEL[0].length];
-        System.arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
+        arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
     }
 
     public static void initRegisterLabels(Set<OutputOption> outputOptions) {
         // Patch names if requested
         if (outputOptions.contains(OutputOption.REGISTER)) {
-            System.arraycopy(REG_LABEL[1], 0, registerLabels, 0, REG_LABEL[1].length);
+            arraycopy(REG_LABEL[1], 0, registerLabels, 0, REG_LABEL[1].length);
         }
         else {
-            System.arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
+            arraycopy(REG_LABEL[0], 0, registerLabels, 0, REG_LABEL[0].length);
         }
     }
 

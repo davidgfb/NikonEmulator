@@ -7,6 +7,7 @@ import com.nikonhacker.disassembly.Symbol;
 import com.nikonhacker.emu.memory.Memory;
 
 import java.io.IOException;
+import static java.lang.System.out;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +39,12 @@ public class Syscall extends Symbol {
         if (syscallMap == null) {
             syscallMap = new HashMap<Integer,Syscall>();
             try {
-                System.out.println("Assuming interrupt vector at 0x" + Format.asHex(INTERRUPT_VECTOR_BASE_ADDRESS, 8) + "...");
+                out.println("Assuming interrupt vector at 0x" + Format.asHex(INTERRUPT_VECTOR_BASE_ADDRESS, 8) + "...");
                 int40address = memory.load32(INTERRUPT_VECTOR_BASE_ADDRESS + 0x3FC - 0x40 * 4);
-                System.out.println("INT 0x40 is at 0x" + Format.asHex(int40address, 8) + "...");
-                System.out.println("Assuming the layout of D5100 is standard, the base address for system calls computation is stored at 0x" + Format.asHex(int40address + 64, 8) + "...");
+                out.println("INT 0x40 is at 0x" + Format.asHex(int40address, 8) + "...");
+                out.println("Assuming the layout of D5100 is standard, the base address for system calls computation is stored at 0x" + Format.asHex(int40address + 64, 8) + "...");
                 int baseAddress = memory.loadInstruction32(int40address + 64);
-                System.out.println("Base address is thus 0x" + Format.asHex(baseAddress, 8) + "...");
+                out.println("Base address is thus 0x" + Format.asHex(baseAddress, 8) + "...");
 
                 Properties properties = new Properties() ;
                 URL url = Syscall.class.getResource("realos-systemcalls.properties");
