@@ -521,21 +521,18 @@ public class TxStatement extends Statement {
                                         if (context.memory.isMapped(addr+3)) {
                                             context.cpuState.setRegisterDefined(rj_rt_ft);
                                             context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction32(addr));
-                                            break OUTER;
                                         }
                                         break;
                                     case 'f':
                                         if (context.memory.isMapped(addr+1)) {
                                             context.cpuState.setRegisterDefined(rj_rt_ft);
                                             context.cpuState.setReg(rj_rt_ft, BinaryArithmetics.signExtend(16,context.memory.loadInstruction16(addr)));
-                                            break OUTER;
                                         }
                                         break;
                                     case 'h':
                                         if (context.memory.isMapped(addr+1)) {
                                             context.cpuState.setRegisterDefined(rj_rt_ft);
                                             context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction16(addr));
-                                            break OUTER;
                                         }
                                         break;
                                     case 'e':
@@ -1016,6 +1013,7 @@ public class TxStatement extends Statement {
                     default:
                         // Normal case for EXTENDed instructions. Decode based on lower 16 bits
                         setInstruction(TxInstructionSet.getExtendedInstructionFor16BitStatement(realBinaryStatement));
+                        break;
                 }
                 break;
             case 0b00011000_00000000:
