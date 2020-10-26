@@ -13,12 +13,49 @@ import static java.lang.System.out;
 //</editor-fold>
 
 public class Format {
+    
+    //<editor-fold defaultstate="collapsed" desc="setters">
+    /**
+     *  Sets the specified bit of the specified value to 1, and returns the result.
+     *   @param value The value in which the bit is to be set.
+     *   @param bit bit position in range 0 (least significant) to 31 (most)
+     *   @return value possibly modified with given bit set to 1.
+     **/
+    public static int setBit(int value, int bit) {
+        return value | ( 1 << bit) ;
+    }
+// setByte and getByte added by DPS on 12 July 2006
+    /**
+     *  Sets the specified byte of the specified value to the low order 8 bits of
+     *  specified replacement value, and returns the result.
+     *   @param value The value in which the byte is to be set.
+     *   @param position byte position in range 0 (least significant) to 3 (most)
+     *   @param replace value to place into that byte position - use low order 8 bits
+     *   @return value modified value.
+     **/
+    public static int setByte(int value, int position, int replace) {
+        return value & ~(0xFF << (position<<3)) | ((replace & 0xFF) << (position<<3)) ;
+    }
 
+//</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="getters">
+    /**
+     *  Gets the specified byte of the specified value.
+     *   @param value The value in which the byte is to be retrieved.
+     *   @param position byte position in range 0 (least significant) to 3 (most)
+     *   @return zero-extended byte value in low order byte.
+     **/
+    public static int getByte(int value, int position) {
+        return value << ((3-position)<<3) >>> 24;
+    }
+
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="funciones">
     public static String asHex(int value, int nbChars) {
         return StringUtils.leftPad(Integer.toHexString(value).toUpperCase(), nbChars, '0');
     }
-
 
     public static String asHexInBitsLength(String prefix, int value, int nbBits) {
         if (nbBits <= 0) {
@@ -31,8 +68,7 @@ public class Format {
         return StringUtils.leftPad(Integer.toBinaryString(value).toUpperCase(), nbChars, '0');
     }
 
-    public static char asAscii(int c)
-    {
+    public static char asAscii(int c) {
         c &= 0xFF;
         if (c > 31 && c < 127) {
             return (char)c;
@@ -95,14 +131,14 @@ public class Format {
             throw(e);
         }
     }
-
-
+    
     /**
      * Parses the given string as an 32-bit integer
      * The number can be either decimal or hex (0x-prefixed) and can be followed by the K or M (case insensitive) multipliers
      *
      * @param value the String to convert
      * @return the converted int, to be considered unsigned
+     * @throws com.nikonhacker.disassembly.ParsingException
      */
     public static int parseUnsigned(String value) throws ParsingException {
         boolean isHex = (value.length() > 2 && value.charAt(0) == '0' && (value.charAt(1) == 'x' || value.charAt(1) == 'X'));
@@ -146,10 +182,7 @@ public class Format {
         return (int) v;
     }
 
-
     // Following methods were copied from MARS' Binary utility class
-
-
     /**
      *  Returns int representing the bit values of the high order 32 bits of given
      *  64 bit long value.
@@ -160,7 +193,6 @@ public class Format {
     public static int highOrderLongToInt(long longValue) {
         return (int) (longValue >> 32);  // high order 32 bits
     }
-
 
     /**
      *  Returns int representing the bit values of the low order 32 bits of given
@@ -183,19 +215,15 @@ public class Format {
         return (((long)highOrder) << 32) | (((long)lowOrder) & 0xFFFFFFFFL);
     }
 
-
-
     /**
      *  Returns the bit value of the given bit position of the given int value.
      *   @param value The value to read the bit from.
      *   @param bit bit position in range 0 (least significant) to 31 (most)
      *   @return 0 if the bit position contains 0, and 1 otherwise.
      **/
-
     public static int bitValue(int value, int bit) {
         return 1 & (value >> bit);
     }
-
 
     /**
      *  Returns the bit value of the given bit position of the given long value.
@@ -203,65 +231,23 @@ public class Format {
      *   @param bit bit position in range 0 (least significant) to 63 (most)
      *   @return 0 if the bit position contains 0, and 1 otherwise.
      **/
-
     public static int bitValue(long value, int bit) {
 
         return (int) (1L & (value >> bit));
     }
-
-    /**
-     *  Sets the specified bit of the specified value to 1, and returns the result.
-     *   @param value The value in which the bit is to be set.
-     *   @param bit bit position in range 0 (least significant) to 31 (most)
-     *   @return value possibly modified with given bit set to 1.
-     **/
-
-    public static int setBit(int value, int bit) {
-        return value | ( 1 << bit) ;
-    }
-
-
+    
     /**
      *  Sets the specified bit of the specified value to 0, and returns the result.
      *   @param value The value in which the bit is to be set.
      *   @param bit bit position in range 0 (least significant) to 31 (most)
      *   @return value possibly modified with given bit set to 0.
      **/
-
     public static int clearBit(int value, int bit) {
         return value &  ~(1 << bit);
     }
 
-
     public static boolean isBitSet(int value, int bit) {
         return (value & (1 << bit)) != 0;
-    }
-
-    // setByte and getByte added by DPS on 12 July 2006
-
-    /**
-     *  Sets the specified byte of the specified value to the low order 8 bits of
-     *  specified replacement value, and returns the result.
-     *   @param value The value in which the byte is to be set.
-     *   @param position byte position in range 0 (least significant) to 3 (most)
-     *   @param replace value to place into that byte position - use low order 8 bits
-     *   @return value modified value.
-     **/
-
-    public static int setByte(int value, int position, int replace) {
-        return value & ~(0xFF << (position<<3)) | ((replace & 0xFF) << (position<<3)) ;
-    }
-
-
-    /**
-     *  Gets the specified byte of the specified value.
-     *   @param value The value in which the byte is to be retrieved.
-     *   @param position byte position in range 0 (least significant) to 3 (most)
-     *   @return zero-extended byte value in low order byte.
-     **/
-
-    public static int getByte(int value, int position) {
-        return value << ((3-position)<<3) >>> 24;
     }
 
     public static int swap2bytes(int value) {
@@ -285,8 +271,7 @@ public class Format {
         }
         return 32;
     }
-
-    /**
+/**
      * Create a file filter suitable for JFileChooser.setFileFilter()
      * @param suffix String that visible files can end with (must include the dot if you mean an extension) or wildcard in form <startPart>*<endPart>
      * @param description The text accompanying the extension (must include the " (*.xxx)" at the end)
@@ -347,4 +332,5 @@ public class Format {
             throw new RuntimeException("BCD number is invalid");
         return hiNibble * 10 + loNibble;
     }
+//</editor-fold>
 }
