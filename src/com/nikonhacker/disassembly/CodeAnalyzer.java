@@ -89,7 +89,6 @@ public abstract class CodeAnalyzer {
                 for (int interruptNumber = 0; interruptNumber < INTERRUPT_VECTOR_LENGTH / 4; interruptNumber++) {
                     interruptTable.put(interruptNumber, memory.load32(range.getStart() + 4 * (0x100 - interruptNumber - 1)));
                 }
-                break;
             }
         }
 
@@ -320,9 +319,10 @@ public abstract class CodeAnalyzer {
             if (stopAtFirstProcessedStatement && processedStatements.contains(address)) {
                 Integer previousAddress = codeStructure.getAddressOfStatementBefore(address);
                 // Check we're not in delay slot. We shouldn't stop on delay slot
+                /*
                 if (previousAddress == null || !codeStructure.getStatement(previousAddress).getInstruction().hasDelaySlot()) {
-                    break;
                 }
+                */
             }
             Statement statement = codeStructure.getStatement(address);
             processedStatements.add(address);
@@ -332,7 +332,6 @@ public abstract class CodeAnalyzer {
                     codeStructure.putReturn(address, currentFunction.getAddress());
                     codeStructure.putEnd(address + (statement.getInstruction().hasDelaySlot() ? statement.getNumBytes() : 0), currentFunction.getAddress());
                     break;
-                case JMP:
                 case BRA:
                     if (statement.decodedImm != 0) {
                         codeStructure.putLabel(statement.decodedImm, new Symbol(statement.decodedImm, "", ""));
@@ -357,7 +356,6 @@ public abstract class CodeAnalyzer {
                                 potentialTargets = getCallTableEntrys(currentFunction, address, statement);
                                 if (potentialTargets == null) {
                                     currentFunction.getCalls().add(new Jump(address, 0, statement.getInstruction(), true));
-                                    break;
                                 }
                             }
                             int i = 0;
@@ -401,7 +399,6 @@ public abstract class CodeAnalyzer {
                     processedStatements.add(address + statement.getNumBytes());
                 }
                 // End of segment
-                break;
             }
             address = codeStructure.getAddressOfStatementAfter(address);
         }
@@ -418,18 +415,13 @@ public abstract class CodeAnalyzer {
                     // So we should consider we're really in a processed segment if
                     // - either it's a jump/call/return
                     Statement statement = codeStructure.getStatement(jump.getTarget());
-                    if (statement != null && (statement.getInstruction().flowType == Instruction.FlowType.CALL
-                            || statement.getInstruction().flowType == Instruction.FlowType.JMP
-                            || statement.getInstruction().flowType == Instruction.FlowType.BRA
-                            || statement.getInstruction().flowType == Instruction.FlowType.RET)) {
+                    if (statement != null && (statement.getInstruction().flowType == Instruction.FlowType.CALL || statement.getInstruction().flowType == Instruction.FlowType.JMP || statement.getInstruction().flowType == Instruction.FlowType.BRA|| statement.getInstruction().flowType == Instruction.FlowType.RET)) {
                         inProcessedSegment = true;
-                        break;
                     }
                     // - or the next statement is also in the range
                     Integer addressFollowingTarget = codeStructure.getAddressOfStatementAfter(jump.getTarget());
                     if (addressFollowingTarget != null && addressFollowingTarget >= segment.getStart() && addressFollowingTarget <= segment.getEnd()) {
                         inProcessedSegment = true;
-                        break;
                     }
                     // Otherwise, it has to be followed...
                 }
@@ -553,17 +545,14 @@ public abstract class CodeAnalyzer {
                 if (candidateStatement.getInstruction() instanceof FrInstructionSet.Ldi32FrInstruction && candidateStatement.decodedRiRsFs == 12) {
                     /* LDI:32 #i32, R12 */
                     r12 = candidateStatement.decodedImm;
-                    break;
                 }
                 if (candidateStatement.getInstruction() instanceof FrInstructionSet.Ldi8FrInstruction && candidateStatement.decodedRiRsFs == 12) {
                     /* LDI:8 #i8, R12 */
                     if (r12SignExtend) {
                         r12 = BinaryArithmetics.signExtend(8, candidateStatement.decodedImm);
-                    }
-                    else {
+                    } else {
                         r12 = candidateStatement.decodedImm;
                     }
-                    break;
                 }
                 if (candidateStatement.getInstruction() instanceof FrInstructionSet.ExtsbFrInstruction && candidateStatement.decodedRiRsFs == 12) {
                     /* EXTSB R12 */
