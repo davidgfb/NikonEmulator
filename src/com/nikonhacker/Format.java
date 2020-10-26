@@ -8,6 +8,7 @@ import javax.swing.filechooser.FileFilter;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 import java.io.File;
+import static java.lang.System.out;
 
 public class Format {
 
@@ -52,6 +53,7 @@ public class Format {
             textField.setBackground(WHITE);
             return (int) value;
         } catch (NumberFormatException e) {
+            out.println(e);
             textField.setBackground(RED);
             throw(e);
         }
@@ -74,6 +76,7 @@ public class Format {
             textField.setBackground(WHITE);
             return (int) value;
         } catch (NumberFormatException e) {
+            out.println(e);
             textField.setBackground(RED);
             throw(e);
         }
@@ -85,6 +88,7 @@ public class Format {
             textField.setBackground(WHITE);
             return value;
         } catch (ParsingException e) {
+            out.println(e);
             textField.setBackground(RED);
             throw(e);
         }

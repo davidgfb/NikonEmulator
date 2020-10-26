@@ -1,5 +1,6 @@
 package com.nikonhacker.emu;
 
+import static java.lang.System.out;
 import junit.framework.TestCase;
 
 public class MasterClockTest  extends TestCase {
@@ -44,15 +45,19 @@ public class MasterClockTest  extends TestCase {
             return -1;
         }
 
+        @Override
         public int getFrequencyHz() {
             return frequencyHz;
         }
 
+        @Override
         public Object onClockTick() {
             System.out.print(name);
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+                out.println("e: "+e);
+            }
             runs++;
             return (runs < maxRuns)?null:new Object();
         }

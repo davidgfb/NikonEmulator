@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.util.LinkedList;
 
 
@@ -222,6 +223,7 @@ public class CallStackFrame extends DocumentFrame {
         }
     }
 
+    @Override
     public void dispose() {
         refreshTimer.stop();
         refreshTimer = null;
@@ -240,6 +242,7 @@ public class CallStackFrame extends DocumentFrame {
                     s += " (" + label + ")";
                 }
             } catch (ParsingException e) {
+                out.println("e: "+e);
                 // ignore
             }
         }

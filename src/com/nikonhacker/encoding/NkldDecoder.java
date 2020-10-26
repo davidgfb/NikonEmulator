@@ -1,6 +1,9 @@
 package com.nikonhacker.encoding;
 
 import java.io.File;
+import java.io.IOException;
+import static java.lang.System.out;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class NkldDecoder {
@@ -57,7 +60,8 @@ public class NkldDecoder {
                 // last 2 bytes are crc padding
                 NkldUtils.decrypt(source, nkldHeader.dataOffset, nkldHeader.dataLength-2);
                 NkldUtils.dumpFile(new File(unpackFileName), source, 0, nkldHeader.totalLength);
-            } catch (Exception e) {
+            } catch (FirmwareFormatException | IOException | NoSuchAlgorithmException e) {
+                out.println("e: "+e);
                 throw new FirmwareFormatException(e);
             }
         }

@@ -18,6 +18,7 @@ import com.nikonhacker.emu.trigger.condition.BreakPointCondition;
 import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
 
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.EnumSet;
@@ -222,6 +223,7 @@ public abstract class Emulator implements Clockable {
             try {
                 Thread.sleep(sleepIntervalMs);
             } catch (InterruptedException e) {
+                out.println("e: "+e);
                 // noop
             }
         }
@@ -233,6 +235,7 @@ public abstract class Emulator implements Clockable {
                         break;
                     }
                 } catch (InterruptedException e) {
+                    out.println("e: "+e);
                     // noop
                 }
             }

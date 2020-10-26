@@ -21,6 +21,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -85,6 +86,7 @@ public class SyscallBreakTriggerCreateDialog extends JDialog implements ActionLi
 
             JButton okButton = new JButton("OK");
             okButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     save();
                 }
@@ -92,6 +94,7 @@ public class SyscallBreakTriggerCreateDialog extends JDialog implements ActionLi
             bottomPanel.add(okButton);
 
         } catch (ParsingException e) {
+            out.println("e: "+e);
             topPanel.add(new JLabel("Error parsing syscall definition file"));
         }
 

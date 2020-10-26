@@ -2,8 +2,10 @@ package com.nikonhacker.encoding;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 import java.io.File;
+import java.io.IOException;
 import static java.lang.System.exit;
 import static java.lang.System.out;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 //</editor-fold>
 
@@ -66,7 +68,8 @@ public class FirmwareDecoder {
                     }
                     FirmwareUtils.dumpFile(new File(unpackDir, fileEntry.getFileName()), fileEntry.getBuffer(), fileEntry.getOffset(), fileEntry.getLength());
                 }
-            } catch (Exception e) {
+            } catch (FirmwareFormatException | IOException | NoSuchAlgorithmException e) {
+                out.println("e: "+e);
                 throw new FirmwareFormatException(e);
             }
         }

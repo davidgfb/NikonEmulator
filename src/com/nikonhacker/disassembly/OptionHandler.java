@@ -2,6 +2,7 @@ package com.nikonhacker.disassembly;
 
 import com.nikonhacker.Format;
 import com.nikonhacker.disassembly.fr.InterruptVectorRange;
+import static java.lang.System.out;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -228,7 +229,8 @@ public class OptionHandler
                     offsetList.add(address + i * recordSize);
                 }
             }
-            catch (Exception e) {
+            catch (ParsingException | NumberFormatException e) {
+                out.println("e: "+e);
                 throw new ParsingException("Cannot parse jump hint '" + StringUtils.substringAfter(argument, "=").trim() + "'");
             }
             jumpHintAddresses.put(source, offsetList);

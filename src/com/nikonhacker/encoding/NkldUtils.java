@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.security.NoSuchAlgorithmException;
 
 public class NkldUtils {
@@ -85,6 +86,7 @@ public class NkldUtils {
             try {
                 if (fis != null) fis.close();
             } catch (IOException e) {
+                out.println("e: "+e);
             }
         }
     }

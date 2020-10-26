@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import static java.lang.System.out;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Collection;
@@ -254,6 +255,7 @@ public abstract class AbstractMemory implements Memory {
             }
             return addr;
         } catch (IOException e) {
+            out.println("e: "+e);
             throw new Error(e);
         }
     }

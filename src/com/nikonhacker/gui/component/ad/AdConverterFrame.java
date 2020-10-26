@@ -16,6 +16,7 @@ import static java.awt.Color.WHITE;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +112,7 @@ public class AdConverterFrame extends DocumentFrame {
             try {
                 list.add(Format.parseUnsigned(value));
             } catch (ParsingException e) {
+                out.println("e: "+e);
                 valueListField.setBackground(RED);
                 return;
             }

@@ -11,6 +11,7 @@ import com.nikonhacker.disassembly.Statement;
 import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.emu.memory.Memory;
 import static java.lang.System.err;
+import static java.lang.System.out;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.EnumSet;
@@ -749,6 +750,7 @@ public class TxStatement extends Statement {
                         }
                     }
                     catch (Exception e) {
+                        out.println("e: "+e);
                     }
                     break;
                 case 'l':
@@ -1024,6 +1026,7 @@ public class TxStatement extends Statement {
                 try {
                     setInstruction(TxInstructionSet.getJalInstructionForStatement(fullStatement));
                 } catch (DisassemblyException e) {
+                    out.println("e: "+e);
                     err.println("Could not decode statement 0x" + Format.asHex(getBinaryStatement(), 4) + " at 0x" + Format.asHex(pc, 8) + ": " + e.getClass().getName());
                 }
                 break;

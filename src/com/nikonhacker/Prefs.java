@@ -604,6 +604,7 @@ public class Prefs {
             p= loadFile(preferenceFile, lastKnownGoodFile);
         }
         catch (IOException e) {
+            out.println(e);
             out.println("Could not load preferences file. Attempting a rename to " + corruptFile.getName() + 
                         " and trying to revert to " + lastKnownGoodFile.getName() + " instead...");
             preferenceFile.renameTo(corruptFile);
@@ -611,6 +612,7 @@ public class Prefs {
             try {
                 p= loadFile(lastKnownGoodFile, preferenceFile);
             } catch (IOException e1) {
+                out.println(e);
                 out.println("Could not load " + lastKnownGoodFile.getName() + ". Starting with a blank preference file...");
             }
         }
@@ -739,6 +741,7 @@ public class Prefs {
         try {
             XStreamUtils.save(prefs, new FileOutputStream(getPreferenceFile()), getPrefsXStream());
         } catch (FileNotFoundException e) {
+            out.println(e);
         }
     }
     /** @deprecated this is a temporary migration process */

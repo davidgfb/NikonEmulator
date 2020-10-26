@@ -160,11 +160,13 @@ public class FrEmulator extends Emulator {
             }
         }
         catch (DisassemblyException | EmulationException e) {
+            out.println("e: "+e);
             err.println(e.getMessage()+"\n"+platform.cpuState);
             try {
                 statement.formatOperandsAndComment(context, false, outputOptions);
                 err.println("Offending instruction : " + statement);
             } catch (DisassemblyException e1) {
+                out.println("e: "+e);
                 err.println("Cannot disassemble offending instruction :" + statement.getFormattedBinaryStatement());
             }
             err.println("(on or before PC=0x" + Format.asHex(platform.cpuState.pc, 8) + ")");

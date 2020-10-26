@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -71,6 +72,7 @@ public class GenerateSysSymbolsDialog extends JDialog {
                     debugPrintWriter.println();
                     debugPrintWriter.println("The lines above can be pasted to a dfr.txt file");
                 } catch (ParsingException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("ERROR : " + e.getClass().getName() + ": " + e.getMessage());
                     debugPrintWriter.println("See console for more information");
                 }

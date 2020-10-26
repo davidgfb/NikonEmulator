@@ -40,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.List;
 
 public class CodeStructureFrame extends DocumentFrame
@@ -145,6 +146,7 @@ public class CodeStructureFrame extends DocumentFrame
         JButton goToPcButton = new JButton("Go to PC");
         toolbar.add(goToPcButton);
         goToPcButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 targetField.setText(Format.asHex(CodeStructureFrame.this.cpuState.pc, 8));
                 exploreButton.doClick(0);
@@ -155,6 +157,7 @@ public class CodeStructureFrame extends DocumentFrame
 
         JButton svgButton = new JButton("Save SVG");
         svgButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 final JFileChooser fc = new JFileChooser();
 
@@ -167,6 +170,7 @@ public class CodeStructureFrame extends DocumentFrame
                     try {
                         saveSvg(fc.getSelectedFile());
                     } catch (IOException e1) {
+                        out.println("e: "+e);
                         JOptionPane.showMessageDialog(CodeStructureFrame.this, e1.getMessage(), "Error saving to SVG", JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -188,6 +192,7 @@ public class CodeStructureFrame extends DocumentFrame
                     try {
                         savePng(fc.getSelectedFile());
                     } catch (IOException e1) {
+                        out.println("e: "+e);
                         JOptionPane.showMessageDialog(CodeStructureFrame.this, e1.getMessage(), "Error saving to SVG", JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -226,6 +231,7 @@ public class CodeStructureFrame extends DocumentFrame
         try {
             currentOrientation = Orientation.valueOf(ui.getPrefs().getCodeStructureGraphOrientation(chip));
         } catch (Exception e) {
+            out.println("e: "+e);
             currentOrientation = Orientation.HORIZONTAL;
         }
         return currentOrientation;
@@ -280,6 +286,7 @@ public class CodeStructureFrame extends DocumentFrame
             // Save as SVG
             mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null,
                     new mxCellRenderer.CanvasFactory() {
+                        @Override
                         public mxICanvas createCanvas(int width, int height) {
                             mxSvgCanvas canvas = new mxSvgCanvas(mxDomUtils.createSvgDocument(width, height));
                             canvas.setEmbedded(true);
@@ -288,6 +295,7 @@ public class CodeStructureFrame extends DocumentFrame
                     });
             mxUtils.writeFile(mxXmlUtils.getXml(canvas.getDocument()), file.getAbsolutePath());
         } catch (IOException e) {
+            out.println("e: "+e);
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

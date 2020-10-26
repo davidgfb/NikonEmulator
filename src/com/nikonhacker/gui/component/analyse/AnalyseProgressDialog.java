@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -65,6 +66,7 @@ public class AnalyseProgressDialog extends JDialog {
             disassembler = new Dtx();
         }
         Thread disassemblerThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 boolean wasVerbose = emulatorUI.getPrefs().getOutputOptions(chip).contains(OutputOption.VERBOSE);
                 emulatorUI.getPrefs().getOutputOptions(chip).add(OutputOption.VERBOSE);
@@ -86,6 +88,7 @@ public class AnalyseProgressDialog extends JDialog {
                         debugPrintWriter.println("You may now use the 'Code Structure' and 'Source Code' windows");
                     }
                 } catch (DisassemblyException | ParsingException | IOException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("ERROR : " + e.getClass().getName() + ": " + e.getMessage());
                     debugPrintWriter.println("See console for more information");
                 }

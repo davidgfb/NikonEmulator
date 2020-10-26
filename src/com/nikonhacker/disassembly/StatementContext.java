@@ -4,6 +4,7 @@ import com.nikonhacker.emu.CallStackItem;
 import com.nikonhacker.emu.interrupt.InterruptRequest;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.emu.peripherials.interruptController.InterruptController;
+import static java.lang.System.out;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Deque;
@@ -90,6 +91,7 @@ public class StatementContext {
                     try {
                         statement.formatOperandsAndComment(this, false, outputOptions);
                     } catch (DisassemblyException e) {
+                        out.println("e: "+e);
                     }
                     String target = statement.getCommentString();
                     if (StringUtils.isBlank(target)) target = statement.getOperandString();

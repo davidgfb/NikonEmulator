@@ -23,6 +23,7 @@ import com.nikonhacker.emu.trigger.condition.fr.SCRBreakCondition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
@@ -227,6 +228,7 @@ public class BreakTrigger {
                         }
                     }
                     catch (ParsingException e) {
+                        out.println("e: "+e);
                         System.err.println("Could not determine syscall list.");
                     }
                 }

@@ -13,6 +13,7 @@ import com.nikonhacker.emu.peripherials.clock.tx.TxClockGenerator;
 import com.nikonhacker.emu.peripherials.interruptController.tx.TxInterruptController;
 import com.nikonhacker.emu.trigger.condition.BreakCondition;
 import com.nikonhacker.gui.component.disassembly.DisassemblyLogger;
+import static java.lang.System.out;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -159,12 +160,14 @@ public class TxEmulator extends Emulator {
             }
         }
         catch (DisassemblyException | EmulationException e) {
+            out.println("e: "+e);
             System.err.println(e.getMessage());
             System.err.println(platform.cpuState);
             try {
                 statement.formatOperandsAndComment(context, false, outputOptions);
                 System.err.println("Offending instruction : " + statement);
             } catch (DisassemblyException e1) {
+                out.println("e: "+e);
                 System.err.println("Cannot disassemble offending instruction :" + statement.getFormattedBinaryStatement());
             }
             System.err.println("(on or before PC=0x" + Format.asHex(platform.cpuState.pc, 8) + ")");

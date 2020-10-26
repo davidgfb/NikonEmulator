@@ -6,6 +6,7 @@ import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.listener.TrackingMemoryActivityListener;
 
 import java.io.IOException;
+import static java.lang.System.out;
 import javax.swing.JFrame;
 //</editor-fold>
 
@@ -41,6 +42,7 @@ public class MemoryMapComponentTest {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
+                out.println("e: "+e);
             }
         }
     }

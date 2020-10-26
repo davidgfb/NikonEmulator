@@ -9,6 +9,8 @@
  */
 package com.nikonhacker.emu.memory;
 
+import static java.lang.System.out;
+
 /*
  * Part of this file is taken from PearColator project
  * aka binarytranslator.org. The binarytranslator.org
@@ -33,10 +35,12 @@ public class FastMemory extends AbstractMemory implements Memory  {
      * @param addr the address of the value to load
      * @return the sign extended result
      */
+    @Override
     final public int loadSigned8(int addr) {
         try {
             return readableMemory[AbstractMemory.getPTE(addr)][AbstractMemory.getOffset(addr)];
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             System.err.println("Null pointer exception at address: 0x" + Integer.toHexString(addr));
             throw e;
         }
@@ -48,10 +52,12 @@ public class FastMemory extends AbstractMemory implements Memory  {
      * @param addr the address of the value to load
      * @return the zero extended result
      */
+    @Override
     final public int loadUnsigned8(int addr) {
         try {
             return readableMemory[AbstractMemory.getPTE(addr)][AbstractMemory.getOffset(addr)] & 0xFF;
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             throw new MemoryException("Memory not initialized trying to read data from address: 0x" + Integer.toHexString(addr));
         }
     }

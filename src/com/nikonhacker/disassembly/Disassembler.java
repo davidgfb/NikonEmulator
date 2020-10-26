@@ -143,6 +143,7 @@ public abstract class Disassembler {
         try {
             debugPrintWriter.write(s);
         } catch (Exception e) {
+            out.println("e: "+e);
             err.println(s);
         }
     }
@@ -394,6 +395,7 @@ public abstract class Disassembler {
                         readOptions(argument);
                         optionsFileProcessed = true;
                     } catch (IOException e) {
+                        out.println("e: "+e);
                         debugPrintWriter.println("Cannot open given options file '" + argument + "'");
                         return false;
                     }
@@ -582,8 +584,10 @@ public abstract class Disassembler {
                 }
             }
         } catch (DisassemblyException e) {
+            out.println("e: "+e);
             throw new DisassemblyException(e.getMessage() + " at 0x" + Format.asHex(context.cpuState.pc, 8), e);
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             throw new DisassemblyException("Null pointer (uninitialized area ?) at 0x" + Format.asHex(context.cpuState.pc, 8), e);
         }
     }

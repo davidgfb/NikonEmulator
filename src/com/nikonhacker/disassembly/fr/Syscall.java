@@ -55,9 +55,8 @@ public class Syscall extends Symbol {
                     Syscall syscall = new Syscall(functionCode, baseAddress + BinaryArithmetics.signExtend(16, memory.loadInstruction16(baseAddress + functionCode * 2)), (String) properties.get(o));
                     syscallMap.put(functionCode, syscall);
                 }
-            } catch (IOException e) {
-                throw new ParsingException(e);
-            } catch (ParsingException e) {
+            } catch (IOException | ParsingException e) {
+                out.println("e: "+e);
                 throw new ParsingException(e);
             }
         }

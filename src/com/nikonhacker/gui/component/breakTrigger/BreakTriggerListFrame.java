@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -224,6 +225,7 @@ public class BreakTriggerListFrame extends DocumentFrame {
                                 JOptionPane.showMessageDialog(BreakTriggerListFrame.this, "Export complete", "Done", JOptionPane.INFORMATION_MESSAGE);
                                 triggerTable.clearSelection();
                             } catch (FileNotFoundException e1) {
+                                out.println("e: "+e);
                                 JOptionPane.showMessageDialog(BreakTriggerListFrame.this, "Could not export to file '" + destinationFile.getAbsolutePath() + "'.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
                         }
@@ -258,6 +260,7 @@ public class BreakTriggerListFrame extends DocumentFrame {
                             triggerTable.setRowSelectionInterval(breakTriggers.size() - importedTrigger.size(), breakTriggers.size() - 1);
                             JOptionPane.showMessageDialog(BreakTriggerListFrame.this, "Import complete", "Done", JOptionPane.INFORMATION_MESSAGE);
                         } catch (FileNotFoundException e1) {
+                            out.println("e: "+e);
                             JOptionPane.showMessageDialog(BreakTriggerListFrame.this, "Could not import to file '" + destinationFile.getAbsolutePath() + "'.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
@@ -458,6 +461,7 @@ public class BreakTriggerListFrame extends DocumentFrame {
                             int interrupt = Format.parseUnsigned("0x" + editedValue);
                             baseObject.setInterruptToRequest(interrupt);
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }
@@ -472,6 +476,7 @@ public class BreakTriggerListFrame extends DocumentFrame {
                             int interrupt = Format.parseUnsigned("0x" + editedValue);
                             baseObject.setInterruptToWithdraw(interrupt);
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }
@@ -486,6 +491,7 @@ public class BreakTriggerListFrame extends DocumentFrame {
                             int pcToSet = Format.parseUnsigned("0x" + editedValue);
                             baseObject.setPcToSet(pcToSet);
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }

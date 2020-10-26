@@ -10,6 +10,9 @@
 package com.nikonhacker.emu.memory;
 
 import com.nikonhacker.emu.memory.listener.MemoryActivityListener;
+import static java.lang.Integer.toHexString;
+import static java.lang.System.err;
+import static java.lang.System.out;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -100,8 +103,9 @@ public class DebuggableMemory extends AbstractMemory implements Memory {
             // e.g. if value is 0xFF, then the returned value will be 0xFFFFFFFF = -1d
             return value;
         } catch (NullPointerException e) {
-             System.err.println("Null pointer exception loading from address: 0x" + Integer.toHexString(addr));
-             throw e;
+            out.println("e: "+e);
+            err.println("Null pointer exception loading from address: 0x" + toHexString(addr));
+            throw e;
         }
     }
 
@@ -140,6 +144,7 @@ public class DebuggableMemory extends AbstractMemory implements Memory {
             // e.g. if value is 0xFF, then the returned value will be 0x000000FF = 255d
             return value & 0xFF;
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             System.err.println("Null pointer exception loading from address: 0x" + Integer.toHexString(addr));
             throw e;
         }

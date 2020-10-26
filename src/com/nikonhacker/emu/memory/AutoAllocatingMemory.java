@@ -10,6 +10,7 @@
 package com.nikonhacker.emu.memory;
 
 import com.nikonhacker.Format;
+import static java.lang.System.out;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -44,6 +45,7 @@ public class AutoAllocatingMemory extends AbstractMemory implements Memory {
 
             return pageData[getOffset(addr)];
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             System.err.println("Null pointer exception at address: 0x" + Integer.toHexString(addr));
             throw e;
         }
@@ -69,6 +71,7 @@ public class AutoAllocatingMemory extends AbstractMemory implements Memory {
 
             return pageData[getOffset(addr)] & 0xFF;
         } catch (NullPointerException e) {
+            out.println("e: "+e);
             throw new MemoryException("Memory not initialized trying to read data from address: 0x" + Integer.toHexString(addr));
         }
     }

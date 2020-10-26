@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.Writer;
 import static java.lang.System.lineSeparator;
+import static java.lang.System.out;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -363,6 +364,7 @@ public abstract class CodeStructure {
                     }
                 }
             } catch(ParsingException e){
+                out.println("e: "+e);
                 // noop
             }
         }
@@ -398,6 +400,7 @@ public abstract class CodeStructure {
             try {
                 address = Format.parseUnsigned((text.startsWith("0x")?"":"0x") + text) & IGNORE_ISA_BIT;
             } catch (ParsingException e) {
+                out.println("e: "+e);
                 // Not parseable as address
                 // Try to interpret as name xxx_address[_]
                 while(text.endsWith("_")) {
@@ -407,6 +410,7 @@ public abstract class CodeStructure {
                 try {
                     address = Format.parseUnsigned("0x" + text) & IGNORE_ISA_BIT;
                 } catch (ParsingException e1) {
+                    out.println("e: "+e);
                     // do nothing. address remains null
                 }
             }

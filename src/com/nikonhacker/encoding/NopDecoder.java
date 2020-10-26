@@ -1,6 +1,9 @@
 package com.nikonhacker.encoding;
 
 import java.io.File;
+import java.io.IOException;
+import static java.lang.System.out;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class NopDecoder {
@@ -61,7 +64,8 @@ public class NopDecoder {
 
                 NopUtils.decrypt(nopHeader, source, NopHeader.SIZE, source.length - 3 - NopHeader.SIZE);
                 NopUtils.dumpFile(new File(unpackFileName), source, 0, source.length);
-            } catch (Exception e) {
+            } catch (FirmwareFormatException | IOException | NoSuchAlgorithmException e) {
+                out.println("e: "+e);
                 throw new FirmwareFormatException(e);
             }
         }

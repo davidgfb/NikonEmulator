@@ -8,6 +8,8 @@ import com.nikonhacker.emu.peripherials.interruptController.fr.FrInterruptContro
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.IOException;
+import static java.lang.System.out;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -463,6 +465,7 @@ public class FrJpegCodec implements JpegCodec {
                         if (image!=null)
                             break;
                     } catch (java.io.IOException e) {
+                        out.println("e: "+e);
                         // ignore and try next reader
                     } finally {
                         // absolutely necessary
@@ -471,7 +474,8 @@ public class FrJpegCodec implements JpegCodec {
                     stream.rewind();
                 }
                 iis.close();
-            } catch (java.io.IOException e) {
+            } catch (IOException e) {
+                out.println("e: "+e);
                 // ImageInputStream create/close can also throw, so catch
             }
         }

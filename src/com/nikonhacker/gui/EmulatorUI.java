@@ -118,8 +118,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import static java.lang.System.out;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -587,6 +589,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 setKeepHidden.setAccessible(true);
                 setKeepHidden.invoke(splitPane.getUI(), new Object[]{keepHidden});
             } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+                out.println("e: "+e);
             }
         }
     }
@@ -605,6 +608,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 getKeepHidden.setAccessible(true);
                 return (Boolean) (getKeepHidden.invoke(splitPane.getUI()));
             } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+                out.println("e: "+e);
             }
         }
         return false;
@@ -677,6 +681,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     try {
                         cps = (1000 * (totalCycles - lastUpdateCycles[chip])) / (now - lastUpdateTime[chip]);
                     } catch (Exception e) {
+                        out.println("e: "+e);
                         cps = -1;
                     }
 
@@ -1397,6 +1402,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 new FirmwareDecoder().decode(sourceFile.getText(), destinationDir.getText(), false);
                 JOptionPane.showMessageDialog(this, "Decoding complete", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error decoding files", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -1432,6 +1438,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 new FirmwareEncoder().encode(inputFilenames, destinationFile.getText());
                 JOptionPane.showMessageDialog(this, "Encoding complete", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error encoding files", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -1446,18 +1453,12 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 sourceFileSelectionPanel,
                 new FileSelectionPanel("Destination file", destinationFile, true)
         };
-        if (JOptionPane.OK_OPTION == JOptionPane.showOptionDialog(this,
-                inputs,
-                "Choose source file and destination dir",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                null,
-                JOptionPane.DEFAULT_OPTION)) {
+        if (JOptionPane.OK_OPTION == JOptionPane.showOptionDialog(this, inputs, "Choose source file and destination dir", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,null,JOptionPane.DEFAULT_OPTION)) {
             try {
                 new NkldDecoder().decode(sourceFile.getText(), destinationFile.getText(), false);
                 JOptionPane.showMessageDialog(this, "Decoding complete.\nFile '" + new File(destinationFile.getText()).getAbsolutePath() + "' was created.", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error decoding files", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -1498,6 +1499,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     framework.getMasterClock().setSyncPlay(prefs.isSyncPlay());
                     setTitle(ApplicationInfo.getNameVersion() + " - Loaded " + source);
                 } catch (IOException e) {
+                    out.println("e: "+e);
                     JOptionPane.showMessageDialog(this, e.getMessage() + "\nSee console for more info", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 // some menu items may get disabled
@@ -1533,6 +1535,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     EmulationFramework.saveStateToFile(framework, destinationFile.getAbsolutePath());
                     JOptionPane.showMessageDialog(this, "State saving complete", "Done", JOptionPane.INFORMATION_MESSAGE);
                 } catch (HeadlessException | IOException e) {
+                    out.println("e: "+e);
                     JOptionPane.showMessageDialog(this, "Error saving state file\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -1726,6 +1729,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                                 statusBar[chip].setBackground(STATUS_BGCOLOR_DEFAULT);
                             }
                         } catch (Exception e) {
+                            out.println("e: "+e);
                         }
                         updateState(chip);
                     }
@@ -1837,6 +1841,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
             try {
                 refreshIntervalMs = Integer.parseInt(refreshIntervalField.getText());
             } catch (NumberFormatException e) {
+                out.println("e: "+e);
                 // noop
             }
             refreshIntervalMs = Math.max(Math.min(refreshIntervalMs, 10000), 10);
@@ -1927,11 +1932,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                         disassembler = new Dtx();
                         disassembler.setDebugPrintWriter(new PrintWriter(new StringWriter())); // Ignore
                         disassembler.setOutputFileName(null);
-                        disassembler.processOptions(new String[]{
-                                "-m",
-                                "0x" + Format.asHex(baseAddress, 8) + "-0x" + Format.asHex(lastAddress, 8) + "=CODE:32",
-                                "-m",
-                                "0x" + Format.asHex(baseAddress16, 8) + "-0x" + Format.asHex(lastAddress16, 8) + "=CODE:16"
+                        disassembler.processOptions(new String[]{"-m","0x" + Format.asHex(baseAddress, 8) + "-0x" + Format.asHex(lastAddress, 8) + "=CODE:32","-m","0x" + Format.asHex(baseAddress16, 8) + "-0x" + Format.asHex(lastAddress16, 8) + "=CODE:16"
                         });
                     }
                     disassembler.setOutputOptions(sampleOptions);
@@ -1945,6 +1946,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     listingArea.setCaretPosition(0);
 
                 } catch (DisassemblyException | ParsingException | MemoryMapException | IOException ex) {
+                    out.println("e: "+e);
                 }
             }
         };
@@ -2148,6 +2150,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
             try {
                 OutputOption.setOption(outputOptions, checkBox.getText(), checkBox.isSelected());
             } catch (ParsingException e) {
+                out.println("e: "+e);
             }
         }
     }
@@ -2216,11 +2219,13 @@ public class EmulatorUI extends JFrame implements ActionListener {
 
         // handle link events
         editorPane.addHyperlinkListener(new HyperlinkListener() {
+            @Override
             public void hyperlinkUpdate(HyperlinkEvent e) {
                 if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
                     try {
                         Desktop.getDesktop().browse(e.getURL().toURI());
-                    } catch (Exception e1) {
+                    } catch (IOException | URISyntaxException e1) {
+                        out.println("e: "+e);
                         // noop
                     }
                 }

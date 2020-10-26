@@ -40,6 +40,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import static java.lang.System.out;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -174,7 +175,9 @@ public class InternalFrameDemo extends JFrame implements ActionListener {
         mdiPane.add(frame);
         try {
             frame.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) { /* noop */ }
+        } catch (java.beans.PropertyVetoException e) { 
+            out.println("e: "+e);/* noop */ 
+        }
     }
 
     public class DocumentFrame extends JInternalFrame {

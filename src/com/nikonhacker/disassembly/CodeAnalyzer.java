@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
 import java.util.SortedSet;
 import java.util.Map;
 import java.util.List;
@@ -106,6 +107,7 @@ public abstract class CodeAnalyzer {
                 }
             }
             catch (Exception e) {
+                out.println(e);
                 debugPrintWriter.println("Error processing INT40. Please check the interrupt vector address in dfr.txt.");
                 debugPrintWriter.println("Continuing without INT40 processing...");
                 int40mapping = null;
@@ -120,6 +122,7 @@ public abstract class CodeAnalyzer {
             followFunction(main, codeStructure.getEntryPoint(), false);
         }
         catch (DisassemblyException e) {
+            out.println(e);
             debugPrintWriter.println("Error disassembling 'main' code at 0x" + asHex(codeStructure.getEntryPoint(), 2) + ": " + e.getMessage());
         }
 
@@ -136,6 +139,7 @@ public abstract class CodeAnalyzer {
                     followFunction(function, address, false);
                 }
                 catch (DisassemblyException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("Error disassembling interrupt 0x" + Format.asHex(interruptNumber, 2) + ": " + e.getMessage());
                 }
             }
@@ -159,6 +163,7 @@ public abstract class CodeAnalyzer {
                     followFunction(function, address, false);
                 }
                 catch (DisassemblyException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("SHOULD NOT HAPPEN. Please report this case on the forums ! : Error disassembling unknown function at 0x" + Format.asHex(address , 2) + ": " + e.getMessage());
                 }
             }
@@ -427,6 +432,7 @@ public abstract class CodeAnalyzer {
                     followFunction(currentFunction, jump.getTarget(), false);
                 }
                 catch (DisassemblyException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("Error following jump at 0x" + Format.asHex(jump.getSource(), 8) + ": " + e.getMessage());
                 }
             }
@@ -495,6 +501,7 @@ public abstract class CodeAnalyzer {
                     }
                 }
                 catch (NullPointerException e) {
+                    out.println("e: "+e);
                     debugPrintWriter.println("Cannot follow dynamic jump at 0x" + Format.asHex(address, 8) + " (no table at 0x" + Format.asHex(addressSize[0] - 8, 8) +")");
                 }
             } else {
@@ -515,6 +522,7 @@ public abstract class CodeAnalyzer {
                 followFunction(function, targetAddress, false);
             }
             catch (DisassemblyException e) {
+                out.println("e: "+e);
                 debugPrintWriter.println("Error following call at 0x" + Format.asHex(sourceAddress, 8) + ": " + e.getMessage());
             }
         }
@@ -578,6 +586,7 @@ public abstract class CodeAnalyzer {
                         followFunction(target, int40targetAddress, false);
                     }
                     catch (DisassemblyException e) {
+                        out.println("e: "+e);
                         debugPrintWriter.println("Error : INT40 at 0x" + Format.asHex(address, 8) + " with value R12=0x" + Format.asHex(r12, 8) + " targets address 0x" + Format.asHex(int40targetAddress, 8) + " where no code can be found.");
                     }
                 }

@@ -92,6 +92,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import static java.lang.System.err;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -355,6 +356,7 @@ public class EmulationFramework {
                             try {
                                 eeprom.loadBinary(new File(lastEepromFileName));
                             } catch (IOException e) {
+                                out.println("e: "+e);
                                 err.println("Error reloading last eeprom contents from file '" + lastEepromFileName + "': " + e.getMessage());
                                 eeprom.clear();
                             }
@@ -486,6 +488,7 @@ public class EmulationFramework {
             masterClock.add(emulator[chip], chip, false, true);
 
         } catch (IOException e) {
+            out.println("e: "+e);
         }
     }
 
@@ -506,6 +509,7 @@ public class EmulationFramework {
                         isEmulatorPlaying[chip] = false;
                         emulator[chip].clearBreakConditions();
                     } catch (Exception e) {
+                        out.println("e: "+e);
                     }
                     if (callbackHandler != null) callbackHandler.onNormalExit(o);
                 }
@@ -816,6 +820,7 @@ public class EmulationFramework {
             // Wait for emulator to stop
             Thread.sleep(120);
         } catch (InterruptedException e) {
+            out.println("e: "+e);
             // nop
         }
         if (prefs.isSyncPlay()) {

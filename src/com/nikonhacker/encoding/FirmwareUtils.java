@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,6 +162,7 @@ public class FirmwareUtils {
             try {
                 if (fis != null) fis.close();
             } catch (IOException e) {
+                out.println("e: "+e);
             }
         }
     }

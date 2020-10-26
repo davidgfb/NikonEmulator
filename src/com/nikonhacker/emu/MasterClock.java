@@ -1,6 +1,7 @@
 package com.nikonhacker.emu;
 
 import com.nikonhacker.Constants;
+import static java.lang.System.out;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -268,6 +269,7 @@ public class MasterClock implements Runnable {
                             }
                         }
                         catch (Exception e) {
+                            out.println("e: "+e);
                             // In case of exception this entry shouldn't run anymore
                             entriesToDisable.add(currentEntry);
                             // Warn the callback method

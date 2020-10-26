@@ -2,6 +2,7 @@ package com.nikonhacker.emu.peripherials.programmableTimer;
 
 import com.nikonhacker.emu.Clockable;
 import com.nikonhacker.emu.Platform;
+import static java.lang.System.out;
 
 public abstract class ProgrammableTimer implements Clockable {
 
@@ -90,6 +91,7 @@ public abstract class ProgrammableTimer implements Clockable {
             frequencyHz = getFrequencyHz() + "Hz";
         }
         catch (Exception e) {
+            out.println("e: "+e);
             frequencyHz = "?Hz";
         }
         return frequencyHz;

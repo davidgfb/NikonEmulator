@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import static java.lang.System.out;
 import java.nio.charset.Charset;
 
 public class XStreamUtils {
@@ -29,6 +30,7 @@ public class XStreamUtils {
                 if (writer!= null) writer.close();
                 if (outputStream!=null) outputStream.close();
             } catch (IOException e) {
+                out.println(e);
                 //noop
             }
         }
