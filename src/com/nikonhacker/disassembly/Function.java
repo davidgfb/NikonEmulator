@@ -86,29 +86,29 @@ public class Function extends Symbol {
     }
 
     public String getFillColor() {
+        String fillColor="#AAAAAA";
         switch (type) {
             case INTERRUPT:
-                return "#77FF77";
+                fillColor= "#77FF77";
             case MAIN:
-                return "#FFFF77";
+                fillColor= "#FFFF77";
             case STANDARD:
-                return "#77FFFF";
-            default:
-                return "#AAAAAA";
+                fillColor= "#77FFFF";
         }
+        return fillColor;
     }
 
     public String getBorderColor() {
+        String borderColor = "#DDDDDD";
         switch (type) {
             case INTERRUPT:
-                return "#007700";
+                borderColor= "#007700";
             case MAIN:
-                return "#777700";
+                borderColor= "#777700";
             case STANDARD:
-                return "#007777";
-            default:
-                return "#DDDDDD";
+                borderColor= "#007777";
         }
+        return borderColor;
     }
 
     @Override

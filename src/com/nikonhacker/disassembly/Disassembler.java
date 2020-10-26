@@ -407,15 +407,16 @@ public abstract class Disassembler {
                             String option = buf.substring(0, 2);
                             String params = buf.substring(2).trim();
                             if (StringUtils.isNotBlank(params)) {
-                                if (!processOptions(new String[]{option, params}))
+                                if (!processOptions(new String[]{option, params})) {
                                     throw new ParsingException("Incorrect options");
-                                continue;
+                                }
                             }
                         }
                     }
 
-                    if (!processOptions(new String[]{buf}))
+                    if (!processOptions(new String[]{buf})) {
                         throw new ParsingException("ParsingException");
+                    }
                 }
             }
         }
@@ -431,7 +432,7 @@ public abstract class Disassembler {
 
 
     public CodeStructure disassembleMemRanges() throws IOException, DisassemblyException {
-        if (memRanges.size() == 0) {
+        if (memRanges.isEmpty()) {
             throw new DisassemblyException("No memory range defined in options");
         }
         if (!outputOptions.contains(OutputOption.STRUCTURE)) {
