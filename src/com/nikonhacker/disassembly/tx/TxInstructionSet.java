@@ -1,12 +1,16 @@
 package com.nikonhacker.disassembly.tx;
 
 import com.nikonhacker.Format;
+import static com.nikonhacker.Format.bitValue;
 import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.Instruction;
+import com.nikonhacker.disassembly.Instruction.DelaySlotType;
+import com.nikonhacker.disassembly.Instruction.FlowType;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.SimulationCode;
 import com.nikonhacker.disassembly.Statement;
 import com.nikonhacker.disassembly.StatementContext;
+import static com.nikonhacker.disassembly.tx.TxInstructionSet.InstructionFormat32.R;
 import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.interrupt.tx.CoprocessorUnusableException;
 
@@ -2020,7 +2024,7 @@ public class TxInstructionSet
                     int value = context.cpuState.getReg(statement.ri_rs_fs);
                     int leadingOnes = 0;
                     int bitPosition = 31;
-                    while (Format.bitValue(value, bitPosition) == 1 && bitPosition >= 0) {
+                    while (bitValue(value, bitPosition) == 1 && bitPosition >= 0) {
                         leadingOnes++;
                         bitPosition--;
                     }
@@ -2033,16 +2037,16 @@ public class TxInstructionSet
      * CLZ rd, rs
      * 32-bit ISA
      */
-    private static final TxInstruction clzInstruction = new TxInstruction("clz", "k, i", "i>k", "", "kw", "clz $t1,$t2",
-            "Count number of Leading Zeroes: Set $t1 to the count of leading zero bits in $t2 starting at most significant bit positio",
-            InstructionFormat32.R, null,
-            Instruction.FlowType.NONE, false, Instruction.DelaySlotType.NONE,
-            new SimulationCode() {
+    //nuevo
+    private static final TxInstruction clzInstruction = new TxInstruction("clz", "k, i", "i>k", "", "kw", "clz $t1,$t2", "Count number of Leading Zeroes: Set $t1 to the count of leading zero bits in $t2 starting at most significant bit positio",R, null,
+            //nuevo
+            FlowType.NONE, false, DelaySlotType.NONE, new SimulationCode() {
+                @Override
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
-                    int value = context.cpuState.getReg(statement.ri_rs_fs);
-                    int leadingZeros = 0;
-                    int bitPosition = 31;
-                    while (Format.bitValue(value, bitPosition) == 0 && bitPosition >= 0) {
+                    int value = context.cpuState.getReg(statement.ri_rs_fs),
+                        leadingZeros = 0,
+                        bitPosition = 31;
+                    while (bitValue(value, bitPosition) == 0 && bitPosition >= 0) {
                         leadingZeros++;
                         bitPosition--;
                     }

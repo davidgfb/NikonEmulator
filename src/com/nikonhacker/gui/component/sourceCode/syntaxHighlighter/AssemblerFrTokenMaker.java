@@ -787,21 +787,22 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
   public org.fife.ui.rsyntaxtextarea.Token yylex() throws java.io.IOException {
-    int zzInput;
-    int zzAction;
+    int zzInput = 0,
+        zzAction,
 
     // cached fields:
-    int zzCurrentPosL;
-    int zzMarkedPosL;
-    int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+        zzCurrentPosL,
+        zzMarkedPosL,
+        zzEndReadL = zzEndRead;
+    char [] zzBufferL = zzBuffer,
+            zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    int [] zzTransL = ZZ_TRANS,
+           zzRowMapL = ZZ_ROWMAP,
+           zzAttrL = ZZ_ATTRIBUTE;
 
-    while (true) {
+    boolean condition = true;
+    while (condition) {
       zzMarkedPosL = zzMarkedPos;
 
       zzAction = -1;
@@ -812,7 +813,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 
 
       zzForAction: {
-        while (true) {
+        boolean condition1 = true;
+        while (condition1) {
     
           if (zzCurrentPosL < zzEndReadL)
             zzInput = zzBufferL[zzCurrentPosL++];
@@ -873,7 +875,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
           }
         case 21: break;
         case 4: 
-          { addToken(Token.COMMENT_EOL); addNullToken(); return firstToken;
+          { addToken(Token.COMMENT_EOL); addNullToken(); 
+          return firstToken;
           }
         case 22: break;
         case 15: 
@@ -917,11 +920,13 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
           }
         case 32: break;
         case 2: 
-          { addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); return firstToken;
+          { addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); 
+          return firstToken;
           }
         case 33: break;
         case 5: 
-          { addNullToken(); return firstToken;
+          { addNullToken(); 
+          return firstToken;
           }
         case 34: break;
         default: 
@@ -929,7 +934,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             zzAtEOF = true;
             switch (zzLexicalState) {
             case YYINITIAL: {
-              addNullToken(); return firstToken;
+              addNullToken(); 
+              return firstToken;
             }
             case 148: break;
             default:
@@ -941,7 +947,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
           }
       }
     }
+    //
+    return firstToken;
   }
-
-
 }

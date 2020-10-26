@@ -238,6 +238,7 @@ public class MasterClock implements Runnable {
      * Use start() instead to start the clock.
      * Note: this is the optimized version that only executes useful entries of useful steps
      */
+    @Override
     public void run() {
         List<ClockableEntry> entriesToDisable = new ArrayList<>();
         int stepNumber = 0;

@@ -6,6 +6,7 @@ import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.peripherials.interruptController.tx.TxInterruptController;
 import com.nikonhacker.emu.peripherials.ioPort.IoPort;
 import com.nikonhacker.emu.peripherials.ioPort.tx.TxIoPort;
+import static java.lang.System.err;
 
 public class TxDmaChannel {
     private static final int CCR_SIO_MASK  = 0b00000000_00000000_00000010_00000000;
@@ -68,12 +69,12 @@ public class TxDmaChannel {
         if (isStartRequested(ccr)) {
             // First check if a termination bit is set
             if (isCsrNormalCompletion()) {
-                System.err.println(toString() + ": Attempt to put the channel in standby while CSR:NC bit is still set. Switching to Abnormal Completion");
+                err.println(toString() + ": Attempt to put the channel in standby while CSR:NC bit is still set. Switching to Abnormal Completion");
                 clearCsrNormalCompletion();
                 setCsrAbnormalCompletion();
             }
             else if (isCsrAbnormalCompletion()) {
-                System.err.println(toString() + ": Attempt to put the channel in standby while CSR:AbC bit is still set. Ignoring");
+                err.println(toString() + ": Attempt to put the channel in standby while CSR:AbC bit is still set. Ignoring");
             }
             else {
                 isInStandBy = true;

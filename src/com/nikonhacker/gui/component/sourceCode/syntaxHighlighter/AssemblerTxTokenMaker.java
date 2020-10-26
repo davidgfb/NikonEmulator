@@ -864,22 +864,23 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
    * @return      the next token
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  public org.fife.ui.rsyntaxtextarea.Token yylex() throws java.io.IOException {
-    int zzInput;
-    int zzAction;
+  public Token yylex() throws IOException {
+    int zzInput = 0,
+        zzAction,
 
     // cached fields:
-    int zzCurrentPosL;
-    int zzMarkedPosL;
-    int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+        zzCurrentPosL,
+        zzMarkedPosL,
+        zzEndReadL = zzEndRead;
+    char [] zzBufferL = zzBuffer,
+            zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    int [] zzTransL = ZZ_TRANS,
+           zzRowMapL = ZZ_ROWMAP,
+           zzAttrL = ZZ_ATTRIBUTE;
 
-    while (true) {
+    boolean condition = true;
+    while (condition) {
       zzMarkedPosL = zzMarkedPos;
 
       zzAction = -1;
@@ -890,7 +891,8 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
 
 
       zzForAction: {
-        while (true) {
+        boolean condition1 = true;
+        while (condition1) {
     
           if (zzCurrentPosL < zzEndReadL)
             zzInput = zzBufferL[zzCurrentPosL++];
@@ -933,93 +935,62 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
       // store back cached position
       zzMarkedPos = zzMarkedPosL;
 
-      switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
-        case 14: 
-          { addToken(Token.RESERVED_WORD);
-          }
-        case 18: break;
-        case 1: 
-          { addToken(Token.IDENTIFIER);
-          }
-        case 19: break;
-        case 13: 
-          { addToken(Token.FUNCTION);
-          }
-        case 20: break;
-        case 11: 
-          { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
-          }
-        case 21: break;
-        case 4: 
-          { addToken(Token.COMMENT_EOL); addNullToken(); return firstToken;
-          }
-        case 22: break;
-        case 15: 
-          { addToken(Token.ANNOTATION);
-          }
-        case 23: break;
-        case 10: 
-          { addToken(Token.VARIABLE);
-          }
-        case 24: break;
-        case 8: 
-          { addToken(Token.RESERVED_WORD_2);
-          }
-        case 25: break;
-        case 6: 
-          { addToken(Token.WHITESPACE);
-          }
-        case 26: break;
-        case 9: 
-          { addToken(Token.PREPROCESSOR);
-          }
-        case 27: break;
-        case 16: 
-          { addToken(Token.DATA_TYPE);
-          }
-        case 28: break;
-        case 3: 
-          { addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
-          }
-        case 29: break;
-        case 17: 
-          { addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
-          }
-        case 30: break;
-        case 7: 
-          { addToken(Token.OPERATOR);
-          }
-        case 31: break;
-        case 12: 
-          { addToken(Token.LITERAL_CHAR);
-          }
-        case 32: break;
-        case 2: 
-          { addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); return firstToken;
-          }
-        case 33: break;
-        case 5: 
-          { addNullToken(); return firstToken;
-          }
-        case 34: break;
-        default: 
-          if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
-            zzAtEOF = true;
-            switch (zzLexicalState) {
-            case YYINITIAL: {
-              addNullToken(); return firstToken;
-            }
-            case 178: break;
-            default:
-            return null;
-            }
-          } 
-          else {
-            zzScanError(ZZ_NO_MATCH);
-          }
+        switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
+            case 1: 
+                addToken(Token.IDENTIFIER);
+            case 2: 
+                addToken(Token.ERROR_STRING_DOUBLE); 
+                addNullToken(); 
+                return firstToken;
+            case 3: 
+                addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
+            case 4: 
+                addToken(Token.COMMENT_EOL); addNullToken(); 
+                return firstToken;
+            case 5:  
+                addNullToken(); 
+                return firstToken;
+            case 6:  
+                addToken(Token.WHITESPACE);
+            case 7:  
+                addToken(Token.OPERATOR);
+            case 8: 
+                addToken(Token.RESERVED_WORD_2);
+            case 9: 
+                addToken(Token.PREPROCESSOR);
+            case 10:  
+                addToken(Token.VARIABLE);
+            case 11:  
+                addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+            case 12: 
+                addToken(Token.LITERAL_CHAR);
+            case 13:  
+                addToken(Token.FUNCTION);
+            case 14:  
+                addToken(Token.RESERVED_WORD);
+            case 15: 
+                addToken(Token.ANNOTATION);
+            case 16: 
+                addToken(Token.DATA_TYPE);
+            case 17:  
+                addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
+            default: 
+                if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
+                    zzAtEOF = true;
+                    switch (zzLexicalState) {
+                        
+                        case YYINITIAL: 
+                            addNullToken(); 
+                            return firstToken;
+                        default:
+                            return null;
+                    }
+                } else {
+                    zzScanError(ZZ_NO_MATCH);
+                }
       }
-    }
+    }  
+    //
+    return firstToken;
   }
-
-
 }

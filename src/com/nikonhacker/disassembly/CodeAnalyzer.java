@@ -355,7 +355,7 @@ public abstract class CodeAnalyzer {
                                     addCall(currentFunction, statement, address, potentialTarget & 0xFFFFFFFE, "call_target_" + Integer.toHexString(address) + "_" + i, true);
                                 i++;
                             }
-                         } while(false);
+                        } while(false);
                     }
                     else {
                         addCall(currentFunction, statement, address, statement.decodedImm & 0xFFFFFFFE, "", false);

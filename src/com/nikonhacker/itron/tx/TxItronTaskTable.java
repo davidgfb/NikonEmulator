@@ -1,14 +1,17 @@
 package com.nikonhacker.itron.tx;
 
-import com.nikonhacker.Format;
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.Function;
 import com.nikonhacker.disassembly.tx.TxCPUState;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.itron.ReturnStackEntry;
+import static java.lang.System.err;
 
 import java.util.LinkedList;
+//</editor-fold>
+
 
 public class TxItronTaskTable {
 
@@ -16,8 +19,8 @@ public class TxItronTaskTable {
 
     private CodeStructure codeStructure;
     private Platform platform;
-    private int [] nextPc = new int[MAXTASKS];
-    private int [] context = new int[MAXTASKS];
+    private int [] nextPc = new int[MAXTASKS],
+                   context = new int[MAXTASKS];
     private int currentTask;
 
     public TxItronTaskTable(Platform platform) {
@@ -26,7 +29,7 @@ public class TxItronTaskTable {
 
     public int read(CodeStructure codeStructure) {
         if (codeStructure == null) {
-            System.err.println("Next PC/Context not available! Code must be disassembled with 'structure' option first");
+            err.println("Next PC/Context not available! Code must be disassembled with 'structure' option first");
             return 0;
         }
         this.codeStructure = codeStructure;
@@ -41,7 +44,7 @@ public class TxItronTaskTable {
                 label = "tblTCB";
             } else
                 break;
-            System.err.println("Next PC/Context not available! No label called '" + label + "' was found in disassembly");
+            err.println("Next PC/Context not available! No label called '" + label + "' was found in disassembly");
             return 0;
         } while(false);
 
@@ -206,18 +209,30 @@ public class TxItronTaskTable {
                 sp += (((opcode>>16) & 0xF0) + (opcode & 0xF))<<3;
                 // calc size of saved args
                 switch ((opcode>>16)&0xF) {
-                    case 0b0000: case 0b0001: case 0b0010: case 0b0011: case 0b1011: args = 0; break;
-                    case 0b0100: case 0b0101: case 0b0110: case 0b0111: args = 1; break;
-                    case 0b1000: case 0b1001: case 0b1010: args = 2; break;
-                    case 0b1100: case 0b1101: args = 3; break;
-                    case 0b1110: args = 4; break;
+                    case 0b1011: 
+                        args = 0; 
+                        break;
+                    case 0b0111: 
+                        args = 1; 
+                        break;
+                    case 0b1010: 
+                        args = 2; 
+                        break;
+                    case 0b1101: 
+                        args = 3; 
+                        break;
+                    case 0b1110: 
+                        args = 4; 
+                        break;
                     default:
-                        sp = 0; continue;
+                        sp = 0; 
+                        continue;
                 }
                 if ((opcode&0x40)==0) {
                     // ra was not saved
-                    if (!firstRun || !state.isRegisterDefined(TxCPUState.RA))
+                    if (!firstRun || !state.isRegisterDefined(TxCPUState.RA)) {
                         break;
+                    }
                     ra = state.getReg(TxCPUState.RA);
                     continue;
                 }
@@ -236,23 +251,25 @@ public class TxItronTaskTable {
     }
 
     public Integer getContext(int index) {
+        Integer context1 = null;
         if (index>0 && index<=MAXTASKS) {
             index--;
             if (context[index]!=0) {
-                return context[index];
+                context1= context[index];
             }
         }
-        return null;
+        return context1;
     }
 
     public Integer getNextPc(int index) {
+        Integer nextPc1 = null;
         if (index>0 && index<=MAXTASKS) {
             index--;
             if (nextPc[index]!=0) {
-                return nextPc[index];
+                nextPc1= nextPc[index];
             }
         }
-        return null;
+        return nextPc1;
     }
 
     // 0 - idle
