@@ -483,10 +483,8 @@ public class FrStatement extends Statement {
 
         int r = FrCPUState.NOREG;
 
-        for (char s : instruction.getAction().toCharArray())
-        {
-            switch (s)
-            {
+        for (char s : instruction.getAction().toCharArray()) {
+            switch (s) {
                 case 'A':
                     r = FrCPUState.AC;
                     break;
@@ -522,8 +520,6 @@ public class FrStatement extends Statement {
                 case 'x':
                     r = FrCPUState.NOREG;
                     break;
-                case 'E':
-                case 'G':
                 case 'H':
                     if (updateRegisters) {
                         if (context.cpuState.isRegisterDefined(decodedRjRtFt)) {
@@ -535,23 +531,24 @@ public class FrStatement extends Statement {
                             // exclude from analyse non-existing addresses
                             if (context.memory.isMapped(addr)) {
                                 // load value
-                                if (s =='G') {
-                                    // exclude from analyse non-existing addresses
-                                    if (context.memory.isMapped(addr+3)) {
-                                        context.cpuState.setRegisterDefined(decodedRiRsFs);
-                                        context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction32(addr));
+                                switch (s) {
+                                    case 'G':
+                                        // exclude from analyse non-existing addresses
+                                        if (context.memory.isMapped(addr+3)) {
+                                            context.cpuState.setRegisterDefined(decodedRiRsFs);
+                                            context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction32(addr));
+                                        }   
                                         break;
-                                    }
-                                } else if (s =='H') {
-                                    if (context.memory.isMapped(addr+1)) {
-                                        context.cpuState.setRegisterDefined(decodedRiRsFs);
-                                        context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction16(addr));
+                                    case 'H':
+                                        if (context.memory.isMapped(addr+1)) {
+                                            context.cpuState.setRegisterDefined(decodedRiRsFs);
+                                            context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction16(addr));
+                                        }   
                                         break;
-                                    }
-                                } else {
-                                    context.cpuState.setRegisterDefined(decodedRiRsFs);
-                                    context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction8(addr));
-                                    break;
+                                    default:
+                                        context.cpuState.setRegisterDefined(decodedRiRsFs);
+                                        context.cpuState.setReg(decodedRiRsFs, context.memory.loadInstruction8(addr));
+                                        break;
                                 }
                             }
                       }
@@ -601,6 +598,7 @@ public class FrStatement extends Statement {
         return out;
     }
 
+    @Override
     public String getFormattedBinaryStatement() {
         String out = "";
         for (int i = 0; i < 3; ++i) {
@@ -614,6 +612,7 @@ public class FrStatement extends Statement {
         return out;
     }
 
+    @Override
     public int getNumBytes() {
         return numData * 2;
     }
@@ -629,9 +628,8 @@ public class FrStatement extends Statement {
         }
     }
 
+    @Override
     public boolean isPotentialStuffing() {
-        return numData == 1 && (
-                   data[0] == 0x9FA0 /* 0x9FA0 : NOP stuffing */
-                || data[0] == 0x0000 /* 0x0000 stuffing */ );
+        return numData == 1 && (data[0] == 0x9FA0 /* 0x9FA0 : NOP stuffing */ || data[0] == 0x0000 /* 0x0000 stuffing */ );
     }
 }
