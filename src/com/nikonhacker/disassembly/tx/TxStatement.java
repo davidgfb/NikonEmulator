@@ -2,6 +2,7 @@ package com.nikonhacker.disassembly.tx;
 
 import com.nikonhacker.BinaryArithmetics;
 import com.nikonhacker.Format;
+import static com.nikonhacker.Format.asHex;
 import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.Instruction;
@@ -573,10 +574,8 @@ public class TxStatement extends Statement {
         StringBuilder tmpBuffer = null;
 
         // See TxInstruction constructor for meaning of chars
-        for (char formatChar : formatString.toCharArray())
-        {
-            switch (formatChar)
-            {
+        for (char formatChar : formatString.toCharArray()) {
+            switch (formatChar) {
                 case '#':
                     buffer.append(fmt_imm);
                     break;
@@ -650,8 +649,7 @@ public class TxStatement extends Statement {
                         case 0b00:
                             if (BinaryArithmetics.isNegative(decodedImmBitWidth, decodedImm)) {
                                 buffer.append(Format.asHexInBitsLength("-" + (outputOptions.contains(OutputOption.DOLLAR) ? "$" : "0x"), BinaryArithmetics.neg(decodedImmBitWidth, decodedImm), decodedImmBitWidth));
-                            }
-                            else {
+                            } else {
                                 buffer.append(Format.asHexInBitsLength((outputOptions.contains(OutputOption.DOLLAR)?"$":"0x"), decodedImm, decodedImmBitWidth - 1));
                             }
                             buffer.append("(" + TxCPUState.registerLabels[0] + ")");
@@ -675,37 +673,28 @@ public class TxStatement extends Statement {
                     break;
 
                 case 'I':
-                    if (context.cpuState.isRegisterDefined(ri_rs_fs))
-                    {
+                    if (context.cpuState.isRegisterDefined(ri_rs_fs)) {
                         decodedImm = context.cpuState.getReg(ri_rs_fs);
                         decodedImmBitWidth = 32;
-                    }
-                    else
-                    {
+                    } else {
                         decodedImm = 0;
                         decodedImmBitWidth = 0;
                     }
                     break;
                 case 'J':
-                    if (context.cpuState.isRegisterDefined(rj_rt_ft))
-                    {
+                    if (context.cpuState.isRegisterDefined(rj_rt_ft)) {
                         decodedImm = context.cpuState.getReg(rj_rt_ft);
                         decodedImmBitWidth = 32;
-                    }
-                    else
-                    {
+                    } else {
                         decodedImm = 0;
                         decodedImmBitWidth = 0;
                     }
                     break;
                 case 'K':
-                    if (context.cpuState.isRegisterDefined(rd_fd))
-                    {
+                    if (context.cpuState.isRegisterDefined(rd_fd)) {
                         decodedImm = context.cpuState.getReg(rd_fd);
                         decodedImmBitWidth = 32;
-                    }
-                    else
-                    {
+                    } else {
                         decodedImm = 0;
                         decodedImmBitWidth = 0;
                     }
@@ -713,7 +702,7 @@ public class TxStatement extends Statement {
 
                 case 'a':
                     pos = decodedImmBitWidth;
-                    while (pos >= 8){
+                    while (pos >= 8) {
                         pos -= 8;
                         buffer.append(Format.asAscii(decodedImm >> pos));
                     }
@@ -736,25 +725,30 @@ public class TxStatement extends Statement {
 
                     tmp = (int)(((1L << pos) - 1) & (decodedImm >> pos));
                     int tmq = (int)(((1L << pos) - 1) & decodedImm);
-                    if (tmq != 0)
+                    if (tmq != 0) {
                         buffer.append(((double)tmp) / tmq);
-                    else
+                    } else {
                         buffer.append("NaN");
-
+                    }
                     break;
 
                 case 'i':
-                    if (!(isOptionalExpression && tmpBuffer.length() == 0 && ri_rs_fs == 0)) buffer.append(TxCPUState.registerLabels[ri_rs_fs]);
+                    if (!(isOptionalExpression && tmpBuffer.length() == 0 && ri_rs_fs == 0)) {
+                        buffer.append(TxCPUState.registerLabels[ri_rs_fs]);
+                    }
                     break;
                 case 'j':
-                    if (!(isOptionalExpression && tmpBuffer.length() == 0 && rj_rt_ft == 0)) buffer.append(TxCPUState.registerLabels[rj_rt_ft]);
+                    if (!(isOptionalExpression && tmpBuffer.length() == 0 && rj_rt_ft == 0)) {
+                        buffer.append(TxCPUState.registerLabels[rj_rt_ft]);
+                    }
                     break;
                 case 'k':
                     try {
-                        if (!(isOptionalExpression && tmpBuffer.length() == 0 && rd_fd == 0)) buffer.append(TxCPUState.registerLabels[rd_fd]);
+                        if (!(isOptionalExpression && tmpBuffer.length() == 0 && rd_fd == 0)) {
+                            buffer.append(TxCPUState.registerLabels[rd_fd]);
+                        }
                     }
                     catch (Exception e) {
-                        e.printStackTrace();
                     }
                     break;
                 case 'l':
@@ -803,8 +797,7 @@ public class TxStatement extends Statement {
                                 buffer.delete(buffer.length() - 1, buffer.length() - 1);
                             }
                             buffer.append(Format.asHexInBitsLength("-" + (outputOptions.contains(OutputOption.DOLLAR)?"$":"0x"), BinaryArithmetics.neg(decodedImmBitWidth, decodedImm), decodedImmBitWidth));
-                        }
-                        else {
+                        } else {
                             buffer.append(Format.asHexInBitsLength((outputOptions.contains(OutputOption.DOLLAR)?"$":"0x"), decodedImm, decodedImmBitWidth - 1));
                         }
                     }
@@ -812,16 +805,18 @@ public class TxStatement extends Statement {
                 case 'm':   // for use with e, h, g
                     writeDirection = true;
                     break;
+                /*    
                 case 'e':   // load byte constant from memory
                 case 'h':   // load halfword constant from memory
+                */
                 case 'g':   // load word constant from memory
-                    if (context.cpuState.isRegisterDefined(ri_rs_fs))
-                    {
+                    if (context.cpuState.isRegisterDefined(ri_rs_fs)) {
                         offset = context.cpuState.getReg(ri_rs_fs);
-                        if (decodedImmBitWidth<8) // 16-bit commands with 5/6/7 bit immediate
+                        if (decodedImmBitWidth<8) { // 16-bit commands with 5/6/7 bit immediate
                             offset += decodedImm;
-                        else
+                        } else {
                             offset += BinaryArithmetics.signExtend(decodedImmBitWidth, decodedImm);
+                        }
                         buffer.append('(' + Format.asHex(offset, 8)+')');
                         /*
                             coderat: This is heuristic evaluation, so use loadInstruction...() functions for
@@ -830,12 +825,13 @@ public class TxStatement extends Statement {
                         if (writeDirection) {
                             buffer.append('=');
                             if (context.cpuState.isRegisterDefined(rj_rt_ft)) {
-                                if (formatChar=='e')
+                                if (formatChar=='e') {
                                     tmp = 2;
-                                else if (formatChar=='h')
+                                } else if (formatChar=='h') {
                                     tmp = 4;
-                                else
+                                } else {
                                     tmp = 8;
+                                }
                                 buffer.append(Format.asHex(context.cpuState.getReg(rj_rt_ft), tmp));
                             }
                             break;
@@ -856,8 +852,9 @@ public class TxStatement extends Statement {
                                     tmp = 4;
                                 } else {
                                     // exclude from analyse non-existing addresses
-                                    if (!context.memory.isMapped(offset+3))
+                                    if (!context.memory.isMapped(offset+3)) {
                                         break;
+                                    }
                                     tmp = 8;
                                     value = context.memory.loadInstruction32(offset);
                                 }
@@ -910,20 +907,48 @@ public class TxStatement extends Statement {
                     }
 
                     switch ((binaryStatement >> 16) & 0b1111) {
-                        case 0b0001:buffer.append("[" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b0010:buffer.append("[" + TxCPUState.registerLabels[6] + "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b0011:buffer.append("[" + TxCPUState.registerLabels[5] + "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b1011:buffer.append("[" + TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b0100:buffer.append(TxCPUState.registerLabels[4]);break;
-                        case 0b0101:buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b0110:buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[6]+ "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b0111:buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[5]+ "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b1000:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ", ");break;
-                        case 0b1001:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ",[" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b1010:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ",[" + TxCPUState.registerLabels[6] + "-" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b1100:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[6] + ", ");break;
-                        case 0b1101:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[6] + ",[" + TxCPUState.registerLabels[7] + "], ");break;
-                        case 0b1110:buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[7] + ", ");break;
+                        case 0b0001:
+                            buffer.append("[" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b0010:
+                            buffer.append("[" + TxCPUState.registerLabels[6] + "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b0011:
+                            buffer.append("[" + TxCPUState.registerLabels[5] + "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b1011:
+                            buffer.append("[" + TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b0100:
+                            buffer.append(TxCPUState.registerLabels[4]);
+                            break;
+                        case 0b0101:
+                            buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b0110:
+                            buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[6]+ "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b0111:
+                            buffer.append(TxCPUState.registerLabels[4] + ",[" + TxCPUState.registerLabels[5]+ "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b1000:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ", ");
+                            break;
+                        case 0b1001:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ",[" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b1010:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[5] + ",[" + TxCPUState.registerLabels[6] + "-" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b1100:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[6] + ", ");
+                            break;
+                        case 0b1101:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[6] + ",[" + TxCPUState.registerLabels[7] + "], ");
+                            break;
+                        case 0b1110:
+                            buffer.append(TxCPUState.registerLabels[4] + "-" + TxCPUState.registerLabels[7] + ", ");
+                            break;
                     }
 
                     if (isExtended() && imm == 0) {
@@ -947,16 +972,15 @@ public class TxStatement extends Statement {
         return StringUtils.replace(StringUtils.replace(buffer.toString(), " ", ""), ",", "");
     }
 
+    @Override
     public String getFormattedBinaryStatement() {
-        if (numBytes == 4)
-        {
+        // 16b
+        String formated = asHex(binaryStatement, 4) + "    ";
+        if (numBytes == 4) {
             // 32b, or extended 16b
-            return Format.asHex(binaryStatement, 8);
-        }
-        else {
-            // 16b
-            return Format.asHex(binaryStatement, 4) + "    ";
-        }
+            formated= asHex(binaryStatement, 8);
+        } 
+        return formated;
     }
 
     @Override

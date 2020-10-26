@@ -1,6 +1,7 @@
 package com.nikonhacker.gui.component.analyse;
 
 import com.nikonhacker.Format;
+import com.nikonhacker.disassembly.ParsingException;
 import com.nikonhacker.disassembly.fr.Syscall;
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.gui.EmulatorUI;
@@ -39,7 +40,9 @@ public class GenerateSysSymbolsDialog extends JDialog {
 
         closeButton = new JButton("Close");
         closeButton.setEnabled(false);
+        //nuevo
         closeButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
@@ -55,6 +58,7 @@ public class GenerateSysSymbolsDialog extends JDialog {
 
     public void startGeneration() {
         Thread disassemblerThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 PrintWriter debugPrintWriter = printWriterArea.getPrintWriter();
                 try {
@@ -66,8 +70,7 @@ public class GenerateSysSymbolsDialog extends JDialog {
                     }
                     debugPrintWriter.println();
                     debugPrintWriter.println("The lines above can be pasted to a dfr.txt file");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (ParsingException e) {
                     debugPrintWriter.println("ERROR : " + e.getClass().getName() + ": " + e.getMessage());
                     debugPrintWriter.println("See console for more information");
                 }

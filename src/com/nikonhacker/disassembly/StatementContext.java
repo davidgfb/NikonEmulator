@@ -90,7 +90,6 @@ public class StatementContext {
                     try {
                         statement.formatOperandsAndComment(this, false, outputOptions);
                     } catch (DisassemblyException e) {
-                        e.printStackTrace();
                     }
                     String target = statement.getCommentString();
                     if (StringUtils.isBlank(target)) target = statement.getOperandString();

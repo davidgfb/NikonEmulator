@@ -63,7 +63,6 @@ public class ImageSensorSerialPanel extends SerialDevicePanel implements HexEdit
         try {
             eepromHexEditor.open(new ByteArrayInputStream(imageSensor.getMemory()));
         } catch (IOException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading eeprom contents in Hex editor. See console for more information.");
         }
     }

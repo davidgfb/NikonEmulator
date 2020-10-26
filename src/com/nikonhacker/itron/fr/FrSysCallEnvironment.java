@@ -3,6 +3,7 @@ package com.nikonhacker.itron.fr;
 import com.nikonhacker.BinaryArithmetics;
 import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.fr.FrCPUState;
+import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.FrEmulator;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.emu.memory.Memory;
@@ -157,12 +158,12 @@ public class FrSysCallEnvironment extends SysCallEnvironment {
             // Read error code
             return ErrorCode.fromFrValue(tmpCpuState.getReg(12));
         }
-        catch (Throwable t) {
-            t.printStackTrace();
+        catch (EmulationException t) {
             return ErrorCode.E_EMULATOR;
         }
     }
 
+    @Override
     public Class getTaskInformationClass() {
         return FrTaskInformation.class;
     }

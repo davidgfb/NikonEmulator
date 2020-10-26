@@ -43,7 +43,6 @@ public class TextEditorDemo extends JFrame {
         try {
             Object tag = textArea.addLineHighlight(3, CYAN);
         } catch (BadLocationException e) {
-            e.printStackTrace();
         }
 
         sp.setIconRowHeaderEnabled(true);
@@ -55,7 +54,6 @@ public class TextEditorDemo extends JFrame {
         try {
             gutter.addLineTrackingIcon(2, new ImageIcon("breakpointIcon.png"));
         } catch (BadLocationException e) {
-            e.printStackTrace();
         }
 
         cp.add(sp);

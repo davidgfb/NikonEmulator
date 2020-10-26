@@ -2,6 +2,7 @@ package com.nikonhacker.emu;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
+import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.tx.TxCPUState;
 import com.nikonhacker.disassembly.tx.TxInstructionSet;
@@ -157,14 +158,13 @@ public class TxEmulator extends Emulator {
                 sleep();
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (DisassemblyException | EmulationException e) {
             System.err.println(e.getMessage());
             System.err.println(platform.cpuState);
             try {
                 statement.formatOperandsAndComment(context, false, outputOptions);
                 System.err.println("Offending instruction : " + statement);
-            } catch (Exception e1) {
+            } catch (DisassemblyException e1) {
                 System.err.println("Cannot disassemble offending instruction :" + statement.getFormattedBinaryStatement());
             }
             System.err.println("(on or before PC=0x" + Format.asHex(platform.cpuState.pc, 8) + ")");

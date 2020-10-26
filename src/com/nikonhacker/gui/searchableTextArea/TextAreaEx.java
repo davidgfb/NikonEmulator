@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,8 +35,7 @@ class TextAreaEx extends JFrame implements ActionListener, KeyListener {
             while ((h = br.readLine()) != null) {
                 sb.append(h + "\n");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         }
         text = sb.toString();
         tx.setText(text);

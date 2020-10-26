@@ -82,11 +82,10 @@ public class PopupMenuDemo extends JFrame {
         }
 
         try {
-            BufferedReader r = new BufferedReader(new FileReader(file));
-            textArea.read(r, null);
-            r.close();
+            try (BufferedReader r = new BufferedReader(new FileReader(file))) {
+                textArea.read(r, null);
+            }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
         }
 
@@ -131,7 +130,6 @@ public class PopupMenuDemo extends JFrame {
                     filename = getFilenameAtCaret(tc);
                 }
             } catch (BadLocationException ble) {
-                ble.printStackTrace();
                 UIManager.getLookAndFeel().provideErrorFeedback(tc);
                 return;
             }

@@ -13,6 +13,7 @@ import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
 import com.nikonhacker.Prefs;
 import com.nikonhacker.disassembly.Disassembler;
+import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.Function;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.ParsingException;
@@ -24,6 +25,7 @@ import com.nikonhacker.emu.ClockableCallbackHandler;
 import com.nikonhacker.emu.EmulationFramework;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.Memory;
+import com.nikonhacker.emu.memory.MemoryMapException;
 import com.nikonhacker.emu.memory.listener.TrackingMemoryActivityListener;
 import com.nikonhacker.emu.peripherials.lcd.fr.FrLcd;
 import com.nikonhacker.emu.peripherials.programmableTimer.ProgrammableTimer;
@@ -88,6 +90,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -112,8 +115,10 @@ import static java.awt.event.KeyEvent.VK_R;
 import static java.awt.event.KeyEvent.VK_S;
 import static java.awt.event.KeyEvent.VK_T;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -581,8 +586,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[]{Boolean.TYPE}); //boolean.class });
                 setKeepHidden.setAccessible(true);
                 setKeepHidden.invoke(splitPane.getUI(), new Object[]{keepHidden});
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             }
         }
     }
@@ -600,8 +604,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 Method getKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("getKeepHidden", new Class<?>[]{});
                 getKeepHidden.setAccessible(true);
                 return (Boolean) (getKeepHidden.invoke(splitPane.getUI()));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             }
         }
         return false;
@@ -1395,7 +1398,6 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Decoding complete", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error decoding files", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }
@@ -1431,7 +1433,6 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Encoding complete", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error encoding files", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }
@@ -1458,7 +1459,6 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Decoding complete.\nFile '" + new File(destinationFile.getText()).getAbsolutePath() + "' was created.", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FirmwareFormatException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage() + "\nPlease see console for full stack trace", "Error decoding files", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }
@@ -1497,8 +1497,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     framework.setupCallbacks(getCallbackHandler(0), getCallbackHandler(1));
                     framework.getMasterClock().setSyncPlay(prefs.isSyncPlay());
                     setTitle(ApplicationInfo.getNameVersion() + " - Loaded " + source);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
                     JOptionPane.showMessageDialog(this, e.getMessage() + "\nSee console for more info", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 // some menu items may get disabled
@@ -1533,8 +1532,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                 try {
                     EmulationFramework.saveStateToFile(framework, destinationFile.getAbsolutePath());
                     JOptionPane.showMessageDialog(this, "State saving complete", "Done", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (HeadlessException | IOException e) {
                     JOptionPane.showMessageDialog(this, "Error saving state file\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -1728,7 +1726,6 @@ public class EmulatorUI extends JFrame implements ActionListener {
                                 statusBar[chip].setBackground(STATUS_BGCOLOR_DEFAULT);
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
                         }
                         updateState(chip);
                     }
@@ -1947,8 +1944,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                     listingArea.append(writer.toString());
                     listingArea.setCaretPosition(0);
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (DisassemblyException | ParsingException | MemoryMapException | IOException ex) {
                 }
             }
         };
@@ -2152,7 +2148,6 @@ public class EmulatorUI extends JFrame implements ActionListener {
             try {
                 OutputOption.setOption(outputOptions, checkBox.getText(), checkBox.isSelected());
             } catch (ParsingException e) {
-                e.printStackTrace();
             }
         }
     }

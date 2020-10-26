@@ -128,7 +128,6 @@ public class DisassemblyLogger {
                 try {
                     writer.append(s);
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }

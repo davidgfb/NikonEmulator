@@ -486,7 +486,6 @@ public class EmulationFramework {
             masterClock.add(emulator[chip], chip, false, true);
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -499,6 +498,7 @@ public class EmulationFramework {
     }
 
     private ClockableCallbackHandler getCallbackHandler(final int chip, final ClockableCallbackHandler callbackHandler) {
+        //nuevo
         return new ClockableCallbackHandler() {
                 @Override
                 public void onNormalExit(Object o) {
@@ -506,7 +506,6 @@ public class EmulationFramework {
                         isEmulatorPlaying[chip] = false;
                         emulator[chip].clearBreakConditions();
                     } catch (Exception e) {
-                        e.printStackTrace();
                     }
                     if (callbackHandler != null) callbackHandler.onNormalExit(o);
                 }
@@ -515,7 +514,6 @@ public class EmulationFramework {
                 public void onException(Exception e) {
                     isEmulatorPlaying[chip] = false;
                     emulator[chip].clearBreakConditions();
-                    e.printStackTrace();
                     if (callbackHandler != null) callbackHandler.onException(e);
                 }
             };

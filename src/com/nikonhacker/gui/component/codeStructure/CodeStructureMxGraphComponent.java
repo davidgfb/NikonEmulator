@@ -96,7 +96,6 @@ public class CodeStructureMxGraphComponent extends mxGraphComponent {
                             ui.setStatusText(chip, "The target for this jump could not be determined in a static way");
                         }
                     } catch (IOException e1) {
-                        e1.printStackTrace();
                     }
                 }
                 maybePopup(e);

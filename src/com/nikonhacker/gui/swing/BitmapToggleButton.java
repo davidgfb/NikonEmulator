@@ -95,7 +95,6 @@ public class BitmapToggleButton extends JComponent implements MouseMotionListene
                     imageCache[hover][stateNumber] = getBufferedImage(imgDir + "/" + imgPrefix + "_" + imageSuffixes[hover][stateNumber] + ".png");
                 } catch (IOException e) {
                     System.err.println("Error initializing images #" + stateNumber + " for BitmapToggleButton: " + imgPrefix);
-                    e.printStackTrace();
                 }
             }
         }

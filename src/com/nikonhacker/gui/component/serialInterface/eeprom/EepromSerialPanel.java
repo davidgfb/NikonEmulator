@@ -121,7 +121,6 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
                 prefs.setLastEepromFileName(fileName);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error loading eeprom contents from file: " + e.getMessage(), "Load error", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }
@@ -140,7 +139,6 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
                 }
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error saving eeprom contents to file: " + e.getMessage(), "Save error", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }
@@ -149,7 +147,6 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
         try {
             eepromHexEditor.open(new ByteArrayInputStream(eeprom.getMemory()));
         } catch (IOException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading eeprom contents in Hex editor. See console for more information.");
         }
     }

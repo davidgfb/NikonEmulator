@@ -228,7 +228,6 @@ public class BreakTrigger {
                     }
                     catch (ParsingException e) {
                         System.err.println("Could not determine syscall list.");
-                        e.printStackTrace();
                     }
                 }
             }

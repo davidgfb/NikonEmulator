@@ -2,6 +2,7 @@ package com.nikonhacker.itron.tx;
 
 import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.tx.TxCPUState;
+import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.Platform;
 import com.nikonhacker.emu.TxEmulator;
 import com.nikonhacker.emu.memory.Memory;
@@ -207,8 +208,7 @@ public class TxSysCallEnvironment extends SysCallEnvironment {
                     // Read error code
                     return ErrorCode.fromTxValue(tmpCpuState.getReg(TxCPUState.V0));
                 }
-                catch (Throwable t) {
-                    t.printStackTrace();
+                catch (EmulationException t) {
                     return ErrorCode.E_EMULATOR;
                 }
             }

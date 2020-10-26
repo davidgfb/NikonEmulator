@@ -242,7 +242,6 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
                 hexEditor.open(new ByteArrayInputStream(currentPage));
                 hexEditor.setColorMap(createColorMap());
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -343,7 +342,6 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
             hexEditor.setColorMap(createColorMap());
             hexEditor.setRowHeaderOffset(baseAddress);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

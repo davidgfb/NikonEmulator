@@ -324,7 +324,6 @@ public class LcdSerialPanel extends SerialDevicePanel {
                 }
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error saving image to file: " + e.getMessage(), "Save error", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
         }
     }

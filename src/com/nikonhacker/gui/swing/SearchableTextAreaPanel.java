@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -228,8 +229,7 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                             for (Integer start : offsets.get()) {
                                 highlights.put(start, highlighter.addHighlight(start, start + searchString.length(), nonSelectedHighlighter));
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } catch (InterruptedException | ExecutionException | BadLocationException e) {
                         }
                     }
                 }
@@ -277,7 +277,6 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                             highlights.put(selectedHighlightPosition, highlighter.addHighlight(selectedHighlightPosition, selectedHighlightPosition + searchString.length(), nonSelectedHighlighter));
                         }
                     } catch (BadLocationException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -418,7 +417,6 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                 try {
                     document.getText(lsOffset, leOffset - lsOffset, seg);
                 } catch (BadLocationException e) {
-                    e.printStackTrace();
                 }
 
                 String line = matchCase?seg.toString():seg.toString().toLowerCase();

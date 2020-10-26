@@ -72,6 +72,7 @@ class HexEditorTransferHandler extends TransferHandler {
 	 * @param c The <code>HexEditor</code>.
 	 * @return The permitted operations.
 	 */
+        @Override
 	public int getSourceActions(JComponent c) {
 		HexEditor e = (HexEditor)c;
 		return e.isEnabled() ? COPY_OR_MOVE : COPY;
@@ -85,6 +86,7 @@ class HexEditorTransferHandler extends TransferHandler {
 	 * @param t The data to be imported.
 	 * @return Whether the data was successfully imported.
 	 */
+        @Override
 	public boolean importData(JComponent c, Transferable t) {
 
 		HexEditor e = (HexEditor)c;
@@ -100,10 +102,9 @@ class HexEditorTransferHandler extends TransferHandler {
 					byte[] bytes = text.getBytes();
 					e.replaceSelection(bytes);
 				}
-			} catch (UnsupportedFlavorException ufe) {
-				ufe.printStackTrace(); // Never happens.
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
+			} catch (UnsupportedFlavorException | IOException ufe) {
+                            // Never happens.
+                            
 			}
 		}
 

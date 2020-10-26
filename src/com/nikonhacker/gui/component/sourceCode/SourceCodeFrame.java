@@ -1,5 +1,6 @@
 package com.nikonhacker.gui.component.sourceCode;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.Constants;
 import com.nikonhacker.Format;
 import com.nikonhacker.disassembly.CPUState;
@@ -19,7 +20,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 
-import javax.imageio.ImageIO;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.BadLocationException;
@@ -52,9 +52,11 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.StringWriter;
+import static java.lang.System.err;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static javax.imageio.ImageIO.read;
 import javax.swing.DefaultListModel;
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
@@ -78,10 +80,12 @@ import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+//</editor-fold>
+
 
 public class SourceCodeFrame extends DocumentFrame implements ActionListener, KeyListener, PopupMenuListener {
-    private static final int FRAME_WIDTH  = 400;
-    private static final int FRAME_HEIGHT = 500;
+    private static final int FRAME_WIDTH  = 400,
+                             FRAME_HEIGHT = 500;
 
     private final RSyntaxTextArea listingArea;
     private final ImageIcon icons[][][][][][][][][] = new ImageIcon[2][2][2][2][2][2][2][2][2];
@@ -89,8 +93,8 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
     private Gutter gutter;
     private Object pcHighlightTag = null;
     private final JTextField searchField;
-    private       JCheckBox  regexCB;
-    private       JCheckBox  matchCaseCB;
+    private       JCheckBox  regexCB,
+                             matchCaseCB;
 
     private CPUState      cpuState;
     private CodeStructure codeStructure;
@@ -101,46 +105,46 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
     private final JTextField        targetField;
     private       int               lastClickedTextPosition;
     private final JCheckBox         followPcCheckBox;
-    private       JMenuItem         addBreakPointMenuItem;
-    private       JMenuItem         removeBreakPointMenuItem;
-    private       JMenuItem         editBreakPointMenuItem;
-    private       JMenuItem         toggleBreakPointMenuItem;
-    private       JCheckBoxMenuItem breakCheckBoxMenuItem;
-    private       JCheckBoxMenuItem logCheckBoxMenuItem;
-    private       JMenuItem         runToHereMenuItem;
-    private       JMenuItem         debugToHereMenuItem;
-    private       JMenuItem         jumpHereMenuItem;
-    private       JMenuItem         copyAddressMenuItem;
+    private       JMenuItem         addBreakPointMenuItem,
+                                    removeBreakPointMenuItem,
+                                    editBreakPointMenuItem,
+                                    toggleBreakPointMenuItem,
+                                    runToHereMenuItem,
+                                    debugToHereMenuItem,
+                                    jumpHereMenuItem,
+                                    copyAddressMenuItem;
+    private       JCheckBoxMenuItem breakCheckBoxMenuItem,
+                                    logCheckBoxMenuItem;
+    
 
     private boolean enabled = true;
 
-    private BufferedImage stopImg;
-    private BufferedImage noStopImg;
-    private BufferedImage logImg;
-    private BufferedImage startLogImg;
-    private BufferedImage endLogImg;
-    private BufferedImage jumpImg;
-    private BufferedImage interruptImg;
-    private BufferedImage noInterruptImg;
-    private BufferedImage registerImg;
+    private BufferedImage stopImg,
+                          noStopImg,
+                          logImg,
+                          startLogImg,
+                          endLogImg,
+                          jumpImg,
+                          interruptImg,
+                          noInterruptImg,
+                          registerImg;
 
     public SourceCodeFrame(String title, String imageName, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable, final int chip, final EmulatorUI ui, final CPUState cpuState, final CodeStructure codeStructure) {
         super(title, imageName, resizable, closable, maximizable, iconifiable, chip, ui);
 
         // Load icons
         try {
-            stopImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerStop.png"));
-            noStopImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerNoStop.png"));
-            logImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerLog.png"));
-            startLogImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerStartLog.png"));
-            endLogImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerEndLog.png"));
-            jumpImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerJump.png"));
-            interruptImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerInterrupt.png"));
-            noInterruptImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerNoInterrupt.png"));
-            registerImg = ImageIO.read(EmulatorUI.class.getResource("images/triggerRegister.png"));
+            stopImg = read(EmulatorUI.class.getResource("images/triggerStop.png"));
+            noStopImg = read(EmulatorUI.class.getResource("images/triggerNoStop.png"));
+            logImg = read(EmulatorUI.class.getResource("images/triggerLog.png"));
+            startLogImg = read(EmulatorUI.class.getResource("images/triggerStartLog.png"));
+            endLogImg = read(EmulatorUI.class.getResource("images/triggerEndLog.png"));
+            jumpImg = read(EmulatorUI.class.getResource("images/triggerJump.png"));
+            interruptImg = read(EmulatorUI.class.getResource("images/triggerInterrupt.png"));
+            noInterruptImg = read(EmulatorUI.class.getResource("images/triggerNoInterrupt.png"));
+            registerImg = read(EmulatorUI.class.getResource("images/triggerRegister.png"));
         } catch (IOException e) {
-            System.err.println("Error initializing source code break trigger icons");
-            e.printStackTrace();
+            err.println("Error initializing source code break trigger icons");
         }
 
         this.cpuState = cpuState;
@@ -165,7 +169,9 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
         topToolbar.add(followPcCheckBox);
 
         // Add listeners
+        //nuevo
         ActionListener exploreExecutor = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String str = targetField.getText();
                 Integer address = null;
@@ -290,6 +296,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             if (line != null) {
                 // must be called after repaint that is not done yet
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         // this is faster way
                         setLineContextVisible(line);
@@ -298,7 +305,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                             try {
                                 listingArea.setCaretPosition(listingArea.getLineStartOffset(line));
                             } catch (BadLocationException e1) {
-                                e1.printStackTrace();
                             }
                         }
                     }
@@ -438,7 +444,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
                 }
             }
         });
@@ -544,7 +549,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
                 }
             }
         });
@@ -568,7 +572,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
                 }
             }
         });
@@ -624,7 +627,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             }
         } catch (BadLocationException e) {
             pcHighlightTag = null;
-            e.printStackTrace();
         }
     }
 
@@ -664,7 +666,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             }
         } catch (BadLocationException e) {
             pcHighlightTag = null;
-            e.printStackTrace();
         }
     }
 
@@ -755,6 +756,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             this.debugMode = debugMode;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 JTextComponent textComponent = getTextComponent(e);
@@ -766,12 +768,12 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                     }
                 }
             } catch (BadLocationException ble) {
-                ble.printStackTrace();
             }
         }
     }
 
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         // "FindNext" => search forward, "FindPrev" => search backward
         String command = e.getActionCommand();
@@ -814,6 +816,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
         }
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 
@@ -828,7 +831,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             }
             performSearch(true);
         } catch (BadLocationException e) {
-            e.printStackTrace();
         }
     }
 
@@ -896,7 +898,6 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         gutter.addLineTrackingIcon(lineFromAddress, getIcon(breakTrigger));
                     }
                 } catch (BadLocationException e) {
-                    e.printStackTrace();
                 }
             }
         }

@@ -2,7 +2,9 @@ package com.nikonhacker.gui.component.analyse;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.disassembly.Disassembler;
+import com.nikonhacker.disassembly.DisassemblyException;
 import com.nikonhacker.disassembly.OutputOption;
+import com.nikonhacker.disassembly.ParsingException;
 import com.nikonhacker.disassembly.fr.Dfr;
 import com.nikonhacker.disassembly.tx.Dtx;
 import com.nikonhacker.emu.memory.Memory;
@@ -13,6 +15,7 @@ import com.nikonhacker.gui.swing.SearchableTextAreaPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -82,8 +85,7 @@ public class AnalyseProgressDialog extends JDialog {
                     if (emulatorUI.getPrefs().getOutputOptions(chip).contains(OutputOption.STRUCTURE)) {
                         debugPrintWriter.println("You may now use the 'Code Structure' and 'Source Code' windows");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (DisassemblyException | ParsingException | IOException e) {
                     debugPrintWriter.println("ERROR : " + e.getClass().getName() + ": " + e.getMessage());
                     debugPrintWriter.println("See console for more information");
                 }

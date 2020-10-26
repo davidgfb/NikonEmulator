@@ -85,7 +85,6 @@ public class NkldUtils {
             try {
                 if (fis != null) fis.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
