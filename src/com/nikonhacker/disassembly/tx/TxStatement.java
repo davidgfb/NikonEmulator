@@ -836,7 +836,6 @@ public class TxStatement extends Statement {
                                 }
                                 buffer.append(Format.asHex(context.cpuState.getReg(rj_rt_ft), tmp));
                             }
-                            break;
                         }
                         // exclude from analyse non-existing addresses
                         if (context.memory.isMapped(offset)) {
