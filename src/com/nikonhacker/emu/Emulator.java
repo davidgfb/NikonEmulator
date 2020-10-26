@@ -199,7 +199,6 @@ public abstract class Emulator implements Clockable {
             if (logger.isIncludeIndent()) {
                 msg.append(logger.getIndent());
                 switch(statement.getInstruction().getFlowType()) {
-                    case CALL:
                     case INT:
                         logger.indent();
                         break;
@@ -231,9 +230,11 @@ public abstract class Emulator implements Clockable {
             for (int i = 0; i < sleepIntervalMs / 100; i++) {
                 try {
                     Thread.sleep(100);
+                    /*
                     if (exitSleepLoop) {
                         break;
                     }
+                    */
                 } catch (InterruptedException e) {
                     out.println("e: "+e);
                     // noop
