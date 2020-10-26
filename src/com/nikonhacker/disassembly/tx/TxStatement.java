@@ -451,6 +451,7 @@ public class TxStatement extends Statement {
         int currentlySelectedRegisterNumber = TxCPUState.NOREG;
 
         for (char actionChar : instruction.getAction().toCharArray()) {
+            OUTER:
             switch (actionChar) {
                 case 'A':
                     currentlySelectedRegisterNumber = TxCPUState.RA;
@@ -516,44 +517,43 @@ public class TxStatement extends Statement {
                                 addr = context.cpuState.getReg(ri_rs_fs) + decodedImm;
                             else
                                 addr = context.cpuState.getReg(ri_rs_fs) + BinaryArithmetics.signExtend(decodedImmBitWidth, decodedImm);
-                            /*
-                                coderat: This is heuristic evaluation, so use loadInstruction...() functions for
-                                         memory access, because I do not want memory auto-expansion here
-                             */
-                            // exclude from analyse non-existing addresses
                             if (context.memory.isMapped(addr)) {
                                 // load value
-                                if (actionChar =='g') {
-                                    // exclude from analyse non-existing addresses
-                                    if (context.memory.isMapped(addr+3)) {
-                                        context.cpuState.setRegisterDefined(rj_rt_ft);
-                                        context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction32(addr));
+                                switch (actionChar) {
+                                    case 'g':
+                                        // exclude from analyse non-existing addresses
+                                        if (context.memory.isMapped(addr+3)) {
+                                            context.cpuState.setRegisterDefined(rj_rt_ft);
+                                            context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction32(addr));
+                                            break OUTER;
+                                        }
                                         break;
-                                    }
-                                } else if (actionChar =='f') {
-                                    if (context.memory.isMapped(addr+1)) {
-                                        context.cpuState.setRegisterDefined(rj_rt_ft);
-                                        context.cpuState.setReg(rj_rt_ft, BinaryArithmetics.signExtend(16,context.memory.loadInstruction16(addr)));
+                                    case 'f':
+                                        if (context.memory.isMapped(addr+1)) {
+                                            context.cpuState.setRegisterDefined(rj_rt_ft);
+                                            context.cpuState.setReg(rj_rt_ft, BinaryArithmetics.signExtend(16,context.memory.loadInstruction16(addr)));
+                                            break OUTER;
+                                        }
                                         break;
-                                    }
-                                } else if (actionChar =='h') {
-                                    if (context.memory.isMapped(addr+1)) {
-                                        context.cpuState.setRegisterDefined(rj_rt_ft);
-                                        context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction16(addr));
+                                    case 'h':
+                                        if (context.memory.isMapped(addr+1)) {
+                                            context.cpuState.setRegisterDefined(rj_rt_ft);
+                                            context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction16(addr));
+                                            break OUTER;
+                                        }
                                         break;
-                                    }
-                                } else if (actionChar =='e') {
-                                    context.cpuState.setRegisterDefined(rj_rt_ft);
-                                    context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction8(addr));
-                                    break;
-                                } else {
-                                    context.cpuState.setRegisterDefined(rj_rt_ft);
-                                    context.cpuState.setReg(rj_rt_ft, BinaryArithmetics.signExtend(8,context.memory.loadInstruction8(addr)));
-                                    break;
+                                    case 'e':
+                                        context.cpuState.setRegisterDefined(rj_rt_ft);
+                                        context.cpuState.setReg(rj_rt_ft, context.memory.loadInstruction8(addr));
+                                        break OUTER;
+                                    default:
+                                        context.cpuState.setRegisterDefined(rj_rt_ft);
+                                        context.cpuState.setReg(rj_rt_ft, BinaryArithmetics.signExtend(8,context.memory.loadInstruction8(addr)));
+                                        break OUTER;
                                 }
                             }
-                      }
-                      context.cpuState.setRegisterUndefined(rj_rt_ft);
+                        }
+                        context.cpuState.setRegisterUndefined(rj_rt_ft);
                     }
                     break;
                 default:
@@ -827,12 +827,16 @@ public class TxStatement extends Statement {
                         if (writeDirection) {
                             buffer.append('=');
                             if (context.cpuState.isRegisterDefined(rj_rt_ft)) {
-                                if (formatChar=='e') {
-                                    tmp = 2;
-                                } else if (formatChar=='h') {
-                                    tmp = 4;
-                                } else {
-                                    tmp = 8;
+                                switch (formatChar) {
+                                    case 'e':
+                                        tmp = 2;
+                                        break;
+                                    case 'h':
+                                        tmp = 4;
+                                        break;
+                                    default:
+                                        tmp = 8;
+                                        break;
                                 }
                                 buffer.append(Format.asHex(context.cpuState.getReg(rj_rt_ft), tmp));
                             }
