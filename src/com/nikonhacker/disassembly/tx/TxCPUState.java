@@ -767,6 +767,8 @@ public class TxCPUState extends CPUState {
     }
 
     public void setCp1CrReg(int regNumber, int value) {
+        
+        
         switch(regNumber) {
             case FIR:
                 throw new RuntimeException("Cannot write to read-only CP1 Control register FIR");

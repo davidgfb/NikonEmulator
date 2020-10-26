@@ -3231,13 +3231,22 @@ public class TxInstructionSet
             null, InstructionFormat16.SPC_BIT,
             Instruction.FlowType.NONE, false, Instruction.DelaySlotType.NONE,
             new SimulationCode() {
+                @Override
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
                     int address = 0;
                     switch (statement.ri_rs_fs) {
-                        case 0b00: address = statement.imm << 18 >> 18; break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
-                        case 0b01: address = statement.imm + context.cpuState.getReg(TxCPUState.GP); break;
-                        case 0b10: address = statement.imm + context.cpuState.getReg(TxCPUState.SP); break;
-                        case 0b11: address = statement.imm + context.cpuState.getReg(TxCPUState.FP); break;
+                        case 0b00: 
+                            address = statement.imm << 18 >> 18; 
+                            break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
+                        case 0b01: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.GP); 
+                            break;
+                        case 0b10: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.SP); 
+                            break;
+                        case 0b11: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.FP); 
+                            break;
                     }
                     context.memory.store8(address, context.memory.loadUnsigned8(address) & (~(1 << statement.sa_cc)));
                     context.cpuState.pc += statement.getNumBytes();
@@ -3346,10 +3355,18 @@ public class TxInstructionSet
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
                     int address = 0;
                     switch (statement.ri_rs_fs) {
-                        case 0b00: address = statement.imm << 18 >> 18; break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
-                        case 0b01: address = statement.imm + context.cpuState.getReg(TxCPUState.GP); break;
-                        case 0b10: address = statement.imm + context.cpuState.getReg(TxCPUState.SP); break;
-                        case 0b11: address = statement.imm + context.cpuState.getReg(TxCPUState.FP); break;
+                        case 0b00: 
+                            address = statement.imm << 18 >> 18; 
+                            break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
+                        case 0b01: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.GP); 
+                            break;
+                        case 0b10: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.SP); 
+                            break;
+                        case 0b11: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.FP); 
+                            break;
                     }
                     context.cpuState.setReg(TxCPUState.T8, ((context.memory.loadUnsigned8(address) & (1 << statement.sa_cc)) == 0)?0:1);
                     context.cpuState.pc += statement.getNumBytes();
@@ -3386,10 +3403,18 @@ public class TxInstructionSet
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
                     int address = 0;
                     switch (statement.ri_rs_fs) {
-                        case 0b00: address = statement.imm << 18 >> 18; break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
-                        case 0b01: address = statement.imm + context.cpuState.getReg(TxCPUState.GP); break;
-                        case 0b10: address = statement.imm + context.cpuState.getReg(TxCPUState.SP); break;
-                        case 0b11: address = statement.imm + context.cpuState.getReg(TxCPUState.FP); break;
+                        case 0b00: 
+                            address = statement.imm << 18 >> 18; 
+                            break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
+                        case 0b01: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.GP); 
+                            break;
+                        case 0b10: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.SP); 
+                            break;
+                        case 0b11: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.FP); 
+                            break;
                     }
                     if ((context.cpuState.getReg(TxCPUState.T8) & 1) == 0) {
                         // Clear bit
@@ -3461,10 +3486,18 @@ public class TxInstructionSet
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
                     int address = 0;
                     switch (statement.ri_rs_fs) {
-                        case 0b00: address = statement.imm << 18 >> 18; break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
-                        case 0b01: address = statement.imm + context.cpuState.getReg(TxCPUState.GP); break;
-                        case 0b10: address = statement.imm + context.cpuState.getReg(TxCPUState.SP); break;
-                        case 0b11: address = statement.imm + context.cpuState.getReg(TxCPUState.FP); break;
+                        case 0b00: 
+                            address = statement.imm << 18 >> 18; 
+                            break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
+                        case 0b01: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.GP); 
+                            break;
+                        case 0b10: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.SP); 
+                            break;
+                        case 0b11: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.FP); 
+                            break;
                     }
                     context.memory.store8(address, context.memory.loadUnsigned8(address) | (1 << statement.sa_cc));
                     context.cpuState.pc += statement.getNumBytes();
@@ -3543,10 +3576,18 @@ public class TxInstructionSet
                 public void simulate(Statement statement, StatementContext context) throws EmulationException {
                     int address = 0;
                     switch (statement.ri_rs_fs) {
-                        case 0b00: address = statement.imm << 18 >> 18; break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
-                        case 0b01: address = statement.imm + context.cpuState.getReg(TxCPUState.GP); break;
-                        case 0b10: address = statement.imm + context.cpuState.getReg(TxCPUState.SP); break;
-                        case 0b11: address = statement.imm + context.cpuState.getReg(TxCPUState.FP); break;
+                        case 0b00: 
+                            address = statement.imm << 18 >> 18; 
+                            break; // sign extend for R0 : shift = 32 - statement.immBitWidth = 32 - 14;
+                        case 0b01: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.GP); 
+                            break;
+                        case 0b10: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.SP); 
+                            break;
+                        case 0b11: 
+                            address = statement.imm + context.cpuState.getReg(TxCPUState.FP); 
+                            break;
                     }
                     context.cpuState.setReg(TxCPUState.T8, ((context.memory.loadUnsigned8(address) & (1 << statement.sa_cc)) == 0)?1:0); // !bext
                     context.cpuState.pc += statement.getNumBytes();
@@ -4417,18 +4458,12 @@ public class TxInstructionSet
                     if (aregs > 0) {
                         int astatic = 0;
                         switch (aregs) {
-                            case 0b0001:
-                            case 0b0101:
-                            case 0b1001:
                             case 0b1101:
                                 astatic = 1;
                                 break;
-                            case 0b0010:
-                            case 0b0110:
                             case 0b1010:
                                 astatic = 2;
                                 break;
-                            case 0b0011:
                             case 0b0111:
                                 astatic = 3;
                                 break;
