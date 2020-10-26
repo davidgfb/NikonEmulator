@@ -83,8 +83,7 @@ public class FrStatement extends Statement {
     }
 
     public void decodeOperands(int pc, Memory memory) {
-        switch (((FrInstruction) getInstruction()).instructionFormat)
-        {
+        switch (((FrInstruction) getInstruction()).instructionFormat) {
             case A:
                 ri_rs_fs = 0xF & data[0];
                 rj_rt_ft = 0xF & (data[0] >> 4);
@@ -189,10 +188,8 @@ public class FrStatement extends Statement {
 
         StringBuilder currentBuffer = operandBuffer;
 
-        for (char formatChar : getInstruction().getOperandFormat().toCharArray())
-        {
-            switch (formatChar)
-            {
+        for (char formatChar : getInstruction().getOperandFormat().toCharArray()) {
+            switch (formatChar) {
                 case '#':
                     currentBuffer.append(fmt_imm);
                     break;
@@ -241,11 +238,12 @@ public class FrStatement extends Statement {
                 case 'm':   // for use with E, H, G
                     writeDirection = true;
                     break;
+                /*
                 case 'G': // load 32-bit word
                 case 'H': // load 16-bit value
+                */
                 case 'E': // load 8-bit value
-                    if (context.cpuState.isRegisterDefined(decodedRjRtFt))
-                    {
+                    if (context.cpuState.isRegisterDefined(decodedRjRtFt)) {
                         final int addr = context.cpuState.getReg(decodedRjRtFt);
                         currentBuffer.append('(' + Format.asHex(addr, 8)+')');
                         /*
@@ -255,15 +253,19 @@ public class FrStatement extends Statement {
                         if (writeDirection) {
                             currentBuffer.append('=');
                             if (context.cpuState.isRegisterDefined(decodedRiRsFs)) {
-                                if (formatChar=='E')
-                                    tmp = 2;
-                                else if (formatChar=='H')
-                                    tmp = 4;
-                                else
-                                    tmp = 8;
+                                switch (formatChar) {
+                                    case 'E':
+                                        tmp = 2;
+                                        break;
+                                    case 'H':
+                                        tmp = 4;
+                                        break;
+                                    default:
+                                        tmp = 8;
+                                        break;
+                                }
                                 currentBuffer.append(Format.asHex(context.cpuState.getReg(decodedRiRsFs), tmp));
                             }
-                            break;
                         }
                         // exclude from analyse non-existing addresses
                         if (context.memory.isMapped(addr)) {
@@ -275,14 +277,20 @@ public class FrStatement extends Statement {
                             } else {
                                 if (formatChar =='H') {
                                     // exclude from analyse non-existing addresses
-                                    if (!context.memory.isMapped(addr+1))
+                                    /*
+                                    if (!context.memory.isMapped(addr+1)) {
                                         break;
+                                    }
+                                    */
                                     value = context.memory.loadInstruction16(addr);
                                     tmp = 4;
                                 } else {
                                     // exclude from analyse non-existing addresses
-                                    if (!context.memory.isMapped(addr+3))
+                                    /*
+                                    if (!context.memory.isMapped(addr+3)) {
                                         break;
+                                    }
+                                    */
                                     tmp = 8;
                                     value = context.memory.loadInstruction32(addr);
                                 }
@@ -302,25 +310,19 @@ public class FrStatement extends Statement {
                     break;
 
                 case 'I':
-                    if (context.cpuState.isRegisterDefined(decodedRiRsFs))
-                    {
+                    if (context.cpuState.isRegisterDefined(decodedRiRsFs)) {
                         decodedImm = context.cpuState.getReg(decodedRiRsFs);
                         immBitWidth = 32;
-                    }
-                    else
-                    {
+                    } else {
                         decodedImm = 0;
                         immBitWidth = 0;
                     }
                     break;
                 case 'J':
-                    if (context.cpuState.isRegisterDefined(decodedRjRtFt))
-                    {
+                    if (context.cpuState.isRegisterDefined(decodedRjRtFt)) {
                         decodedImm = context.cpuState.getReg(decodedRjRtFt);
                         immBitWidth = 32;
-                    }
-                    else
-                    {
+                    } else {
                         decodedImm = 0;
                         immBitWidth = 0;
                     }
@@ -329,7 +331,6 @@ public class FrStatement extends Statement {
                 case 'T':
                     currentBuffer.append("INT");
                     break;
-                case 'X':
                 case 'Y':
                     throw new RuntimeException("no more X or Y : operand parsing is now done in decodeOperands()");
                 case 'a':
@@ -357,10 +358,11 @@ public class FrStatement extends Statement {
 
                     tmp = (int)(((1L << pos) - 1) & (decodedImm >> pos));
                     int tmq = (int)(((1L << pos) - 1) & decodedImm);
-                    if (tmq != 0)
+                    if (tmq != 0) {
                         currentBuffer.append(((double)tmp) / tmq);
-                    else
+                    } else {
                         currentBuffer.append("NaN");
+                    }
 
                     break;
                 case 'g':
@@ -410,16 +412,13 @@ public class FrStatement extends Statement {
                     break;
                 case 's':
                     /* signed constant */
-                    if (BinaryArithmetics.isNegative(immBitWidth, decodedImm))
-                    {
+                    if (BinaryArithmetics.isNegative(immBitWidth, decodedImm)) {
                         /* avoid "a+-b" : remove the last "+" so that output is "a-b" */
                         if (outputOptions.contains(OutputOption.CSTYLE) && (currentBuffer.charAt(currentBuffer.length() - 1) == '+')) {
                             currentBuffer.delete(currentBuffer.length() - 1, currentBuffer.length() - 1);
                         }
                         currentBuffer.append(Format.asHexInBitsLength("-" + (outputOptions.contains(OutputOption.DOLLAR)?"$":"0x"), BinaryArithmetics.neg(immBitWidth, decodedImm), immBitWidth));
-                    }
-                    else
-                    {
+                    } else {
                         currentBuffer.append(Format.asHexInBitsLength((outputOptions.contains(OutputOption.DOLLAR)?"$":"0x"), decodedImm, immBitWidth - 1));
                     }
                     break;
@@ -437,32 +436,32 @@ public class FrStatement extends Statement {
                 case 'y':
                     c += 8; // use high register list
                     // continue with case 'z'
+                    break;
                 case 'z':
                     /* register list */
                     currentBuffer.append(fmt_par);
                     boolean first = true;
 
                     if ((decodedImm & 0x100) != 0) {
-                        for (int i = 7; i >= 0; i--)
-                        {
-                            if ((decodedImm & (1 << i)) != 0)
-                            {
-                                if (first)
+                        for (int i = 7; i >= 0; i--) {
+                            if ((decodedImm & (1 << i)) != 0) {
+                                if (first) {
                                     first = false;
-                                else
+                                } else {
                                     currentBuffer.append(",");
+                                }
                                 currentBuffer.append(FrCPUState.registerLabels[c + 7 - i]);
                             }
                         }
                     } else {
-                        for (int i = 0; i < 8; ++i)
-                        {
-                            if ((decodedImm & (1 << i)) != 0)
-                            {
-                                if (first)
+                        for (int i = 0; i < 8; ++i) {
+                            if ((decodedImm & (1 << i)) != 0) {
+                                if (first) {
                                     first = false;
-                                else
+                                }
+                                else {
                                     currentBuffer.append(",");
+                                }
                                 currentBuffer.append(FrCPUState.registerLabels[c + i]);
                             }
                         }

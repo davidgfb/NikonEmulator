@@ -85,8 +85,7 @@ public class ArmStatement extends Statement {
 
     // ------------------------------
     public void decodeOperands(int pc, Memory memory) {
-        switch (((ArmInstruction) getInstruction()).instructionFormat)
-        {
+        switch (((ArmInstruction) getInstruction()).instructionFormat) {
 /*
             case A:
                 ri_rs_fs = 0xF & data[0];
@@ -119,10 +118,11 @@ public class ArmStatement extends Statement {
                 */
             case W:
                 immBitWidth = numData*16;
-                if (immBitWidth>16)
+                if (immBitWidth>16) {
                     imm = halfwords2word(data[0], data[1]);
-                else
+                } else {
                     imm = data[0];
+                }
                 break;
         }
 
@@ -181,8 +181,7 @@ public class ArmStatement extends Statement {
 
         for (char formatChar : getInstruction().getOperandFormat().toCharArray())
         {
-            switch (formatChar)
-            {
+            switch (formatChar) {
                 case '#':
                     currentBuffer.append(fmt_imm);
                     break;
@@ -204,10 +203,11 @@ public class ArmStatement extends Statement {
 
                     tmp = (int)(((1L << pos) - 1) & (decodedImm >> pos));
                     int tmq = (int)(((1L << pos) - 1) & decodedImm);
-                    if (tmq != 0)
+                    if (tmq != 0) {
                         currentBuffer.append(((double)tmp) / tmq);
-                    else
+                    } else {
                         currentBuffer.append("NaN");
+                    }
 
                     break;
                 case 'u':
@@ -233,10 +233,8 @@ public class ArmStatement extends Statement {
 
         int r = ArmCPUState.NOREG;
 
-        for (char s : instruction.getAction().toCharArray())
-        {
-            switch (s)
-            {
+        for (char s : instruction.getAction().toCharArray()) {
+            switch (s) {
                 default:
                     err.println("bad action '" + s + "' in " + instruction + " at " + Format.asHex(context.cpuState.pc, 8));
                     break;

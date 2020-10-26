@@ -83,9 +83,15 @@ public class RangeType {
                 sb.append(":");
                 switch (widths.get(0))
                 {
-                    case MD_LONG: sb.append("32"); break;
-                    case MD_WORD: sb.append("16"); break;
-                    default: sb.append("?"); break;
+                    case MD_LONG: 
+                        sb.append("32"); 
+                        break;
+                    case MD_WORD: 
+                        sb.append("16"); 
+                        break;
+                    default: 
+                        sb.append("?"); 
+                        break;
                 }
                 string= sb.toString();
                 break;

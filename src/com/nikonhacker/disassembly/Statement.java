@@ -112,12 +112,10 @@ public abstract class Statement {
 
         if (instruction == null) {
             out += " (no instruction) " + operandString;
-        }
-        else {
+        } else {
             if (delaySlotType == null) {
                 System.out.println("Error : delaySlotType = null");
-            }
-            else {
+            } else {
                 switch (delaySlotType) {
                     case NONE:
                         out += " " + StringUtils.rightPad(instruction.getName(), 7) + " " + getOperandString();
