@@ -163,15 +163,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 //</editor-fold>
 
-
 public class EmulatorUI extends JFrame implements ActionListener {
-
-    public static String getBUTTON_SIZE_SMALL() {
-        return BUTTON_SIZE_SMALL;
-    }
     
-    
-
     //<editor-fold defaultstate="collapsed" desc="vars">
     // Constants for commands
     private static final String[] COMMAND_IMAGE_LOAD                         = {"FR_IMAGE_LOAD", "TX_IMAGE_LOAD"},
@@ -270,8 +263,7 @@ public class EmulatorUI extends JFrame implements ActionListener {
                               STATUS_BGCOLOR_BREAK   = new Color(255, 127, 127);
 
     private EmulationFramework framework;
-//</editor-fold>
-    
+
     // UI
 
     private final Insets toolbarButtonMargin;
@@ -287,73 +279,68 @@ public class EmulatorUI extends JFrame implements ActionListener {
                         pauseMenuItem      = new JMenuItem[2],
                         stepMenuItem       = new JMenuItem[2],
                         stopMenuItem       = new JMenuItem[2],
-                        breakpointMenuItem = new JMenuItem[2];
-
+                        breakpointMenuItem = new JMenuItem[2],
+                        analyseMenuItem        = new JMenuItem[2],
+                        saveLoadMemoryMenuItem = new JMenuItem[2],
+                        chipOptionsMenuItem    = new JMenuItem[2];
+    
     private JMenuItem generateSysSymbolsMenuItem;
 
-    private JCheckBoxMenuItem[] cpuStateMenuItem            = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] memoryHexEditorMenuItem     = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] interruptControllerMenuItem = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] programmableTimersMenuItem  = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] serialInterfacesMenuItem    = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] serialDevicesMenuItem       = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] ioPortsMenuItem             = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] adConverterMenuItem         = new JCheckBoxMenuItem[2];
-
-    private JCheckBoxMenuItem component4006MenuItem;
-    private JCheckBoxMenuItem screenEmulatorMenuItem;
-
-    private JCheckBoxMenuItem frontPanelMenuItem;
-
-    private JCheckBoxMenuItem[] disassemblyMenuItem             = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] memoryActivityViewerMenuItem    = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] customMemoryRangeLoggerMenuItem = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] callStackMenuItem               = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] iTronObjectMenuItem             = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] iTronReturnStackMenuItem        = new JCheckBoxMenuItem[2];
-
-    private JMenuItem[]         analyseMenuItem        = new JMenuItem[2];
-    private JCheckBoxMenuItem[] codeStructureMenuItem  = new JCheckBoxMenuItem[2];
-    private JCheckBoxMenuItem[] sourceCodeMenuItem     = new JCheckBoxMenuItem[2];
-    private JMenuItem[]         saveLoadMemoryMenuItem = new JMenuItem[2];
-    private JMenuItem[]         chipOptionsMenuItem    = new JMenuItem[2];
+    private JCheckBoxMenuItem component4006MenuItem,
+                              screenEmulatorMenuItem,
+                              frontPanelMenuItem;
+    
+    private JCheckBoxMenuItem[] cpuStateMenuItem            = new JCheckBoxMenuItem[2],
+                                memoryHexEditorMenuItem     = new JCheckBoxMenuItem[2],
+                                interruptControllerMenuItem = new JCheckBoxMenuItem[2],
+                                programmableTimersMenuItem  = new JCheckBoxMenuItem[2],
+                                serialInterfacesMenuItem    = new JCheckBoxMenuItem[2],
+                                serialDevicesMenuItem       = new JCheckBoxMenuItem[2],
+                                ioPortsMenuItem             = new JCheckBoxMenuItem[2],
+                                adConverterMenuItem         = new JCheckBoxMenuItem[2],
+                                disassemblyMenuItem             = new JCheckBoxMenuItem[2],
+                                memoryActivityViewerMenuItem    = new JCheckBoxMenuItem[2],
+                                customMemoryRangeLoggerMenuItem = new JCheckBoxMenuItem[2],
+                                callStackMenuItem               = new JCheckBoxMenuItem[2],
+                                iTronObjectMenuItem             = new JCheckBoxMenuItem[2],
+                                iTronReturnStackMenuItem        = new JCheckBoxMenuItem[2],
+                                codeStructureMenuItem  = new JCheckBoxMenuItem[2],
+                                sourceCodeMenuItem     = new JCheckBoxMenuItem[2];
 
     @SuppressWarnings("FieldCanBeLocal")
     private JMenuItem uiOptionsMenuItem;
 
     // Buttons
-    private JButton[] loadButton       = new JButton[2];
-    private JButton[] playButton       = new JButton[2];
-    private JButton[] debugButton      = new JButton[2];
-    private JButton[] pauseButton      = new JButton[2];
-    private JButton[] stepButton       = new JButton[2];
-    private JButton[] stopButton       = new JButton[2];
-    private JButton[] breakpointButton = new JButton[2];
+    private JButton[] loadButton       = new JButton[2],
+                      playButton       = new JButton[2],
+                      debugButton      = new JButton[2],
+                      pauseButton      = new JButton[2],
+                      stepButton       = new JButton[2],
+                      stopButton       = new JButton[2],
+                      breakpointButton = new JButton[2],
+                      disassemblyButton             = new JButton[2],
+                      cpuStateButton                = new JButton[2],
+                      memoryActivityViewerButton    = new JButton[2],
+                      memoryHexEditorButton         = new JButton[2],
+                      customMemoryRangeLoggerButton = new JButton[2],
+                      codeStructureButton           = new JButton[2],
+                      sourceCodeButton              = new JButton[2],
+                      interruptControllerButton     = new JButton[2],
+                      programmableTimersButton      = new JButton[2],
+                      serialInterfacesButton        = new JButton[2],
+                      serialDevicesButton           = new JButton[2],
+                      ioPortsButton                 = new JButton[2],
+                      adConverterButton             = new JButton[2],
+                      callStackButton               = new JButton[2],
+                      iTronObjectButton             = new JButton[2],
+                      analyseButton        = new JButton[2],
+                      saveLoadMemoryButton = new JButton[2],
+                      chipOptionsButton    = new JButton[2];
 
-    private JButton[] disassemblyButton             = new JButton[2];
-    private JButton[] cpuStateButton                = new JButton[2];
-    private JButton[] memoryActivityViewerButton    = new JButton[2];
-    private JButton[] memoryHexEditorButton         = new JButton[2];
-    private JButton[] customMemoryRangeLoggerButton = new JButton[2];
-    private JButton[] codeStructureButton           = new JButton[2];
-    private JButton[] sourceCodeButton              = new JButton[2];
-    private JButton[] interruptControllerButton     = new JButton[2];
-    private JButton[] programmableTimersButton      = new JButton[2];
-    private JButton[] serialInterfacesButton        = new JButton[2];
-    private JButton[] serialDevicesButton           = new JButton[2];
-    private JButton[] ioPortsButton                 = new JButton[2];
-    private JButton[] adConverterButton             = new JButton[2];
-    private JButton[] callStackButton               = new JButton[2];
-    private JButton[] iTronObjectButton             = new JButton[2];
+    private JButton component4006Button,
+                    screenEmulatorButton,
 
-    private JButton component4006Button;
-    private JButton screenEmulatorButton;
-
-    private JButton frontPanelButton;
-
-    private JButton[] analyseButton        = new JButton[2];
-    private JButton[] saveLoadMemoryButton = new JButton[2];
-    private JButton[] chipOptionsButton    = new JButton[2];
+                    frontPanelButton;
 
     // Frames
     private CPUStateEditorFrame[]          cpuStateEditorFrame          = new CPUStateEditorFrame[2];
@@ -391,26 +378,30 @@ public class EmulatorUI extends JFrame implements ActionListener {
 
     private static File[] imageFile = new File[2];
 
-    private long lastUpdateCycles[] = {0, 0};
-    private long lastUpdateTime[]   = {0, 0};
+    private long lastUpdateCycles[] = {0, 0},
+                 lastUpdateTime[]   = {0, 0};
 
     private Prefs prefs = new Prefs();
-
+//</editor-fold>
     
-    
-    
-    public static void setImageFile(File[] imageFile) {
-        EmulatorUI.imageFile = imageFile;
+    //<editor-fold defaultstate="collapsed" desc="getters">
+    public static String getBUTTON_SIZE_SMALL() {
+        return BUTTON_SIZE_SMALL;
     }
-
+    
     public static File[] getImageFile() {
         return imageFile;
     }
 
+//</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="setters">
+    public static void setImageFile(File[] imageFile) {
+        EmulatorUI.imageFile = imageFile;
+    }
+//</editor-fold>
     
-
-
+    //<editor-fold defaultstate="collapsed" desc="procedimientos">
     /**
      * Create the GUI and show it. For thread safety,
      * this method should be invoked from the
@@ -426,7 +417,103 @@ public class EmulatorUI extends JFrame implements ActionListener {
         // Display the window.
         frame.setVisible(true);
     }
+    
+    private void saveMainWindowSettings() {
+        prefs.setMainWindowPosition(getX(), getY());
+        prefs.setMainWindowSize(getWidth(), getHeight());
 
+        prefs.setDividerLocation(splitPane.getDividerLocation());
+        prefs.setLastDividerLocation(splitPane.getLastDividerLocation());
+        prefs.setDividerKeepHidden(getKeepHidden(splitPane));
+    }
+    
+    private void restoreMainWindowSettings() {
+        if (prefs.getMainWindowSizeX() == 0) {
+            //Settings were never saved. Make the app window indented 50 pixels from each edge of the screen.
+            int inset = 50;
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int width = screenSize.width - inset * 2;
+            int height = screenSize.height - inset * 2;
+            setLocation(inset, inset);
+            setPreferredSize(new Dimension(width, height));
+
+            splitPane.setDividerLocation(width/2);
+            setKeepHidden(splitPane, false);
+        }
+        else {
+            setLocation(prefs.getMainWindowPositionX(), prefs.getMainWindowPositionY());
+            setPreferredSize(new Dimension(prefs.getMainWindowSizeX(), prefs.getMainWindowSizeY()));
+
+            splitPane.setDividerLocation(prefs.getDividerLocation());
+            splitPane.setLastDividerLocation(prefs.getLastDividerLocation());
+            setKeepHidden(splitPane, prefs.isDividerKeepHidden());
+        }
+    }
+
+    // TODO instead of having the next two methods here, use a custom JFoldableSplitPane extends JSplitPane, and give it two methods void setFolded(boolean folded) and boolean isFolded()
+
+    /**
+     * Method circumventing package access to setKeepHidden() method of BasicSplitPaneUI
+     * @param splitPane
+     * @param keepHidden
+     * @author taken from http://java-swing-tips.googlecode.com/svn/trunk/OneTouchExpandable/src/java/example/MainPanel.java
+     */
+    private void setKeepHidden(JSplitPane splitPane, boolean keepHidden) {
+        if (splitPane.getUI() instanceof BasicSplitPaneUI) {
+            try {
+                Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[]{Boolean.TYPE}); //boolean.class });
+                setKeepHidden.setAccessible(true);
+                setKeepHidden.invoke(splitPane.getUI(), new Object[]{keepHidden});
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+                out.println("e: "+e);
+            }
+        }
+    }
+    
+    private void applyPrefsToUI() {
+        if (BUTTON_SIZE_LARGE.equals(prefs.getButtonSize())) {
+            toolbarButtonMargin.set(2, 14, 2, 14);
+        }
+        else {
+            toolbarButtonMargin.set(0, 0, 0, 0);
+        }
+        if (BUTTON_SIZE_SMALL.equals(prefs.getButtonSize())) {
+            //iterate on buttons and resize them to 16x16
+            for (int chip = 0; chip < 2; chip++) {
+                for (Component component : toolBar[chip].getComponents()) {
+                    if (component instanceof JButton) {
+                        JButton button = (JButton) component;
+                        ImageIcon icon = (ImageIcon) button.getClientProperty(BUTTON_PROPERTY_KEY_ICON);
+                        if (icon != null) {
+                            Image newImg = icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
+                            button.setIcon(new ImageIcon(newImg));
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            //iterate on buttons and revert to original icon
+            for (int chip = 0; chip < 2; chip++) {
+                for (Component component : toolBar[chip].getComponents()) {
+                    if (component instanceof JButton) {
+                        JButton button = (JButton) component;
+                        ImageIcon icon = (ImageIcon) button.getClientProperty(BUTTON_PROPERTY_KEY_ICON);
+                        if (icon != null) {
+                            button.setIcon(icon);
+                        }
+                    }
+                }
+            }
+        }
+        initProgrammableTimerAnimationIcons(prefs.getButtonSize());
+        for (int chip = 0; chip < 2; chip++) {
+            toolBar[chip].revalidate();
+        }
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="constructor">
     public EmulatorUI() {
         super(ApplicationInfo.getNameVersion() + " - (none) / (none)");
 
@@ -540,60 +627,9 @@ public class EmulatorUI extends JFrame implements ActionListener {
             }
         }).start();
     }
-
-
-    private void saveMainWindowSettings() {
-        prefs.setMainWindowPosition(getX(), getY());
-        prefs.setMainWindowSize(getWidth(), getHeight());
-
-        prefs.setDividerLocation(splitPane.getDividerLocation());
-        prefs.setLastDividerLocation(splitPane.getLastDividerLocation());
-        prefs.setDividerKeepHidden(getKeepHidden(splitPane));
-    }
-
-    private void restoreMainWindowSettings() {
-        if (prefs.getMainWindowSizeX() == 0) {
-            //Settings were never saved. Make the app window indented 50 pixels from each edge of the screen.
-            int inset = 50;
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int width = screenSize.width - inset * 2;
-            int height = screenSize.height - inset * 2;
-            setLocation(inset, inset);
-            setPreferredSize(new Dimension(width, height));
-
-            splitPane.setDividerLocation(width/2);
-            setKeepHidden(splitPane, false);
-        }
-        else {
-            setLocation(prefs.getMainWindowPositionX(), prefs.getMainWindowPositionY());
-            setPreferredSize(new Dimension(prefs.getMainWindowSizeX(), prefs.getMainWindowSizeY()));
-
-            splitPane.setDividerLocation(prefs.getDividerLocation());
-            splitPane.setLastDividerLocation(prefs.getLastDividerLocation());
-            setKeepHidden(splitPane, prefs.isDividerKeepHidden());
-        }
-    }
-
-    // TODO instead of having the next two methods here, use a custom JFoldableSplitPane extends JSplitPane, and give it two methods void setFolded(boolean folded) and boolean isFolded()
-
-    /**
-     * Method circumventing package access to setKeepHidden() method of BasicSplitPaneUI
-     * @param splitPane
-     * @param keepHidden
-     * @author taken from http://java-swing-tips.googlecode.com/svn/trunk/OneTouchExpandable/src/java/example/MainPanel.java
-     */
-    private void setKeepHidden(JSplitPane splitPane, boolean keepHidden) {
-        if (splitPane.getUI() instanceof BasicSplitPaneUI) {
-            try {
-                Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[]{Boolean.TYPE}); //boolean.class });
-                setKeepHidden.setAccessible(true);
-                setKeepHidden.invoke(splitPane.getUI(), new Object[]{keepHidden});
-            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
-                out.println("e: "+e);
-            }
-        }
-    }
-
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="funciones">
     /**
      * Method circumventing package access to getKeepHidden() method of BasicSplitPaneUI
      * @param splitPane
@@ -613,48 +649,15 @@ public class EmulatorUI extends JFrame implements ActionListener {
         }
         return false;
     }
+//</editor-fold>
 
-    private void applyPrefsToUI() {
-        if (BUTTON_SIZE_LARGE.equals(prefs.getButtonSize())) {
-            toolbarButtonMargin.set(2, 14, 2, 14);
-        }
-        else {
-            toolbarButtonMargin.set(0, 0, 0, 0);
-        }
-        if (BUTTON_SIZE_SMALL.equals(prefs.getButtonSize())) {
-            //iterate on buttons and resize them to 16x16
-            for (int chip = 0; chip < 2; chip++) {
-                for (Component component : toolBar[chip].getComponents()) {
-                    if (component instanceof JButton) {
-                        JButton button = (JButton) component;
-                        ImageIcon icon = (ImageIcon) button.getClientProperty(BUTTON_PROPERTY_KEY_ICON);
-                        if (icon != null) {
-                            Image newImg = icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
-                            button.setIcon(new ImageIcon(newImg));
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            //iterate on buttons and revert to original icon
-            for (int chip = 0; chip < 2; chip++) {
-                for (Component component : toolBar[chip].getComponents()) {
-                    if (component instanceof JButton) {
-                        JButton button = (JButton) component;
-                        ImageIcon icon = (ImageIcon) button.getClientProperty(BUTTON_PROPERTY_KEY_ICON);
-                        if (icon != null) {
-                            button.setIcon(icon);
-                        }
-                    }
-                }
-            }
-        }
-        initProgrammableTimerAnimationIcons(prefs.getButtonSize());
-        for (int chip = 0; chip < 2; chip++) {
-            toolBar[chip].revalidate();
-        }
-    }
+    
+
+    
+
+    
+
+    
 
     public Prefs getPrefs() {
         return prefs;
