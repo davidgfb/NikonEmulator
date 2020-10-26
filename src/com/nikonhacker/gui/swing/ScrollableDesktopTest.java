@@ -5,6 +5,7 @@ package com.nikonhacker.gui.swing;
  * Taken from http://www.java2s.com/Tutorial/Java/0240__Swing/extendsJDesktopPaneimplementsScrollable.htm
  */
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.awt.BorderLayout;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.RED;
@@ -26,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+//</editor-fold>
+
 
 public class ScrollableDesktopTest extends JFrame {
 

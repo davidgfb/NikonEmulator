@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 public class BitmapToggleButtonTest {
     private static final String IMG_DIR = "images/buttons/D5100_large";
 
+    /*
     public static void main(String[] args) throws Exception {
         javax.swing.JFrame frame = new javax.swing.JFrame("Custom Shape Button");
         frame.setDefaultCloseOperation(3);
@@ -53,7 +54,7 @@ public class BitmapToggleButtonTest {
 
         addButton(panel, FrontPanel.KEY_DIAL, bgWidth, bgHeight, new String[][]{{null, null}, {"highlight", "highlight"}}, true);
         addButton(panel, FrontPanel.KEY_MODEDIAL, bgWidth, bgHeight, new String[][]{{"0","1","2","3","4","5","6","7","8","9","10","11","12"}, {"0_highlight","1_highlight","2_highlight","3_highlight","4_highlight","5_highlight","6_highlight","7_highlight","8_highlight","9_highlight","10_highlight","11_highlight","12_highlight"}}, false);
-//        addLed(panel, "led", bgWidth, bgHeight);
+        //addLed(panel, "led", bgWidth, bgHeight);
 
         frame.add(panel);
         frame.pack();
@@ -67,5 +68,6 @@ public class BitmapToggleButtonTest {
         parent.add(button);
         button.setBounds(0, 0, width, height);
     }
+    */
 
 }

@@ -173,7 +173,7 @@ public class FrEmulator extends Emulator {
         return null;
     }
 
-
+    /*
     public static void main(String[] args) throws IOException, EmulationException, ParsingException {
         if (args.length < 2) {
             err.println("Usage Emulator <file> <initialPc>\n e.g. Emulator fw.bin 0x40000");
@@ -199,4 +199,5 @@ public class FrEmulator extends Emulator {
 
         masterClock.add(new FrEmulator(platform));
     }
+    */
 }

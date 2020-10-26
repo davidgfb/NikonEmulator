@@ -54,9 +54,11 @@ class TextAreaEx extends JFrame implements ActionListener, KeyListener {
         setVisible(true);
     }
 
+    /*
     public static void main(String s[]) {
         new TextAreaEx();
     }
+    */
 
     public void actionPerformed(ActionEvent e) {
         startFrom = 0;

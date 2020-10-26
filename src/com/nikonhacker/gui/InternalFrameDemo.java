@@ -31,6 +31,7 @@
 
 package com.nikonhacker.gui;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.listener.TrackingMemoryActivityListener;
 
@@ -47,6 +48,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+//</editor-fold>
+
 
 /*
 * InternalFrameDemo.java requires:
@@ -58,7 +61,7 @@ public class InternalFrameDemo extends JFrame implements ActionListener {
     private static DebuggableMemory memory = new DebuggableMemory(false);
     private static TrackingMemoryActivityListener activityListener = new TrackingMemoryActivityListener(memory.getNumPages(), memory.getPageSize());
 
-
+    /*
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
@@ -79,6 +82,7 @@ public class InternalFrameDemo extends JFrame implements ActionListener {
             }
         }
     }
+    */
 
     /**
      * Create the GUI and show it.  For thread safety,

@@ -1,16 +1,21 @@
 package com.nikonhacker.gui.clock;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import javax.swing.JFrame;
 import javax.swing.JComponent;
 import java.awt.BorderLayout;
+//</editor-fold>
+
 
 public class ClockApp {
     private Clock _clock;                        // Our clock component.
 
     //================================================================= main
+    /*
     public static void main(String[] args) {
         new ClockApp().run();
     }
+    */
 
     private void run() {
         JFrame window = new JFrame();

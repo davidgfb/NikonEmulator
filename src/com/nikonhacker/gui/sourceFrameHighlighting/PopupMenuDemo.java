@@ -92,6 +92,7 @@ public class PopupMenuDemo extends JFrame {
 
     }
 
+    /*
     public static void main(String[] args) {
         // Start all Swing applications on the EDT.
         SwingUtilities.invokeLater(new Runnable() {
@@ -100,6 +101,7 @@ public class PopupMenuDemo extends JFrame {
             }
         });
     }
+    */
 
     /**
      * An action that gets the filename at the current caret position and tries

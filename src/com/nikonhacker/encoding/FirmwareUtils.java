@@ -184,6 +184,7 @@ public class FirmwareUtils {
         return data;
     }
 
+    /*
     public static void main(String[] args) throws IOException {
         byte[] hello = "Hello World !".getBytes();
         byte[] enc = xor(hello, STANDARD);
@@ -192,6 +193,7 @@ public class FirmwareUtils {
         dumpBytesAsString(dec);
         System.out.println("done");
     }
+    */
 
     private static void dumpBytesAsString(byte[] dec) {
         String out = "";

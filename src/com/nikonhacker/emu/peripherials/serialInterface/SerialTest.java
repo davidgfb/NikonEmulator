@@ -1,6 +1,7 @@
 package com.nikonhacker.emu.peripherials.serialInterface;
 
 public class SerialTest {
+    /*
     public static void main(String[] args) {
         System.out.println("Starting...");
         TimerDevice d1 = new TimerDevice("Device1", 2000);
@@ -14,4 +15,5 @@ public class SerialTest {
         }
         System.out.println("Done...");
     }
+    */
 }

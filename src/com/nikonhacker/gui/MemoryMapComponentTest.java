@@ -1,16 +1,21 @@
 package com.nikonhacker.gui;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.emu.EmulationException;
 import com.nikonhacker.emu.memory.DebuggableMemory;
 import com.nikonhacker.emu.memory.listener.TrackingMemoryActivityListener;
 
 import java.io.IOException;
 import javax.swing.JFrame;
+//</editor-fold>
+
 
 public class MemoryMapComponentTest {
+    /*
     public static void main(String[] args) throws EmulationException, IOException {
         new MemoryMapComponentTest();
     }
+    */
 
     private MemoryMapComponentTest() throws IOException, EmulationException {
         DebuggableMemory memory = new DebuggableMemory(false);

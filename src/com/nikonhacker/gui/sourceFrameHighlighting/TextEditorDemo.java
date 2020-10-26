@@ -68,6 +68,7 @@ public class TextEditorDemo extends JFrame {
 
     }
 
+    /*
     public static void main(String[] args) {
         // Start all Swing applications on the EDT.
         SwingUtilities.invokeLater(new Runnable() {
@@ -76,5 +77,5 @@ public class TextEditorDemo extends JFrame {
             }
         });
     }
-
+    */
 }

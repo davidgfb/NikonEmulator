@@ -105,6 +105,7 @@ public class FindAndReplaceDemo extends JFrame implements ActionListener {
 
     }
 
+    /*
     public static void main(String[] args) {
         // Start all Swing applications on the EDT.
         SwingUtilities.invokeLater(new Runnable() {
@@ -112,12 +113,14 @@ public class FindAndReplaceDemo extends JFrame implements ActionListener {
                 try {
                     String laf = UIManager.getSystemLookAndFeelClassName();
                     UIManager.setLookAndFeel(laf);
-                } catch (Exception e) { /* never happens */ }
+                } catch (Exception e) { // never happens 
+                }
                 FindAndReplaceDemo demo = new FindAndReplaceDemo();
                 demo.setVisible(true);
                 demo.textArea.requestFocusInWindow();
             }
         });
     }
+    */
 
 }

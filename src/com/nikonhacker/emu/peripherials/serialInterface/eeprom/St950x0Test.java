@@ -3,7 +3,7 @@ package com.nikonhacker.emu.peripherials.serialInterface.eeprom;
 import com.nikonhacker.emu.peripherials.serialInterface.BidirectionalConsoleLoggerSerialCable;
 
 public class St950x0Test {
-
+    /*
     public static void main(String[] args) {
         System.err.println("Starting...");
 
@@ -49,4 +49,5 @@ public class St950x0Test {
             // noop
         }
     }
+    */
 }

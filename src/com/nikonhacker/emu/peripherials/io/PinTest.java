@@ -1,12 +1,16 @@
 package com.nikonhacker.emu.peripherials.io;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.emu.peripherials.ioPort.Pin;
 import com.nikonhacker.emu.peripherials.ioPort.util.ConsoleLoggingIoWire;
 import com.nikonhacker.emu.peripherials.ioPort.util.Diode;
 
 import java.util.Random;
+//</editor-fold>
+
 
 public class PinTest {
+    /*
     public static void main(String[] args) {
         int value;
         System.out.println("Creating components SOURCE and TARGET");
@@ -109,4 +113,5 @@ public class PinTest {
 
         System.out.println("Connection is now from " + sourceComponent.getOutputPin() + " to " + sourceComponent.getOutputPin().getConnectedPin());
     }
+    */
 }

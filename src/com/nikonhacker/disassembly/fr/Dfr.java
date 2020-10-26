@@ -42,7 +42,8 @@ package com.nikonhacker.disassembly.fr;
 // Further modifications and port to Java by Vicne
 // */
 
-import com.nikonhacker.Constants;
+//<editor-fold defaultstate="collapsed" desc="imports">
+import static com.nikonhacker.Constants.CHIP_FR;
 import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.Disassembler;
@@ -55,13 +56,15 @@ import com.nikonhacker.disassembly.StatementContext;
 
 import java.io.IOException;
 import java.util.Set;
+//</editor-fold>
 
-public class Dfr extends Disassembler
-{
+
+public class Dfr extends Disassembler {
     public Dfr() {
-        super(Constants.CHIP_FR);
+        super(CHIP_FR);
     }
 
+    /*
     public static void main(String[] args) {
         Dfr dfr = new Dfr();
         try {
@@ -73,9 +76,11 @@ public class Dfr extends Disassembler
             dfr.closeDebugPrintWriter();
         }
     }
+    */
 
 
     /* output */
+    @Override
     protected int disassembleOne16BitStatement(StatementContext context, Range memRange, int memoryFileOffset, CodeStructure codeStructure, Set<OutputOption> outputOptions) throws IOException {
         FrStatement statement = new FrStatement(memRange.getStart());
 

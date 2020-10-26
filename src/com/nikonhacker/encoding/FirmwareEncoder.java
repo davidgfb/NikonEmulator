@@ -1,16 +1,21 @@
 package com.nikonhacker.encoding;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.io.File;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+//</editor-fold>
+
 
 public class FirmwareEncoder {
     private static void usage() {
-        System.out.println("Usage : " + FirmwareEncoder.class.getName() + " <infile1> [ <infile2> [...]] <outfile> ");
-        System.exit(1);
+        out.println("Usage : " + FirmwareEncoder.class.getName() + " <infile1> [ <infile2> [...]] <outfile> ");
+        exit(1);
     }
 
+    /*
     public static void main(String[] args) {
         if (args.length < 2) {
             usage();
@@ -29,11 +34,12 @@ public class FirmwareEncoder {
         System.out.println("Operation complete.");
 
     }
+    */
 
     public void encode(List<String> inputFilenames, String outFilename) throws FirmwareFormatException {
         try {
-            File outFile = new File(outFilename);
-            File outDir = outFile.getParentFile();
+            File outFile = new File(outFilename),
+                 outDir = outFile.getParentFile();
             if (outDir!=null)
                 outDir.mkdirs();
 

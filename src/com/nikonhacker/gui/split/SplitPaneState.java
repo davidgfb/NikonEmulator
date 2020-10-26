@@ -1,5 +1,6 @@
 package com.nikonhacker.gui.split;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -10,8 +11,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
+//</editor-fold>
+
 
 public class SplitPaneState {
+    /*
     public static void main( String[] args ) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -20,6 +24,7 @@ public class SplitPaneState {
             }
         });
     }
+    */
 
     private int position = -1;
     private Dimension size = new Dimension( 500, 300 );

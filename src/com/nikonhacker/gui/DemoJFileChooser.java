@@ -50,6 +50,7 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
         return new Dimension(200, 200);
     }
 
+    /*
     public static void main(String s[]) {
         JFrame frame = new JFrame("");
         DemoJFileChooser panel = new DemoJFileChooser();
@@ -66,4 +67,5 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
         frame.setSize(panel.getPreferredSize());
         frame.setVisible(true);
     }
+    */
 }

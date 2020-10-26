@@ -10,6 +10,7 @@ public class NopDecoder {
         System.exit(1);
     }
 
+    /*
     public static void main(String[] args) {
         if (args.length < 1 ) {
             usage();
@@ -30,6 +31,7 @@ public class NopDecoder {
         System.out.println("Operation complete.");
 
     }
+    */
 
     public void decode(String sourceFileName, String unpackFileName, boolean ignoreCrcErrors) throws FirmwareFormatException {
         File sourceFile = new File(sourceFileName);

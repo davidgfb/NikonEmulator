@@ -1,15 +1,21 @@
 package com.nikonhacker.encoding;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.io.File;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 import java.util.List;
+//</editor-fold>
+
 
 public class FirmwareDecoder {
 
     private static void usage() {
-        System.out.println("Usage : " + FirmwareDecoder.class.getName() + " <infile> [<destdir>] ");
-        System.exit(1);
+        out.println("Usage : " + FirmwareDecoder.class.getName() + " <infile> [<destdir>] ");
+        exit(1);
     }
 
+    /*
     public static void main(String[] args) {
         if (args.length < 1 ) {
             usage();
@@ -30,6 +36,7 @@ public class FirmwareDecoder {
         System.out.println("Operation complete.");
 
     }
+    */
 
     public void decode(String sourceFileName, String unpackDirName, boolean ignoreCrcErrors) throws FirmwareFormatException {
         File sourceFile = new File(sourceFileName);

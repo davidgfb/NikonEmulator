@@ -1,6 +1,7 @@
 package com.nikonhacker.disassembly.tx;
 
-import com.nikonhacker.Constants;
+//<editor-fold defaultstate="collapsed" desc="imports">
+import static com.nikonhacker.Constants.CHIP_TX;
 import com.nikonhacker.disassembly.CPUState;
 import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.Disassembler;
@@ -13,13 +14,16 @@ import com.nikonhacker.disassembly.StatementContext;
 
 import java.io.IOException;
 import java.util.Set;
+//</editor-fold>
+
 
 public class Dtx extends Disassembler
 {
     public Dtx() {
-        super(Constants.CHIP_TX);
+        super(CHIP_TX);
     }
     
+    /*
     public static void main(String[] args) {
         Dtx dtx = new Dtx();
         try {
@@ -31,9 +35,11 @@ public class Dtx extends Disassembler
             dtx.closeDebugPrintWriter();
         }
     }
+    */
 
 
     /* output */
+    @Override
     protected int disassembleOne16BitStatement(StatementContext context, Range memRange, int memoryFileOffset, CodeStructure codeStructure, Set<OutputOption> outputOptions) throws IOException, DisassemblyException {
         TxStatement statement = new TxStatement(memRange.getStart());
 

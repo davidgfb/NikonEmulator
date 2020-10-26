@@ -1,18 +1,23 @@
 package com.nikonhacker.emu;
 
+import static java.lang.Integer.toHexString;
+import static java.lang.System.out;
+
 public class SandBox {
 
-    public final static int SSP = 18;
-    public final static int USP = 19;
+    public final static int SSP = 18,
+                            USP = 19;
 
+    /*
     public static void main(String[] args) {
         //registerSharingTest();
         produceReversedHexTable();
     }
+    */
 
     private static void produceReversedHexTable() {
         for (int i = 255; i >=0; i--) {
-            System.out.println((i<16?"0":"") + Integer.toHexString(i) + " (" + i + ")");
+            out.println((i<16?"0":"") + toHexString(i) + " (" + i + ")");
         }
     }
 
@@ -26,17 +31,17 @@ public class SandBox {
         regValue[SSP].setValue(1);
         regValue[USP].setValue(2);
 
-        System.out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
+        out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
 
         regValue[15].setValue(3);
-        System.out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
+        out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
 
         regValue[15] = regValue[USP];
-        System.out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
+        out.println("R15=" + regValue[15] + ", SSP=" + regValue[SSP] + ", USP=" + regValue[USP]);
     }
 
     private static class Register32 {
-        int value;
+        int value = 0;
 
         private Register32(int value) {
             this.value = value;

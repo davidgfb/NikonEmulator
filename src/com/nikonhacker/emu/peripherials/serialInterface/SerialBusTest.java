@@ -3,6 +3,7 @@ package com.nikonhacker.emu.peripherials.serialInterface;
 import com.nikonhacker.emu.peripherials.serialInterface.util.SerialBus;
 
 public class SerialBusTest {
+    /*
     public static void main(String[] args) {
         System.out.println("Starting...");
         TimerDevice d1 = new TimerDevice("CPU", 2000);
@@ -35,4 +36,5 @@ public class SerialBusTest {
         connectedSerialDevice.connectTargetDevice(new ConsoleLoggerSerialWire(name + " Tx of " + device.toString(), device));
 
     }
+    */
 }

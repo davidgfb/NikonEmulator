@@ -1,5 +1,6 @@
 package com.nikonhacker.gui.component.serialInterface.viewfinderLcd;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.Format;
 import com.nikonhacker.disassembly.ParsingException;
 
@@ -8,8 +9,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+//</editor-fold>
+
 
 public class LcdSerialPanelTest {
+    /*
     public static void main(String[] args) throws IOException {
 
         File path = new File("Java\\Emulator\\src\\main\\com\\nikonhacker\\gui\\images\\viewfinder_lcd");
@@ -60,4 +64,5 @@ public class LcdSerialPanelTest {
         // Save as new image
         ImageIO.write(result, "PNG", new File(path, "result1.png"));
     }
+    */
 }
