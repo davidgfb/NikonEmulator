@@ -53,19 +53,23 @@ final public class MemoryMapException
     this.reason = reason;
   }
 
-  /**
-   * String representation of exception
-   */
-  public String toString() {
-    switch (reason) {
-    case UNALIGNED_ADDRESS:
-      return String.format("Unaligned memory map address: 0x%x", offsetOrAddress);
-      
-    case UNALIGNED_FILE_OFFSET:
-      return String.format("Unaligned file offset: 0x%x", offsetOrAddress);
-      
-    default:
-      throw new RuntimeException("Unexpected MemoryMapException Reason: " + reason);
+    /**
+     * String representation of exception
+     */
+    public String toString() {
+        String string = "";
+        switch (reason) {
+            case UNALIGNED_ADDRESS:
+                string= String.format("Unaligned memory map address: 0x%x", offsetOrAddress);
+                break;
+
+            case UNALIGNED_FILE_OFFSET:
+                string= String.format("Unaligned file offset: 0x%x", offsetOrAddress);
+                break;
+
+            default:
+                throw new RuntimeException("Unexpected MemoryMapException Reason: " + reason);
+        }
+        return string;
     }
-  }
 }
