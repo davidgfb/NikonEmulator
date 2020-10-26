@@ -368,8 +368,6 @@ public class TxStatement extends Statement {
                     rj_rt_ft = TxCPUState.REGISTER_MAP_16B[(binaryStatement >>>16) & 0b111]; // ry
                     rd_fd = TxCPUState.REGISTER_MAP_16B[(binaryStatement >>> 8) & 0b111]; // rz
                     break;
-                case W:
-                    break;
                 default:
                     throw new RuntimeException("EXTENDed decoding of format " + ((TxInstruction)instruction).getInstructionFormat16() + " is not implemented at 0x" + Format.asHex(pc, 8));
             }
