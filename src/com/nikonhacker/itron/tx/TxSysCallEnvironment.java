@@ -13,6 +13,7 @@ import com.nikonhacker.itron.MailboxInformation;
 import com.nikonhacker.itron.SemaphoreInformation;
 import com.nikonhacker.itron.SysCallEnvironment;
 import com.nikonhacker.itron.TaskInformation;
+import static java.lang.System.out;
 
 /**
  * This environment is the implementation for the TX CPU
@@ -209,6 +210,7 @@ public class TxSysCallEnvironment extends SysCallEnvironment {
                     return ErrorCode.fromTxValue(tmpCpuState.getReg(TxCPUState.V0));
                 }
                 catch (EmulationException t) {
+                    out.println("e: "+t);
                     return ErrorCode.E_EMULATOR;
                 }
             }

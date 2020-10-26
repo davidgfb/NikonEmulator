@@ -14,6 +14,7 @@ import com.nikonhacker.itron.MailboxInformation;
 import com.nikonhacker.itron.SemaphoreInformation;
 import com.nikonhacker.itron.SysCallEnvironment;
 import com.nikonhacker.itron.TaskInformation;
+import static java.lang.System.out;
 
 /**
  * This environment is the implementation for the FR CPU
@@ -159,6 +160,7 @@ public class FrSysCallEnvironment extends SysCallEnvironment {
             return ErrorCode.fromFrValue(tmpCpuState.getReg(12));
         }
         catch (EmulationException t) {
+            out.println("e: "+t);
             return ErrorCode.E_EMULATOR;
         }
     }

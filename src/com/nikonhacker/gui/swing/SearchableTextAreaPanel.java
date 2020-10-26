@@ -279,6 +279,7 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                             highlights.put(selectedHighlightPosition, highlighter.addHighlight(selectedHighlightPosition, selectedHighlightPosition + searchString.length(), nonSelectedHighlighter));
                         }
                     } catch (BadLocationException e) {
+                        out.println("e: "+e);
                     }
                 }
             }
@@ -292,6 +293,7 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                     }
                     highlights.put(matchOffset, highlighter.addHighlight(matchOffset, matchOffset + searchString.length(), selectedHighlighter));
                 } catch (BadLocationException e) {
+                    out.println("e: "+e);
                     // ignore
                 }
             }
@@ -419,6 +421,7 @@ public class SearchableTextAreaPanel extends JPanel implements DocumentListener,
                 try {
                     document.getText(lsOffset, leOffset - lsOffset, seg);
                 } catch (BadLocationException e) {
+                    out.println("e: "+e);
                 }
 
                 String line = matchCase?seg.toString():seg.toString().toLowerCase();

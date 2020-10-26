@@ -60,6 +60,7 @@ import java.io.InputStream;
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 import static java.lang.Integer.parseInt;
+import static java.lang.System.out;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
@@ -830,6 +831,7 @@ class HexTable extends JTable {
                         throw new NumberFormatException();
                     }
                 } catch (NumberFormatException nfe) {
+                    out.println("e: "+nfe);
                     UIManager.getLookAndFeel().provideErrorFeedback(null);
                     isRepresented=false;
                 }

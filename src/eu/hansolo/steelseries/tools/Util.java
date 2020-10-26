@@ -50,6 +50,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import static java.lang.System.out;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -79,8 +81,8 @@ public enum Util {
         try {
             digitalFont = Font.createFont(0, this.getClass().getResourceAsStream("/eu/hansolo/steelseries/resources/digital.ttf"));
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(digitalFont);
-        } catch (FontFormatException exception) {
-        } catch (java.io.IOException exception) {
+        } catch (FontFormatException | java.io.IOException exception) {
+            out.println("e: "+exception);
         }
     }
 
@@ -982,7 +984,8 @@ public enum Util {
     public void savePngImage(final BufferedImage IMAGE, final String FILE_NAME) {
         try {
             ImageIO.write(IMAGE, "png", new File(FILE_NAME));
-        } catch (final java.io.IOException EXCEPTION) {
+        } catch (final IOException EXCEPTION) {
+            out.println("e: "+EXCEPTION);
         }
     }
 
