@@ -740,20 +740,30 @@ public class TxCPUState extends CPUState {
     }
 
     public int getCp1CrReg(int regNumber) {
+        int cp1crreg=0;
+        
         switch(regNumber) {
             case FIR:
-                //       0000Impl06LW3PDSProcesidRevision
-                return 0b00000000_00010001_00000000_00000000;
+                //0000Impl06LW3PDSProcesidRevision
+                cp1crreg= 0b00000000_00010001_00000000_00000000;
+                break;
             case FCSR:
-                return getReg(FCSR);
+                cp1crreg= getReg(FCSR);
+                break;
             case FCCR:
-                return ((getReg(FCSR) & 0b11111110_00000000_00000000_00000000) >> 24) | ((getReg(FCSR) & 0b00000000_10000000_00000000_00000000) >> 23);
+                cp1crreg= ((getReg(FCSR) & 0b11111110_00000000_00000000_00000000) >> 24) | ((getReg(FCSR) & 0b00000000_10000000_00000000_00000000) >> 23);
+                break;
             case FEXR:
-                return getReg(FCSR)   & 0b00000000_00000011_11110000_01111100;
+                cp1crreg= getReg(FCSR)   & 0b00000000_00000011_11110000_01111100;
+                break;
             case FENR:
-                return (getReg(FCSR)  & 0b00000000_00000000_00001111_10000011) | ((getReg(FCSR) & 0b00000001_00000000_00000000_00000000) >> 22);
+                cp1crreg= (getReg(FCSR)  & 0b00000000_00000000_00001111_10000011) | ((getReg(FCSR) & 0b00000001_00000000_00000000_00000000) >> 22);
+                break;
+            default:
+                throw new RuntimeException("Unknown CP1 register number " + regNumber);
         }
-        throw new RuntimeException("Unknown CP1 register number " + regNumber);
+        
+        return cp1crreg;
     }
 
     public void setCp1CrReg(int regNumber, int value) {
