@@ -262,8 +262,6 @@ public class TxStatement extends Statement {
                     imm   = (binaryStatement >>>  5) & 0b111111;
                     immBitWidth = 6;
                     break;
-                case W:
-                    break;
                 default:
                     throw new RuntimeException("Decoding of format " + ((TxInstruction)instruction).getInstructionFormat16() + " is not implemented at 0x" + Format.asHex(pc, 8));
             }
