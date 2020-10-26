@@ -882,6 +882,7 @@ public class TxStatement extends Statement {
                 case 'y':
                     c += 8;
                     // goto case 'z'; /*FALLTHROUGH*/
+                    break;
                 case 'z':
                     /* register list */
                     if ((sa_cc & 0b100) != 0) { // RA
