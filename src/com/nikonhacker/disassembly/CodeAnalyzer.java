@@ -1,5 +1,6 @@
 package com.nikonhacker.disassembly;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.BinaryArithmetics;
 import com.nikonhacker.Format;
 import static com.nikonhacker.Format.asHex;
@@ -23,9 +24,11 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.ArrayList;
+//</editor-fold>
 
 public abstract class CodeAnalyzer {
 
+    //<editor-fold defaultstate="collapsed" desc="vars">
     private CodeStructure codeStructure;
     private SortedSet<Range> ranges;
     protected Memory memory;
@@ -40,8 +43,11 @@ public abstract class CodeAnalyzer {
     private final Set<Integer> processedStatements;
     private final Map<Integer,Integer> interruptTable;
     private Map<Integer,Integer> int40mapping;
-
-
+    protected abstract List<Integer> getCallTableEntrys(Function currentFunction, int address, Statement statement);
+    protected abstract int[] getJmpTableAddressSize(int address);
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="constructor">
     /**
      * Code Analyzer
      *
@@ -52,7 +58,6 @@ public abstract class CodeAnalyzer {
      * @param jumpHints
      * @param outputOptions
      * @param debugPrintWriter a PrintWriter to write debug/info messages to
-     * @throws IOException
      */
     public CodeAnalyzer(CodeStructure codeStructure, SortedSet<Range> ranges, Memory memory, Map<Integer, Symbol> symbols, Map<Integer, List<Integer>> jumpHints, Set<OutputOption> outputOptions, PrintWriter debugPrintWriter) {
         this.codeStructure = codeStructure;
@@ -69,8 +74,12 @@ public abstract class CodeAnalyzer {
         int40mapping = null;
     }
 
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="metodos">
     /**
      * Post-process statements to retrieve code structure
+     * @throws java.io.IOException
      */
     public void postProcess() throws IOException {
 
@@ -299,8 +308,6 @@ public abstract class CodeAnalyzer {
         }
     }
 
-    protected abstract List<Integer> getCallTableEntrys(Function currentFunction, int address, Statement statement);
-
     void followFunction(Function currentFunction, Integer address, boolean stopAtFirstProcessedStatement) throws IOException, DisassemblyException {
         if (!codeStructure.isStatement(address)) {
             throw new DisassemblyException("No decoded statement at 0x" + Format.asHex(address, 8) + " (not a CODE range)");
@@ -471,8 +478,6 @@ public abstract class CodeAnalyzer {
         }
     }
 
-    protected abstract int[] getJmpTableAddressSize(int address);
-
     private void resolveJumpDynamicTarget(Function currentFunction, Integer address, List<Jump> jumps, Statement statement) {
         // First see if we have a hint
         List<Integer> potentialTargets = jumpHints.get(address);
@@ -606,6 +611,5 @@ public abstract class CodeAnalyzer {
             }
         }
     }
-
-
+//</editor-fold>
 }
