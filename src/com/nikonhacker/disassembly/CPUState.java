@@ -1,9 +1,12 @@
 package com.nikonhacker.disassembly;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.emu.interrupt.InterruptRequest;
+//</editor-fold>
 
 public abstract class CPUState {
-
+    
+    //<editor-fold defaultstate="collapsed" desc="vars">
     public final static int NOREG = -1;
 
     /**
@@ -23,24 +26,24 @@ public abstract class CPUState {
      */
     protected long regValidityBitmap = 0;
 
-    /**
-     * Tests if such a register number exists
-     * @param regNumber
-     * @return
-     */
-    public boolean registerExists(int regNumber) {
-        return (regNumber >= 0) && (regNumber < regValue.length);
-    }
+    public abstract int getSp();
 
-    /**
-     * Tests if the given register number is defined in the current disassembly context
-     * @param regNumber
-     * @return
-     */
-    public boolean isRegisterDefined(int regNumber) {
-        return registerExists(regNumber) && ((regValidityBitmap & (1 << regNumber)) != 0);
-    }
+    public abstract void reset();
 
+    public abstract void clear();
+
+    public abstract boolean accepts(InterruptRequest interruptRequest);
+
+    public abstract int getResetAddress();
+
+    public abstract void applyRegisterChanges(CPUState newCpuStateValues, CPUState newCpuStateFlags);
+
+    public abstract boolean hasAllRegistersZero();
+
+    public abstract int getNumStdRegisters();
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="setters">
     /**
      * Declares the given register number as defined in the current disassembly context
      * @param regNumber
@@ -69,7 +72,13 @@ public abstract class CPUState {
     public void setReg(int registerNumber, int newValue) {
         regValue[registerNumber].setValue(newValue);
     }
-
+    
+    public void setPc(int pc) {
+        this.pc = pc;
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="getters">
     public int getReg(int registerNumber) {
         return regValue[registerNumber].getValue();
     }
@@ -77,24 +86,26 @@ public abstract class CPUState {
     public int getPc() {
         return pc;
     }
+//</editor-fold>  
 
-    public void setPc(int pc) {
-        this.pc = pc;
+    //<editor-fold defaultstate="collapsed" desc="funciones">
+    /**
+     * Tests if such a register number exists
+     * @param regNumber
+     * @return
+     */
+    public boolean registerExists(int regNumber) {
+        return (regNumber >= 0) && (regNumber < regValue.length);
     }
 
-    public abstract int getSp();
+    /**
+     * Tests if the given register number is defined in the current disassembly context
+     * @param regNumber
+     * @return
+     */
+    public boolean isRegisterDefined(int regNumber) {
+        return registerExists(regNumber) && ((regValidityBitmap & (1 << regNumber)) != 0);
+    }
 
-    public abstract void reset();
-
-    public abstract void clear();
-
-    public abstract boolean accepts(InterruptRequest interruptRequest);
-
-    public abstract int getResetAddress();
-
-    public abstract void applyRegisterChanges(CPUState newCpuStateValues, CPUState newCpuStateFlags);
-
-    public abstract boolean hasAllRegistersZero();
-
-    public abstract int getNumStdRegisters();
+//</editor-fold>   
 }

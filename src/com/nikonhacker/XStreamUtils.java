@@ -1,5 +1,6 @@
 package com.nikonhacker;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
@@ -13,8 +14,31 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import static java.lang.System.out;
 import java.nio.charset.Charset;
+//</editor-fold>
 
 public class XStreamUtils {
+    
+    //<editor-fold defaultstate="collapsed" desc="getters">
+    public static XStream getBaseXStream() {
+        return new XStream(new StaxDriver()) {
+            @Override
+            protected MapperWrapper wrapMapper(MapperWrapper next) {
+                return new MapperWrapper(next) {
+                    @Override
+                    public boolean shouldSerializeMember(Class definedIn, String fieldName) {
+                        //noinspection SimplifiableIfStatement
+                        if (definedIn == Object.class) {
+                            return false;
+                        }
+                        return super.shouldSerializeMember(definedIn, fieldName);
+                    }
+                };
+            }
+        };
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="metodos">
     public static void save(Object object, OutputStream outputStream) {
         save(object, outputStream, getBaseXStream());
     }
@@ -36,6 +60,9 @@ public class XStreamUtils {
         }
     }
 
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="funciones">
     public static Object load(InputStream inputStream) {
         return load(inputStream, getBaseXStream());
     }
@@ -45,22 +72,5 @@ public class XStreamUtils {
         return xStream.fromXML(reader);
     }
 
-    public static XStream getBaseXStream() {
-        return new XStream(new StaxDriver()) {
-            @Override
-            protected MapperWrapper wrapMapper(MapperWrapper next) {
-                return new MapperWrapper(next) {
-                    @Override
-                    public boolean shouldSerializeMember(Class definedIn, String fieldName) {
-                        //noinspection SimplifiableIfStatement
-                        if (definedIn == Object.class) {
-                            return false;
-                        }
-                        return super.shouldSerializeMember(definedIn, fieldName);
-                    }
-                };
-            }
-        };
-    }
-
+//</editor-fold>
 }
