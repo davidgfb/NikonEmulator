@@ -251,7 +251,8 @@ public abstract class Disassembler {
         Character option;
         String argument;
         OptionHandler optionHandler = new OptionHandler(args);
-
+        boolean condition = true;
+        
         while ((option = optionHandler.getNextOption()) != null) {
             switch (option) {
                 case 0:
@@ -259,69 +260,58 @@ public abstract class Disassembler {
                     if (inputFileName != null) {
                         log("too many input files\n");
                         usage();
-                        return false;
+                        condition= false;
                     }
                     inputFileName = optionHandler.getArgument();
                     break;
-
-
-                case 'E':
                 case 'e':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     entryPoint = Format.parseUnsigned(argument);
                     break;
-
-                case 'F':
                 case 'f':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     debugPrintWriter.println("-" + option + ": not implemented yet!\n");
-                    return false;
-
-                case 'H':
-                case 'h':
+                    condition= false;
+                    break;
                 case '?':
                     usage();
-                    return false;
-
-                case 'I':
+                    condition= false;
+                    break;
                 case 'i':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
 
                     Range range = OptionHandler.parseOffsetRange(option, argument);
-                    if (range == null)
+                    /*
+                    if (range == null) {
                         break;
-
+                    }
+                    */
                     fileRanges.add(range);
                     break;
-
-                case 'J':
                 case 'j':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     OptionHandler.parseJumpHint(jumpHints, jumpHintOffsets, argument);
                     break;
-
-                case 'L':
                 case 'l':
                     debugPrintWriter.println("-" + option + ": not implemented yet!\n");
-                    return false;
-
-                case 'M':
+                    condition= false;
+                    break;
                 case 'm':
                     argument = optionHandler.getArgument();
                     if ("?".equals(argument)) {
@@ -330,66 +320,54 @@ public abstract class Disassembler {
                     }
                     memRanges.add(OptionHandler.parseTypeRange(option, argument));
                     break;
-
-                case 'O':
                 case 'o':
                     outputFileName = optionHandler.getArgument();
                     if (StringUtils.isBlank(outputFileName)) {
                         log("option '-" + option + "' requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     String ext = FilenameUtils.getExtension(outputFileName);
                     if (!ext.equals("")) {
                         if (!ext.equalsIgnoreCase("asm")) {
                             log("option '-" + option + "' only extension .asm is allowed\n");
-                            return false;
+                            condition= false;
                         }
                     }
                     break;
-
-                case 'S':
                 case 's':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     OptionHandler.parseSymbol(symbols, argument, getRegisterLabels());
                     break;
-
-                case 'T':
                 case 't':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     memRanges.add(OptionHandler.parseTypeRange(option, argument + "," + CodeAnalyzer.INTERRUPT_VECTOR_LENGTH + "=DATA:V"));
                     break;
-
-                case 'V':
                 case 'v':
                     outputOptions.add(OutputOption.VERBOSE);
                     break;
-
-                case 'W':
                 case 'w':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     if (!OutputOption.parseFlag(chip, outputOptions, option, argument)) {
                         exit(1);
                     }
                     break;
-
-                case 'X':
                 case 'x':
                     argument = optionHandler.getArgument();
                     if (StringUtils.isBlank(argument)) {
                         log("option \"-" + option + "\" requires an argument\n");
-                        return false;
+                        condition= false;
                     }
                     try {
                         readOptions(argument);
@@ -397,23 +375,20 @@ public abstract class Disassembler {
                     } catch (IOException e) {
                         out.println("e: "+e);
                         debugPrintWriter.println("Cannot open given options file '" + argument + "'");
-                        return false;
+                        condition= false;
                     }
                     break;
-
-                case 'Z':
                 case 'z':
                     outputOptions.add(OutputOption.DEBUG);
                     break;
-
                 default:
                     log("unknown option \"-" + option + "\"\n");
                     usage();
-                    return false;
+                    condition= false;
             }
         }
 
-        return true;
+        return condition;
     }
 
     public void readOptions(String filename) throws IOException, ParsingException {
