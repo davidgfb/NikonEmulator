@@ -45,29 +45,39 @@ public class RangeType {
     public MemoryType memoryType = MemoryType.UNKNOWN;
 
 
-    public String toString()
-    {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        switch (memoryType)
-        {
+        String string = memoryType.name();
+        switch (memoryType) {
             case DATA:
                 sb.append(memoryType.name());
                 sb.append(":");
 
-                for (Width width : widths)
-                {
-                    switch (width)
-                    {
-                        case MD_LONG: sb.append("L"); break;
-                        case MD_LONGNUM: sb.append("N"); break;
-                        case MD_RATIONAL: sb.append("R"); break;
-                        case MD_VECTOR: sb.append("V"); break;
-                        case MD_WORD: sb.append("W"); break;
-                        default: sb.append("?"); break;
+                for (Width width : widths) {
+                    switch (width) {
+                        case MD_LONG: 
+                            sb.append("L"); 
+                            break;
+                        case MD_LONGNUM: 
+                            sb.append("N"); 
+                            break;
+                        case MD_RATIONAL: 
+                            sb.append("R"); 
+                            break;
+                        case MD_VECTOR: 
+                            sb.append("V"); 
+                            break;
+                        case MD_WORD: 
+                            sb.append("W"); 
+                            break;
+                        default: 
+                            sb.append("?"); 
+                            break;
                     }
                 }
-                return sb.toString();
+                string= sb.toString();
+                break;
             case CODE:
                 sb.append(memoryType.name());
                 sb.append(":");
@@ -77,10 +87,10 @@ public class RangeType {
                     case MD_WORD: sb.append("16"); break;
                     default: sb.append("?"); break;
                 }
-                return sb.toString();
-            default:
-                return memoryType.name();
+                string= sb.toString();
+                break;
         }
+        return string;
     }
 
     public boolean isCode() {

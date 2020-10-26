@@ -113,7 +113,7 @@ public class Function extends Symbol {
 
     @Override
     public String toString() {
-        return getName() + "\n" + (getCalledBy().size()==0?"":("=> ")) + "0x" + Format.asHex(getAddress(), 8) + (getCalls().size()==0?"":(" =>"));
+        return getName() + "\n" + (getCalledBy().isEmpty()?"":("=> ")) + "0x" + Format.asHex(getAddress(), 8) + (getCalls().isEmpty()?"":(" =>"));
     }
 
     public String getSummary() {
