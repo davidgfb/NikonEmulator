@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 
 /**
  * This file is part of NikonEmulator, a NikonHacker.com project.
@@ -84,6 +85,7 @@ public class RxTxSerialPanel extends SerialDevicePanel {
             serialDevice.write(value);
         }
         catch (Exception e) {
+            out.println("e: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         txTextArea.append(Format.asHex(value, 2) + " ");

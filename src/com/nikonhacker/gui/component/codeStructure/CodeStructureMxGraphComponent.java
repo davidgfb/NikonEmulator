@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import static java.lang.System.out;
 
 public class CodeStructureMxGraphComponent extends mxGraphComponent {
     private CodeStructure codeStructure;
@@ -96,6 +97,7 @@ public class CodeStructureMxGraphComponent extends mxGraphComponent {
                             ui.setStatusText(chip, "The target for this jump could not be determined in a static way");
                         }
                     } catch (IOException e1) {
+                        out.println("e: "+e);
                     }
                 }
                 maybePopup(e);

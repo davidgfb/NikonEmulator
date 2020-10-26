@@ -28,6 +28,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.lang.System.out;
 
 public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener {
 
@@ -98,6 +99,7 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
 
         // Start update timer
         refreshTimer = new Timer(refreshInterval, new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
             }
@@ -105,6 +107,7 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
         refreshTimer.start();
     }
 
+    @Override
     public void dispose() {
         refreshTimer.stop();
         refreshTimer = null;
@@ -113,6 +116,7 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
         super.dispose();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         int width,align;
 
@@ -124,6 +128,7 @@ public class ScreenEmulatorFrame extends DocumentFrame implements ActionListener
             align = Format.parseUnsignedField(yuvAlignField);
             this.screenHeight = Format.parseUnsignedField(heightField);
         } catch(ParsingException excp) {
+            out.println("e: "+excp);
             throw new NumberFormatException("Wrong number format");
         }
         // width and alignment must be always even

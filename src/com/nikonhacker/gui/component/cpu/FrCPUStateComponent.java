@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 
 /**
  * This component displays a CPU State.
@@ -297,6 +298,7 @@ public class FrCPUStateComponent extends CPUStateComponent {
                 cpuState.setReg(i, regs[i]);
             }
         } catch (NumberFormatException e) {
+            out.println("e: "+e);
             // noop
         }
     }
@@ -344,11 +346,13 @@ public class FrCPUStateComponent extends CPUStateComponent {
                 dumpFieldToRegister(regTextFields[i], i);
             }
         } catch (NumberFormatException e) {
+            out.println("e: "+e);
             System.err.println(e.getClass().getName() + " " + e.getMessage());
         }
 
     }
 
+    @Override
     public void setEditable(boolean editable) {
         saveButton.setEnabled(editable);
         cancelButton.setEnabled(editable);

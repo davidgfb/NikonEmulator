@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 
 /**
  * This component displays a CPU State.
@@ -312,6 +313,7 @@ public class TxCPUStateComponent extends CPUStateComponent {
             }
         }
         catch (NumberFormatException e) {
+            out.println("e: "+e);
             // noop
         }
     }
@@ -344,12 +346,14 @@ public class TxCPUStateComponent extends CPUStateComponent {
             }
         }
         catch (NumberFormatException e) {
+            out.println("e: "+e);
             System.err.println(e.getClass().getName() + " " + e.getMessage());
         }
 
     }
 
 
+    @Override
     public void setEditable(boolean editable) {
         saveButton.setEnabled(editable);
         cancelButton.setEnabled(editable);

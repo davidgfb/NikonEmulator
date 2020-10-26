@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
@@ -65,6 +66,7 @@ public class CustomMemoryRangeLoggerFrame extends DocumentFrame {
                 try {
                     textArea.clear();
                 } catch (IOException e1) {
+                    out.println("e: "+e1);
                     // ignore
                 }
             }
@@ -93,6 +95,7 @@ public class CustomMemoryRangeLoggerFrame extends DocumentFrame {
                     listeners.put(minAddressField, listener);
                     textArea.getPrintWriter().println("Starting listener for " + Constants.CHIP_LABEL[chip] + " range 0x" + Format.asHex(minAddress, 8) + " - 0x" + Format.asHex(maxAddress, 8));
                 } catch (NumberFormatException excp) {
+                    out.println("e: "+excp);
                     // do nothing, field is now red
                 }
             }

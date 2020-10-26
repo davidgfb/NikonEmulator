@@ -45,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -242,6 +243,7 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
                 hexEditor.open(new ByteArrayInputStream(currentPage));
                 hexEditor.setColorMap(createColorMap());
             } catch (IOException e) {
+                out.println("e: "+e);
             }
         }
     }
@@ -342,6 +344,7 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
             hexEditor.setColorMap(createColorMap());
             hexEditor.setRowHeaderOffset(baseAddress);
         } catch (IOException e) {
+            out.println("e: "+e);
         }
     }
 
@@ -460,12 +463,14 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
         hexEditor.setSelectedRange(offset, offset + selectionLength - 1);
     }
 
+    @Override
     public void hexBytesChanged(HexEditorEvent event) {
         if (event.isModification()) {
             try {
                 memory.store8((int) ((baseAddress & 0xFFFFFFFFL) + (long)event.getOffset()), hexEditor.getByte(event.getOffset()));
             }
             catch (ArrayIndexOutOfBoundsException exception) {
+                out.println("e: "+exception);
                 JOptionPane.showMessageDialog(this, "Error writing to memory. This area is probably protected (see options)", "Write error", JOptionPane.ERROR_MESSAGE);
                 // Reload to show unedited values
                 jumpToAddress((int) ((baseAddress & 0xFFFFFFFFL) + (long)event.getOffset()), 1);
@@ -484,11 +489,13 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
             }
         }
 
+        @Override
         public int getColumnCount() {
             return 3;
         }
 
 
+        @Override
         public MemoryWatch setColumnValue(MemoryWatch baseObject, Object editedValue, int column) {
             switch (column) {
                 case 0:
@@ -499,6 +506,7 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
                         int address = Format.parseUnsigned((((String)editedValue).startsWith("0x")?"":"0x") + editedValue);
                         baseObject.setAddress(address);
                     } catch (ParsingException e) {
+                        out.println("e: "+e);
                         // ignore the change
                     }
                     break;
@@ -509,6 +517,7 @@ public class MemoryHexEditorFrame extends DocumentFrame implements ActionListene
                             memory.store32(baseObject.getAddress(), value);
                             refreshMemoryPage();
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }

@@ -46,6 +46,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.System.out;
 import java.util.EnumSet;
 
 public class ITronObjectFrame extends DocumentFrame {
@@ -151,6 +152,7 @@ public class ITronObjectFrame extends DocumentFrame {
                         try {
                             ui.jumpToSource(chip, Format.parseUnsigned(taskTable.getValueAt(row, column).toString()));
                         } catch (ParsingException e1) {
+                            out.println("e: "+e1);
                             // ignore
                         }
                     }
@@ -158,6 +160,7 @@ public class ITronObjectFrame extends DocumentFrame {
                         try {
                             ui.jumpToContext(chip, Format.parseUnsigned(taskTable.getValueAt(row, 0).toString()));
                         } catch (ParsingException e1) {
+                            out.println("e: "+e1);
                             // ignore
                         }
                     }
@@ -216,9 +219,11 @@ public class ITronObjectFrame extends DocumentFrame {
                             }
                             updateAllLists(chip);
                         } catch (ParsingException e1) {
+                            out.println("e: "+e1);
                             JOptionPane.showMessageDialog(ITronObjectFrame.this, "Error: Cannot parse new value " + newValue);
                         }
                     } catch (ParsingException e1) {
+                        out.println("e: "+e1);
                         JOptionPane.showMessageDialog(ITronObjectFrame.this, "Error: Cannot parse flag ID " + strFlagId);
                     }
                 }

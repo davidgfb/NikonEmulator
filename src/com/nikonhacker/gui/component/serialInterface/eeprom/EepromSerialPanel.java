@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.out;
 
 /**
  * This file is part of NikonEmulator, a NikonHacker.com project.
@@ -120,6 +121,7 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
                 }
                 prefs.setLastEepromFileName(fileName);
             } catch (IOException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, "Error loading eeprom contents from file: " + e.getMessage(), "Load error", JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +129,7 @@ public class DisassemblyLogger {
                 try {
                     writer.append(s);
                 } catch (IOException e) {
+                    out.println("e: "+e);
                 }
             }
         }

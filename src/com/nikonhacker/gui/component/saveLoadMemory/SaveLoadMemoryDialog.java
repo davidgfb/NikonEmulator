@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.out;
 
 public class SaveLoadMemoryDialog extends JDialog {
 
@@ -200,8 +201,10 @@ public class SaveLoadMemoryDialog extends JDialog {
                     }
                 }
             } catch (NumberFormatException e) {
+                out.println("e: "+e);
                 // do nothing, field is now red
             } catch (IOException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error saving memory to file", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -219,8 +222,10 @@ public class SaveLoadMemoryDialog extends JDialog {
                     dispose();
                 }
             } catch (NumberFormatException e) {
+                out.println("e: "+e);
                 // do nothing, field is now red
             } catch (IOException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error loading memory from file", JOptionPane.ERROR_MESSAGE);
             }
         }

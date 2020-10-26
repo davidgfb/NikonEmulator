@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import static java.lang.System.out;
 
 /**
  * This is a generic camera front panel UI that renders a FrontPanel model
@@ -52,6 +53,7 @@ public class FrontPanelFrame extends DocumentFrame {
             addLed(panel, imageDir, bgWidth, bgHeight, frontPanel.getLed(FrontPanel.KEY_CARDLED));
 
         } catch (IOException e) {
+            out.println("e: "+e);
             throw new RuntimeException("Cannot find image " + e.getMessage());
         }
 

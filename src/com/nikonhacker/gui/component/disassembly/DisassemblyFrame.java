@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import static java.lang.System.out;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -116,6 +117,7 @@ public class DisassemblyFrame extends DocumentFrame implements LoggingStateChang
                         }
                         writer.close();
                     } catch (IOException e1) {
+                        out.println("e: "+e1);
                         System.err.println("Error closing writer: " + writer);
                     }
                 }
@@ -138,6 +140,7 @@ public class DisassemblyFrame extends DocumentFrame implements LoggingStateChang
                         try {
                             logger.getWriters().add(new FileWriter(file, true));
                         } catch (IOException e1) {
+                            out.println("e: "+e1);
                             JOptionPane.showMessageDialog(DisassemblyFrame.this, "Cannot write to " + file.getAbsolutePath(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
                         break;
@@ -208,6 +211,7 @@ public class DisassemblyFrame extends DocumentFrame implements LoggingStateChang
                 try {
                     writer.close();
                 } catch (IOException e) {
+                    out.println("e: "+e);
                     System.err.println("Error closing writer " + writer);
                 }
             }

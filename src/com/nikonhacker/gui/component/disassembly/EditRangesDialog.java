@@ -23,6 +23,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -193,6 +194,7 @@ public class EditRangesDialog extends JDialog {
                             int address = Format.parseUnsigned("0x" + editedValue);
                             baseObject.setStartAddress(address);
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }
@@ -206,6 +208,7 @@ public class EditRangesDialog extends JDialog {
                             int address = Format.parseUnsigned("0x" + editedValue);
                             baseObject.setEndAddress(address);
                         } catch (ParsingException e) {
+                            out.println("e: "+e);
                             // ignore the change
                         }
                     }
