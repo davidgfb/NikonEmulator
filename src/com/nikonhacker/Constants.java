@@ -1,12 +1,16 @@
 package com.nikonhacker;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.awt.Color;
 import static java.awt.Color.BLUE;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.ORANGE;
 import static java.awt.Color.RED;
+//</editor-fold>
 
 public interface Constants {
+    
+    //<editor-fold defaultstate="collapsed" desc="vars">
     /* These 2 constants are used to index everything pertaining to one chip or the other */
     int      CHIP_NONE             = -1,
              CHIP_FR               = 0,
@@ -20,9 +24,8 @@ public interface Constants {
           COLOR_LO  = BLUE,
           COLOR_PULLUP = GREEN;
 
-    String LABEL_HI  = "VCC";
-    String LABEL_HIZ = "---";
-    String LABEL_LO  = "GND";
-
-
+    String LABEL_HI  = "VCC",
+           LABEL_HIZ = "---",
+           LABEL_LO  = "GND";
+//</editor-fold>
 }

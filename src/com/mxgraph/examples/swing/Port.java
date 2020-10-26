@@ -1,5 +1,6 @@
 package com.mxgraph.examples.swing;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -10,11 +11,12 @@ import com.mxgraph.view.mxMultiplicity;
 
 import javax.swing.JFrame;
 import java.util.Arrays;
+//</editor-fold>
 
 public class Port extends JFrame {
 
-    final int PORT_DIAMETER = 20;
-    final int PORT_RADIUS = PORT_DIAMETER / 2;
+    final int PORT_DIAMETER = 20,
+              PORT_RADIUS = PORT_DIAMETER / 2;
 
     public Port() {
         super("Hello, World!");
@@ -22,12 +24,14 @@ public class Port extends JFrame {
         mxGraph graph = new mxGraph() {
             // Ports are not used as terminals for edges, they are
             // only used to compute the graphical connection point
+            @Override
             public boolean isPort(Object cell) {
                 mxGeometry geometry = getCellGeometry(cell);
                 return (geometry != null) && geometry.isRelative();
             }
 
             // Removes the folding icon and disables any folding
+            @Override
             public boolean isCellFoldable(Object cell, boolean collapse) {
                 return false;
             }

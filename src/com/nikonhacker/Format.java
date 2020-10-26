@@ -1,5 +1,6 @@
 package com.nikonhacker;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.disassembly.ParsingException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,6 +10,7 @@ import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 import java.io.File;
 import static java.lang.System.out;
+//</editor-fold>
 
 public class Format {
 

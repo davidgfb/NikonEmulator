@@ -2,6 +2,8 @@
 package com.nikonhacker;
 
 public class ApplicationInfo {
+    
+    //<editor-fold defaultstate="collapsed" desc="getters">
     public static String getName() {
         return "@APPNAME@";
     }
@@ -14,5 +16,6 @@ public class ApplicationInfo {
     public static String getNameVersion() {
         return getName() + " v" + getVersion();
     }
+//</editor-fold>
 }
 

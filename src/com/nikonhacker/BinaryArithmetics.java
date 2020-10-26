@@ -1,10 +1,13 @@
 package com.nikonhacker;
 
 public class BinaryArithmetics {
+    
+    //<editor-fold defaultstate="collapsed" desc="funciones">
     /**
      * Extend with negative sign
      * @param numBits the number of significant bits in value
      * @param value the original value
+     * @return 
      */
     public static int negativeExtend(int numBits, int value) {
         int mask = (1 << numBits) - 1;
@@ -17,6 +20,7 @@ public class BinaryArithmetics {
      * so that the returned value represents the same number, but on 32 bits
      * @param numBits the number of significant bits in value
      * @param value the original value
+     * @return 
      */
     public static int signExtend(int numBits, int value)
     {
@@ -28,6 +32,7 @@ public class BinaryArithmetics {
      * Returns the opposite of value, interpreting it on numBits bits
      * @param numBits the number of significant bits in value
      * @param value the original value
+     * @return 
      */
     public static int neg(int numBits, int value)
     {
@@ -65,4 +70,5 @@ public class BinaryArithmetics {
         return (n1 > n2) ^ ((n1 < 0) != (n2 < 0));
     }
 
+//</editor-fold>
 }

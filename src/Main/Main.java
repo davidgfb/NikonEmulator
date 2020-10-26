@@ -11,8 +11,6 @@ import static java.lang.Thread.setDefaultUncaughtExceptionHandler;
 import javax.swing.UnsupportedLookAndFeelException;
 //</editor-fold>
 
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,6 +22,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author David
  */
 public class Main {
+    
+    //<editor-fold defaultstate="collapsed" desc="main">
     //proviene de EmulatorUI en un intento de facilitar el arranque del programa desde el .jar
     public static void main(String[] args) throws EmulationException, IOException, ClassNotFoundException, UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException {
         EmulatorUI eUI = new EmulatorUI();
@@ -59,4 +59,5 @@ public class Main {
         });
         */
     }
+//</editor-fold>
 }

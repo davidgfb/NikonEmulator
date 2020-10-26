@@ -10,15 +10,16 @@ import static java.lang.System.exit;
 import java.lang.Thread.UncaughtExceptionHandler;
 //</editor-fold>
 
-
 /**
  *
  * @author David
  */
 public class UEHandler implements UncaughtExceptionHandler {
 
+    //<editor-fold defaultstate="collapsed" desc="metodo">
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         exit(1);
     }
+//</editor-fold>
 }

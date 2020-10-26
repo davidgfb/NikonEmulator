@@ -4,6 +4,7 @@
  */
 package com.mxgraph.examples.swing;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.mxgraph.swing.handler.mxKeyboardHandler;
 import com.mxgraph.swing.handler.mxRubberband;
 import com.mxgraph.swing.mxGraphComponent;
@@ -18,21 +19,25 @@ import org.w3c.dom.Element;
 
 import javax.swing.JFrame;
 import java.util.Arrays;
+//</editor-fold>
 
 public class Validation extends JFrame {
 
     public Validation() {
         super("Hello, World!");
 
+        //<editor-fold defaultstate="collapsed" desc="vars">
         Document xmlDocument = mxDomUtils.createDocument();
-        Element sourceNode = xmlDocument.createElement("Source");
-        Element targetNode = xmlDocument.createElement("Target");
-        Element subtargetNode = xmlDocument.createElement("Subtarget");
+        Element sourceNode = xmlDocument.createElement("Source"),
+                targetNode = xmlDocument.createElement("Target"),
+                subtargetNode = xmlDocument.createElement("Subtarget");
 
         mxGraph graph = new mxGraph();
         Object parent = graph.getDefaultParent();
-
+//</editor-fold>
+        
         graph.getModel().beginUpdate();
+        
         try {
             Object v1 = graph.insertVertex(parent, null, sourceNode, 20, 20, 80, 30);
             Object v2 = graph.insertVertex(parent, null, targetNode, 200, 20, 80, 30);
@@ -74,6 +79,7 @@ public class Validation extends JFrame {
         // Installs automatic validation (use editor.validation = true
         // if you are using an mxEditor instance)
         graph.getModel().addListener(mxEvent.CHANGE, new mxIEventListener() {
+            @Override
             public void invoke(Object sender, mxEventObject evt) {
                 graphComponent.validateGraph();
             }
