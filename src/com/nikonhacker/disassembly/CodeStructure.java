@@ -1,5 +1,6 @@
 package com.nikonhacker.disassembly;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.Format;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,9 +15,11 @@ import java.util.Set;
 import java.util.List;
 import java.util.EnumSet;
 import java.util.ArrayList;
+//</editor-fold>
 
 public abstract class CodeStructure {
 
+    //<editor-fold defaultstate="collapsed" desc="vars">
     public static final int IGNORE_ISA_BIT = 0xFFFFFFFE;
 
     private int entryPoint;
@@ -46,103 +49,54 @@ public abstract class CodeStructure {
     private Map<Integer, Integer> ends = new TreeMap<Integer, Integer>();
 
     // Cache for task-related addresses
-    public Integer tblTaskData;
-    public Integer pCurrentTCB;
-    public Integer tblTCB;
-
-
+    public Integer tblTaskData,
+                   pCurrentTCB,
+                   tblTCB;
+    
+    public abstract String[] getRegisterLabels();
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="constructor">
     public CodeStructure(int address) {
         this.entryPoint = address;
     }
-
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="getters">
     public int getEntryPoint() {
         return entryPoint;
-    }
-
-
-    // STATEMENTS
-
-    public boolean isStatement(Integer address) {
-        return statements.containsKey(address & IGNORE_ISA_BIT);
-    }
-
-    public Statement getStatement(Integer address) {
+    }public Statement getStatement(Integer address) {
         return statements.get(address & IGNORE_ISA_BIT);
-    }
-
-    public void putStatement(int address, Statement statement) {
-        statements.put(address & IGNORE_ISA_BIT, statement);
-    }
-
-    public int getNumStatements() {
+    }public int getNumStatements() {
         return statements.size();
-    }
-
-    public Integer getAddressOfStatementBefore(Integer address) {
+    }public Integer getAddressOfStatementBefore(Integer address) {
         return statements.lowerKey(address & IGNORE_ISA_BIT);
     }
 
     public Integer getAddressOfStatementAfter(Integer address) {
         return statements.higherKey(address & IGNORE_ISA_BIT);
-    }
-
-    public Map.Entry<Integer, Statement> getFirstStatementEntry() {
+    }public Map.Entry<Integer, Statement> getFirstStatementEntry() {
         return statements.firstEntry();
     }
 
     public Map.Entry<Integer, Statement> getStatementEntryAfter(Integer address) {
         return statements.higherEntry(address & IGNORE_ISA_BIT);
-    }
-
-
-    // LABELS
-
-    public boolean isLabel(Integer address) {
-        return labels.containsKey(address & IGNORE_ISA_BIT);
-    }
-
-    public Symbol getLabel(int address) {
+    }public Symbol getLabel(int address) {
         return labels.get(address & IGNORE_ISA_BIT);
     }
-
-    public void putLabel(int address, Symbol symbol) {
-        labels.put(address & IGNORE_ISA_BIT, symbol);
-    }
-
     public int getNumLabels() {
         return labels.size();
-    }
-
-    /** TX Note : returned addresses never contain ISA-bit. In other words, all addresses are even */
+    }/** TX Note : returned addresses never contain ISA-bit. In other words, all addresses are even */
     public Set<Integer> getAllLabelAddresses() {
         return labels.keySet();
-    }
-
-    public String getLabelName(Integer address) {
+    }public Function getFunction(int address) {
+        return functions.get(address & IGNORE_ISA_BIT);
+    }public int getNumFunctions() {
+        return functions.size();
+    }public String getLabelName(Integer address) {
         Symbol symbol = labels.get(address);
         return symbol==null?null:symbol.getName();
-    }
-
-
-    // FUNCTIONS
-
-    public boolean isFunction(int address) {
-        return functions.containsKey(address & IGNORE_ISA_BIT);
-    }
-
-    public Function getFunction(int address) {
-        return functions.get(address & IGNORE_ISA_BIT);
-    }
-
-    public void putFunction(int address, Function function) {
-        functions.put(address & IGNORE_ISA_BIT, function);
-    }
-
-    public int getNumFunctions() {
-        return functions.size();
-    }
-
-    /** TX Note : returned addresses never contain ISA-bit. In other words, all addresses are even */
+    }/** TX Note : returned addresses never contain ISA-bit. In other words, all addresses are even */
     public Set<Integer> getAllFunctionAddresses() {
         return functions.keySet();
     }
@@ -150,6 +104,78 @@ public abstract class CodeStructure {
     public String getFunctionName(int address) {
         Symbol symbol = getFunction(address);
         return symbol==null?null:symbol.getName();
+    }public int getNumReturns() {
+        return returns.size();
+    }public int getReturn(int addressOfReturn) {
+        return returns.get(addressOfReturn & IGNORE_ISA_BIT);
+    }/**
+     * Try to convert given text to address
+     * @param text can be a (dfr.txt defined) function name, an address with or without 0x, of a fictious
+     *             function name of the form xxx_address[_]
+     * @return the converted address, or null if none matches
+     */
+    public Integer getAddressFromString(String text) {
+        Integer address = null;
+        if (StringUtils.isNotBlank(text)) {
+            text = text.trim();
+            // Try to find by name
+            for (Integer candidateAddress : getAllFunctionAddresses()) {
+                Function f = getFunction(candidateAddress);
+                if (text.equalsIgnoreCase(f.getName())) {
+                    return candidateAddress;
+                }
+            }
+            // No match by name
+            // Try to interpret as address, adding 0x if omitted
+            try {
+                address = Format.parseUnsigned((text.startsWith("0x")?"":"0x") + text) & IGNORE_ISA_BIT;
+            } catch (ParsingException e) {
+                out.println("e: "+e);
+                // Not parseable as address
+                // Try to interpret as name xxx_address[_]
+                while(text.endsWith("_")) {
+                    text = StringUtils.chop(text);
+                }
+                text = StringUtils.substringAfterLast(text, "_");
+                try {
+                    address = Format.parseUnsigned("0x" + text) & IGNORE_ISA_BIT;
+                } catch (ParsingException e1) {
+                    out.println("e: "+e);
+                    // do nothing. address remains null
+                }
+            }
+        }
+        return address;
+    }
+    
+    public final List<Function> getAddressFromExpression(String regex) {
+        List<Function> foundFuncs = new ArrayList<Function>();
+        regex = regex.trim();
+        // Try to find by name
+        for (SortedMap.Entry<Integer, Function> entry : functions.entrySet()) {
+            Function func = entry.getValue();
+            if (func.getName().matches(regex)) {
+                foundFuncs.add(func);
+            }
+        }
+        return (foundFuncs.isEmpty() ? null : foundFuncs);
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="funciones">
+    // STATEMENTS
+    public boolean isStatement(Integer address) {
+        return statements.containsKey(address & IGNORE_ISA_BIT);
+    }// LABELS
+
+    public boolean isLabel(Integer address) {
+        return labels.containsKey(address & IGNORE_ISA_BIT);
+    }
+
+    // FUNCTIONS
+
+    public boolean isFunction(int address) {
+        return functions.containsKey(address & IGNORE_ISA_BIT);
     }
 
     public Function findFunctionIncluding(int address) {
@@ -164,39 +190,36 @@ public abstract class CodeStructure {
         return null;
     }
 
-
     // RETURNS
-
     public boolean isReturn(Integer address) {
         return returns.containsKey(address & IGNORE_ISA_BIT);
     }
-
-    public int getReturn(int addressOfReturn) {
-        return returns.get(addressOfReturn & IGNORE_ISA_BIT);
-    }
-
-    public void putReturn(int addressOfReturn, int startAddressOfCorrespondingFunction) {
-        returns.put(addressOfReturn & IGNORE_ISA_BIT, startAddressOfCorrespondingFunction);
-    }
-
-    public int getNumReturns() {
-        return returns.size();
-    }
-
-
-    // ENDS
 
     private boolean isEnd(Integer address) {
         return ends.containsKey(address & IGNORE_ISA_BIT);
     }
 
+        private String skipOrLoop(Integer address, int targetAddress) {
+        long target = targetAddress & 0xFFFFFFFFL;
+        long addr = address & 0xFFFFFFFFL;
+        return target > addr ?"(skip)":"(loop)";
+    }  
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="metodos">
+    public void putStatement(int address, Statement statement) {
+        statements.put(address & IGNORE_ISA_BIT, statement);
+    }public void putLabel(int address, Symbol symbol) {
+        labels.put(address & IGNORE_ISA_BIT, symbol);
+    }public void putFunction(int address, Function function) {
+        functions.put(address & IGNORE_ISA_BIT, function);
+    }public void putReturn(int addressOfReturn, int startAddressOfCorrespondingFunction) {
+        returns.put(addressOfReturn & IGNORE_ISA_BIT, startAddressOfCorrespondingFunction);
+    }// ENDS
+
     public void putEnd(int addressOfEnd, int startAddressOfCorrespondingFunction) {
         ends.put(addressOfEnd & IGNORE_ISA_BIT, startAddressOfCorrespondingFunction);
-    }
-
-
-
-    public void writeDisassembly(Writer writer, Range memRange, Range fileRange, Set<OutputOption> outputOptions) throws IOException {
+    }public void writeDisassembly(Writer writer, Range memRange, Range fileRange, Set<OutputOption> outputOptions) throws IOException {
 
         // Start output
         Integer address = memRange.getStart();
@@ -273,8 +296,7 @@ public abstract class CodeStructure {
         }
 
     }
-
-    /**
+/**
      * This method replaces addresses in operands and comments by corresponding symbol names (if any),
      * indicates if branches go forward (skip) or backwards (loop) and decodes call parameters
      * @param address
@@ -369,65 +391,5 @@ public abstract class CodeStructure {
             }
         }
     }
-
-    public abstract String[] getRegisterLabels();
-
-    private String skipOrLoop(Integer address, int targetAddress) {
-        long target = targetAddress & 0xFFFFFFFFL;
-        long addr = address & 0xFFFFFFFFL;
-        return target > addr ?"(skip)":"(loop)";
-    }
-
-    /**
-     * Try to convert given text to address
-     * @param text can be a (dfr.txt defined) function name, an address with or without 0x, of a fictious
-     *             function name of the form xxx_address[_]
-     * @return the converted address, or null if none matches
-     */
-    public Integer getAddressFromString(String text) {
-        Integer address = null;
-        if (StringUtils.isNotBlank(text)) {
-            text = text.trim();
-            // Try to find by name
-            for (Integer candidateAddress : getAllFunctionAddresses()) {
-                Function f = getFunction(candidateAddress);
-                if (text.equalsIgnoreCase(f.getName())) {
-                    return candidateAddress;
-                }
-            }
-            // No match by name
-            // Try to interpret as address, adding 0x if omitted
-            try {
-                address = Format.parseUnsigned((text.startsWith("0x")?"":"0x") + text) & IGNORE_ISA_BIT;
-            } catch (ParsingException e) {
-                out.println("e: "+e);
-                // Not parseable as address
-                // Try to interpret as name xxx_address[_]
-                while(text.endsWith("_")) {
-                    text = StringUtils.chop(text);
-                }
-                text = StringUtils.substringAfterLast(text, "_");
-                try {
-                    address = Format.parseUnsigned("0x" + text) & IGNORE_ISA_BIT;
-                } catch (ParsingException e1) {
-                    out.println("e: "+e);
-                    // do nothing. address remains null
-                }
-            }
-        }
-        return address;
-    }
-
-    public final List<Function> getAddressFromExpression(String regex) {
-        List<Function> foundFuncs = new ArrayList<Function>();
-        regex = regex.trim();
-        // Try to find by name
-        for (SortedMap.Entry<Integer, Function> entry : functions.entrySet()) {
-            Function func = entry.getValue();
-            if (func.getName().matches(regex)) {
-                foundFuncs.add(func);
-            }
-        }
-        return (foundFuncs.isEmpty() ? null : foundFuncs);
-    }
+//</editor-fold>
 }
