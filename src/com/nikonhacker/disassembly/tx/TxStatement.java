@@ -505,10 +505,6 @@ public class TxStatement extends Statement {
                     // Unselect register
                     currentlySelectedRegisterNumber = TxCPUState.NOREG;
                     break;
-                case 'd':
-                case 'e':
-                case 'f':
-                case 'h':
                 case 'g':
                     if (updateRegisters) {
                         if (context.cpuState.isRegisterDefined(ri_rs_fs)) {
