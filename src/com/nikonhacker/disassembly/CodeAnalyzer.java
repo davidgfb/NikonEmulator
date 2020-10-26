@@ -2,6 +2,8 @@ package com.nikonhacker.disassembly;
 
 import com.nikonhacker.BinaryArithmetics;
 import com.nikonhacker.Format;
+import static com.nikonhacker.Format.asHex;
+import static com.nikonhacker.disassembly.Function.Type.MAIN;
 import com.nikonhacker.disassembly.fr.FrInstruction;
 import com.nikonhacker.disassembly.fr.FrInstructionSet;
 import com.nikonhacker.disassembly.fr.FrStatement;
@@ -112,13 +114,13 @@ public abstract class CodeAnalyzer {
 
 
         debugPrintWriter.println("Following flow starting at entry point...");
-        Function main = new Function(codeStructure.getEntryPoint(), "main", "", Function.Type.MAIN);
+        Function main = new Function(codeStructure.getEntryPoint(), "main", "", MAIN);
         codeStructure.putFunction(codeStructure.getEntryPoint(), main);
         try {
             followFunction(main, codeStructure.getEntryPoint(), false);
         }
         catch (DisassemblyException e) {
-            debugPrintWriter.println("Error disassembling 'main' code at 0x" + Format.asHex(codeStructure.getEntryPoint(), 2) + ": " + e.getMessage());
+            debugPrintWriter.println("Error disassembling 'main' code at 0x" + asHex(codeStructure.getEntryPoint(), 2) + ": " + e.getMessage());
         }
 
 

@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import static java.lang.Integer.min;
+import static java.lang.System.arraycopy;
 
 
 public class ByteBuffer {
@@ -96,68 +98,67 @@ public class ByteBuffer {
 
 
 	public byte getByte(int offset) {
-		return buffer[offset];
+            return buffer[offset];
 	}
 
 
 	public int getSize() {
-		return buffer.length;
+            return buffer.length;
 	}
 
 
 	public void insertByte(int offset, byte b) {
-		byte[] buf2 = new byte[buffer.length+1];
-		System.arraycopy(buffer,0, buf2,0, offset);
-		buf2[offset] = b;
-		System.arraycopy(buffer,offset, buf2,offset+1, buffer.length-offset);
-		buffer = buf2;
+            byte[] buf2 = new byte[buffer.length+1];
+            arraycopy(buffer,0, buf2,0, offset);
+            buf2[offset] = b;
+            arraycopy(buffer,offset, buf2,offset+1, buffer.length-offset);
+            buffer = buf2;
 	}
 
 
 	public void insertBytes(int offs, byte[] b) {
 
-		if (b==null || b.length==0) {
-			return;
-		}
+            if (b==null || b.length==0) {
+                return;
+            }
 
-		byte[] buf2 = new byte[buffer.length+b.length];
-		System.arraycopy(buffer,0,    buf2,0,             offs);
-		System.arraycopy(b,0,         buf2,offs,          b.length);
-		System.arraycopy(buffer,offs, buf2,offs+b.length, buffer.length-offs);
-		buffer = buf2;
+            byte[] buf2 = new byte[buffer.length+b.length];
+            arraycopy(buffer,0,    buf2,0,             offs);
+            arraycopy(b,0,         buf2,offs,          b.length);
+            arraycopy(buffer,offs, buf2,offs+b.length, buffer.length-offs);
+            buffer = buf2;
 
 	}
 
-
+        //null
 	public int read(int offset, byte[] buf) {
-		if (buf==null) {
-			return -1;
-		}
-		int count = Math.min(buf.length, getSize()-offset);
-		System.arraycopy(buffer,offset, buf,0, count);
-		return count;
+            int count=min(buf.length, getSize()-offset);
+            if (buf==null) {
+                count= -1;
+            }
+            arraycopy(buffer,offset, buf,0, count);
+            
+            return count;
 	}
 
 
 	public void remove(int offset, int len) {
-		remove(offset, len, null);
+            remove(offset, len, null);
 	}
 
 
 	public void remove(int offset, int len, byte[] removed) {
-		if (removed!=null) {
-			System.arraycopy(buffer,offset, removed,0, len);
-		}
-		byte[] buf = new byte[buffer.length-len];
-		System.arraycopy(buffer,0, buf,0, offset);
-		System.arraycopy(buffer,offset+len, buf,offset, buf.length-offset);
-		buffer = buf;
+            if (removed!=null) {
+                arraycopy(buffer,offset, removed,0, len);
+            }
+            byte[] buf = new byte[buffer.length-len];
+            arraycopy(buffer,0, buf,0, offset);
+            arraycopy(buffer,offset+len, buf,offset, buf.length-offset);
+            buffer = buf;
 	}
 
 
 	public void setByte(int offset, byte b) {
-		buffer[offset] = b;
+            buffer[offset] = b;
 	}
-
-
 }

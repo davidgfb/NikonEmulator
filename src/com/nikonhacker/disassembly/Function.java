@@ -1,25 +1,26 @@
 package com.nikonhacker.disassembly;
 
-
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.Format;
+import static com.nikonhacker.disassembly.Function.Type.STANDARD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//</editor-fold>
+
 
 public class Function extends Symbol {
 
-    public enum Type {
-        /** The entry point */
-        MAIN,
-        /** address referenced in interrupt vector */
-        INTERRUPT,
-        /** code reached by at least one static CALL */
-        STANDARD,
-        /** code not reached by any static CALL */
-        UNKNOWN
-    }
+    public enum Type {/** The entry point */
+                      MAIN, 
+                      /** address referenced in interrupt vector */
+                      INTERRUPT,
+                      /** code reached by at least one static CALL */
+                      STANDARD,
+                      /** code not reached by any static CALL */
+                      UNKNOWN}
 
     /**
      * List of Code Segments that compose the function
@@ -43,7 +44,7 @@ public class Function extends Symbol {
      * Function type
      * @see Type
      */
-    private Type type = Type.STANDARD;
+    private Type type = STANDARD;
 
 
     public Function(int address, String name, String comment, Type type) {

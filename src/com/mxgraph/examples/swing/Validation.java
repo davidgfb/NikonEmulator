@@ -85,11 +85,12 @@ public class Validation extends JFrame {
         getContentPane().add(graphComponent);
     }
 
+    /*
     public static void main(String[] args) {
         Validation frame = new Validation();
         frame.setDefaultCloseOperation(3);
         frame.setSize(400, 320);
         frame.setVisible(true);
     }
-
+    */
 }

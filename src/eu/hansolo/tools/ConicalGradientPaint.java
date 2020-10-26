@@ -1,5 +1,20 @@
 package eu.hansolo.tools;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
+import static java.awt.image.ColorModel.getRGBdefault;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.toDegrees;
+import java.util.HashMap;
+
 
 /**
  * A paint class that creates conical gradients around a given center point
@@ -188,7 +203,7 @@ public final class ConicalGradientPaint implements java.awt.Paint
     {
         // Recalculate the fractions and colors with the given offset
         final int MAX_FRACTIONS = FRACTION_LIST.size();
-        final java.util.HashMap<Float, java.awt.Color> FRACTION_COLORS = new java.util.HashMap<Float, java.awt.Color>(MAX_FRACTIONS);
+        final HashMap<Float, Color> FRACTION_COLORS = new HashMap<Float, Color>(MAX_FRACTIONS);
         for (int i = 0 ; i < MAX_FRACTIONS ; i++)
         {
             // Add offset to fraction
@@ -203,49 +218,37 @@ public final class ConicalGradientPaint implements java.awt.Paint
                 FRACTION_COLORS.put(1.0f + TMP_FRACTION + 0.0001f, TMP_COLOR);
 
                 final float NEXT_FRACTION;
-                final java.awt.Color NEXT_COLOR;
-                if (i < MAX_FRACTIONS - 1)
-                {
+                final Color NEXT_COLOR;
+                if (i < MAX_FRACTIONS - 1) {
                     NEXT_FRACTION = FRACTION_LIST.get(i + 1) + OFFSET;
                     NEXT_COLOR = COLOR_LIST.get(i + 1);
-                }
-                else
-                {
+                } else {
                     NEXT_FRACTION = 1 - FRACTION_LIST.get(0) + OFFSET;
                     NEXT_COLOR = COLOR_LIST.get(0);
                 }
-                if (NEXT_FRACTION > 0)
-                {
-                    final java.awt.Color NEW_FRACTION_COLOR = getColorFromFraction(TMP_COLOR, NEXT_COLOR, (int) ((NEXT_FRACTION - TMP_FRACTION) * 10000), (int) ((-TMP_FRACTION) * 10000));
+                if (NEXT_FRACTION > 0) {
+                    final Color NEW_FRACTION_COLOR = getColorFromFraction(TMP_COLOR, NEXT_COLOR, (int) ((NEXT_FRACTION - TMP_FRACTION) * 10000), (int) ((-TMP_FRACTION) * 10000));
                     FRACTION_COLORS.put(0.0f, NEW_FRACTION_COLOR);
                     FRACTION_COLORS.put(1.0f, NEW_FRACTION_COLOR);
                 }
-            }
-            else if(TMP_FRACTION >= 1)
-            {
+            } else if(TMP_FRACTION >= 1) {
                 FRACTION_COLORS.put(TMP_FRACTION - 1.0f - 0.0001f, TMP_COLOR);
 
                 final float PREVIOUS_FRACTION;
-                final java.awt.Color PREVIOUS_COLOR;
-                if (i > 0)
-                {
+                final Color PREVIOUS_COLOR;
+                if (i > 0) {
                     PREVIOUS_FRACTION = FRACTION_LIST.get(i - 1) + OFFSET;
                     PREVIOUS_COLOR = COLOR_LIST.get(i - 1);
-                }
-                else
-                {
+                } else {
                     PREVIOUS_FRACTION = FRACTION_LIST.get(MAX_FRACTIONS - 1) + OFFSET;
                     PREVIOUS_COLOR = COLOR_LIST.get(MAX_FRACTIONS - 1);
                 }
-                if (PREVIOUS_FRACTION < 1)
-                {
+                if (PREVIOUS_FRACTION < 1) {
                     final java.awt.Color NEW_FRACTION_COLOR = getColorFromFraction(TMP_COLOR, PREVIOUS_COLOR, (int) ((TMP_FRACTION - PREVIOUS_FRACTION) * 10000), (int) (TMP_FRACTION - 1.0f) * 10000);
                     FRACTION_COLORS.put(1.0f, NEW_FRACTION_COLOR);
                     FRACTION_COLORS.put(0.0f, NEW_FRACTION_COLOR);
                 }
-            }
-            else
-            {
+            } else {
                 FRACTION_COLORS.put(TMP_FRACTION, TMP_COLOR);
             }
         }
@@ -270,92 +273,85 @@ public final class ConicalGradientPaint implements java.awt.Paint
      * @param VALUE
      * @return Color calculated from a range of values by given value
      */
-    public java.awt.Color getColorFromFraction(final java.awt.Color START_COLOR, final java.awt.Color DESTINATION_COLOR, final int RANGE, final int VALUE)
+    public Color getColorFromFraction(final Color START_COLOR, final Color DESTINATION_COLOR, final int RANGE, final int VALUE)
     {
-        final float SOURCE_RED = START_COLOR.getRed() * INT_TO_FLOAT_CONST;
-        final float SOURCE_GREEN = START_COLOR.getGreen() * INT_TO_FLOAT_CONST;
-        final float SOURCE_BLUE = START_COLOR.getBlue() * INT_TO_FLOAT_CONST;
-        final float SOURCE_ALPHA = START_COLOR.getAlpha() * INT_TO_FLOAT_CONST;
+        final float SOURCE_RED = START_COLOR.getRed() * INT_TO_FLOAT_CONST,
+                    SOURCE_GREEN = START_COLOR.getGreen() * INT_TO_FLOAT_CONST,
+                    SOURCE_BLUE = START_COLOR.getBlue() * INT_TO_FLOAT_CONST,
+                    SOURCE_ALPHA = START_COLOR.getAlpha() * INT_TO_FLOAT_CONST,
 
-        final float DESTINATION_RED = DESTINATION_COLOR.getRed() * INT_TO_FLOAT_CONST;
-        final float DESTINATION_GREEN = DESTINATION_COLOR.getGreen() * INT_TO_FLOAT_CONST;
-        final float DESTINATION_BLUE = DESTINATION_COLOR.getBlue() * INT_TO_FLOAT_CONST;
-        final float DESTINATION_ALPHA = DESTINATION_COLOR.getAlpha() * INT_TO_FLOAT_CONST;
+                    DESTINATION_RED = DESTINATION_COLOR.getRed() * INT_TO_FLOAT_CONST,
+                    DESTINATION_GREEN = DESTINATION_COLOR.getGreen() * INT_TO_FLOAT_CONST,
+                    DESTINATION_BLUE = DESTINATION_COLOR.getBlue() * INT_TO_FLOAT_CONST,
+                    DESTINATION_ALPHA = DESTINATION_COLOR.getAlpha() * INT_TO_FLOAT_CONST,
 
-        final float RED_DELTA = DESTINATION_RED - SOURCE_RED;
-        final float GREEN_DELTA = DESTINATION_GREEN - SOURCE_GREEN;
-        final float BLUE_DELTA = DESTINATION_BLUE - SOURCE_BLUE;
-        final float ALPHA_DELTA = DESTINATION_ALPHA - SOURCE_ALPHA;
+                    RED_DELTA = DESTINATION_RED - SOURCE_RED,
+                    GREEN_DELTA = DESTINATION_GREEN - SOURCE_GREEN,
+                    BLUE_DELTA = DESTINATION_BLUE - SOURCE_BLUE,
+                    ALPHA_DELTA = DESTINATION_ALPHA - SOURCE_ALPHA,
 
-        final float RED_FRACTION = RED_DELTA / RANGE;
-        final float GREEN_FRACTION = GREEN_DELTA / RANGE;
-        final float BLUE_FRACTION = BLUE_DELTA / RANGE;
-        final float ALPHA_FRACTION = ALPHA_DELTA / RANGE;
-        //System.out.println(DISTANCE + "     " + CURRENT_FRACTION);
+                    RED_FRACTION = RED_DELTA / RANGE,
+                    GREEN_FRACTION = GREEN_DELTA / RANGE,
+                    BLUE_FRACTION = BLUE_DELTA / RANGE,
+                    ALPHA_FRACTION = ALPHA_DELTA / RANGE;
+        //out.println(DISTANCE + "     " + CURRENT_FRACTION);
 
-        return new java.awt.Color(SOURCE_RED + RED_FRACTION * VALUE, SOURCE_GREEN + GREEN_FRACTION * VALUE, SOURCE_BLUE + BLUE_FRACTION * VALUE, SOURCE_ALPHA + ALPHA_FRACTION * VALUE);
+        return new Color(SOURCE_RED + RED_FRACTION * VALUE, SOURCE_GREEN + GREEN_FRACTION * VALUE, SOURCE_BLUE + BLUE_FRACTION * VALUE, SOURCE_ALPHA + ALPHA_FRACTION * VALUE);
     }
 
     @Override
-    public java.awt.PaintContext createContext(final java.awt.image.ColorModel COLOR_MODEL, final java.awt.Rectangle DEVICE_BOUNDS, final java.awt.geom.Rectangle2D USER_BOUNDS, final java.awt.geom.AffineTransform TRANSFORM, final java.awt.RenderingHints HINTS)
-    {
-        final java.awt.geom.Point2D TRANSFORMED_CENTER = TRANSFORM.transform(CENTER, null);
-        return new ConicalGradientPaintContext(TRANSFORMED_CENTER);
+    public java.awt.PaintContext createContext(final ColorModel COLOR_MODEL, final Rectangle DEVICE_BOUNDS, final Rectangle2D USER_BOUNDS, final AffineTransform TRANSFORM, final RenderingHints HINTS) {
+        return new ConicalGradientPaintContext(TRANSFORM.transform(CENTER, null));
     }
 
     @Override
-    public int getTransparency()
-    {
-        return java.awt.Transparency.TRANSLUCENT;
+    public int getTransparency() {
+        return TRANSLUCENT;
     }
 
     private final class ConicalGradientPaintContext implements java.awt.PaintContext
     {
-        final private java.awt.geom.Point2D CENTER;
+        final private Point2D CENTER;
 
-        public ConicalGradientPaintContext(final java.awt.geom.Point2D CENTER)
+        public ConicalGradientPaintContext(final Point2D CENTER)
         {
-            this.CENTER = new java.awt.geom.Point2D.Double(CENTER.getX(), CENTER.getY());
+            this.CENTER = new Point2D.Double(CENTER.getX(), CENTER.getY());
         }
 
         @Override
-        public void dispose()
-        {
+        public void dispose() {
         }
 
         @Override
-        public java.awt.image.ColorModel getColorModel()
-        {
-            return java.awt.image.ColorModel.getRGBdefault();
+        public ColorModel getColorModel() {
+            return getRGBdefault();
         }
 
         @Override
-        public java.awt.image.Raster getRaster(final int X, final int Y, final int TILE_WIDTH, final int TILE_HEIGHT)
+        public Raster getRaster(final int X, final int Y, final int TILE_WIDTH, final int TILE_HEIGHT)
         {
-            final double ROTATION_CENTER_X = -X + CENTER.getX();
-            final double ROTATION_CENTER_Y = -Y + CENTER.getY();
+            final double ROTATION_CENTER_X = -X + CENTER.getX(),
+                         ROTATION_CENTER_Y = -Y + CENTER.getY();
 
             final int MAX = FRACTION_ANGLES.length;
 
             // Create raster for given colormodel
-            final java.awt.image.WritableRaster RASTER = getColorModel().createCompatibleWritableRaster(TILE_WIDTH, TILE_HEIGHT);
+            final WritableRaster RASTER = getColorModel().createCompatibleWritableRaster(TILE_WIDTH, TILE_HEIGHT);
 
             // Create data array with place for red, green, blue and alpha values
             int[] data = new int[(TILE_WIDTH * TILE_HEIGHT * 4)];
 
-            double dx;
-            double dy;
-            double distance;
-            double angle;
-            double currentRed = 0;
-            double currentGreen = 0;
-            double currentBlue = 0 ;
-            double currentAlpha = 0;
+            double dx = 0,
+                   dy = 0,
+                   distance = 0,
+                   angle = 0,
+                   currentRed = 0,
+                   currentGreen = 0,
+                   currentBlue = 0 ,
+                   currentAlpha = 0;
 
-            for (int py = 0; py < TILE_HEIGHT; py++)
-            {
-                for (int px = 0; px < TILE_WIDTH; px++)
-                {
+            for (int py = 0; py < TILE_HEIGHT; py++) {
+                for (int px = 0; px < TILE_WIDTH; px++) {
 
                     // Calculate the distance between the current position and the rotation angle
                     dx = px - ROTATION_CENTER_X;
@@ -363,41 +359,30 @@ public final class ConicalGradientPaint implements java.awt.Paint
                     distance = Math.sqrt(dx * dx + dy * dy);
 
                     // Avoid division by zero
-                    if (distance == 0)
-                    {
+                    if (distance == 0) {
                         distance = 1;
                     }
 
                     // 0 degree on top
-                    angle = Math.abs(Math.toDegrees(Math.acos(dx / distance)));
+                    angle = abs(toDegrees(acos(dx / distance)));
 
-                    if (dx >= 0 && dy <= 0)
-                    {
+                    if (dx >= 0 && dy <= 0) {
                         angle = 90.0 - angle;
-                    }
-                    else if (dx >= 0 && dy >= 0)
-                    {
+                    } else if (dx >= 0 && dy >= 0) {
                         angle += 90.0;
-                    }
-                    else if (dx <= 0 && dy >= 0)
-                    {
+                    } else if (dx <= 0 && dy >= 0) {
                         angle += 90.0;
-                    }
-                    else if (dx <= 0 && dy <= 0)
-                    {
+                    } else if (dx <= 0 && dy <= 0) {
                         angle = 450.0 - angle;
                     }
 
                     // Check for each angle in fractionAngles array
-                    for (int i = 0 ; i < (MAX - 1) ; i++)
-                    {
-                        if ((angle >= FRACTION_ANGLES[i]) )
-                        {
+                    for (int i = 0 ; i < (MAX - 1) ; i++)  {
+                        if ((angle >= FRACTION_ANGLES[i]) ) {
                             currentRed = COLORS[i].getRed() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * RED_STEP_LOOKUP[i];
                             currentGreen = COLORS[i].getGreen() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * GREEN_STEP_LOOKUP[i];
                             currentBlue = COLORS[i].getBlue() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * BLUE_STEP_LOOKUP[i];
                             currentAlpha = COLORS[i].getAlpha() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * ALPHA_STEP_LOOKUP[i];
-                            continue;
                         }
                     }
 
@@ -418,8 +403,7 @@ public final class ConicalGradientPaint implements java.awt.Paint
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ConicalGradientPaint";
     }
 }

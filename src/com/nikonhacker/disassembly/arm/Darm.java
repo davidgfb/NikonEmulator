@@ -1,6 +1,7 @@
 package com.nikonhacker.disassembly.arm;
 
-import com.nikonhacker.Constants;
+//<editor-fold defaultstate="collapsed" desc="imports">
+import static com.nikonhacker.Constants.CHIP_ARM;
 import com.nikonhacker.disassembly.Disassembler;
 import com.nikonhacker.disassembly.StatementContext;
 import com.nikonhacker.disassembly.Range;
@@ -8,18 +9,26 @@ import com.nikonhacker.disassembly.CodeStructure;
 import com.nikonhacker.disassembly.OutputOption;
 import com.nikonhacker.disassembly.Instruction;
 import com.nikonhacker.disassembly.DisassemblyException;
-import com.nikonhacker.disassembly.RangeType;
 import com.nikonhacker.disassembly.CPUState;
+import com.nikonhacker.disassembly.RangeType.Width;
+import static com.nikonhacker.disassembly.arm.ArmCPUState.REG_LABEL;
+import static com.nikonhacker.disassembly.arm.ArmCPUState.initRegisterLabels;
+import static com.nikonhacker.disassembly.arm.ArmInstructionSet.init;
+import static com.nikonhacker.disassembly.arm.ArmInstructionSet.opData;
+import static com.nikonhacker.disassembly.arm.ArmStatement.initFormatChars;
 
 import java.io.IOException;
 import java.util.Set;
+//</editor-fold>
+
 
 public class Darm extends Disassembler
 {
     public Darm() {
-        super(Constants.CHIP_ARM);
+        super(CHIP_ARM);
     }
 
+    /*
     public static void main(String[] args) {
         Darm darm = new Darm();
         try {
@@ -31,9 +40,11 @@ public class Darm extends Disassembler
             darm.closeDebugPrintWriter();
         }
     }
+    */
 
 
     /* output */
+    @Override
     protected int disassembleOne16BitStatement(StatementContext context, Range memRange, int memoryFileOffset, CodeStructure codeStructure, Set<OutputOption> outputOptions) throws IOException {
         ArmStatement statement = new ArmStatement(memRange.getStart());
 
@@ -69,18 +80,19 @@ public class Darm extends Disassembler
     }
 
 
+    @Override
     protected int disassembleOneDataRecord(StatementContext context, Range memRange, int memoryFileOffset, Set<OutputOption> outputOptions) throws IOException {
 
         int sizeInBytes = 0;
 
-        for (RangeType.Width spec : memRange.getRangeType().widths)
+        for (Width spec : memRange.getRangeType().widths)
         {
             ArmStatement statement = new ArmStatement(memRange.getStart());
             statement.getNextData(memory, context.cpuState.pc);
             if (spec.getWidth()>2)
                 statement.getNextData(memory, context.cpuState.pc);
 
-            statement.setInstruction(ArmInstructionSet.opData[spec.getIndex()]);
+            statement.setInstruction(opData[spec.getIndex()]);
 
             statement.decodeOperands(context.cpuState.pc, memory);
 
@@ -97,25 +109,29 @@ public class Darm extends Disassembler
     }
 
 
+    @Override
     protected CPUState getCPUState(Range memRange) {
         return new ArmCPUState(memRange.getStart());
     }
 
     /* initialization */
+    @Override
     public void initialize() throws IOException {
         super.initialize();
-        ArmInstructionSet.init(outputOptions);
+        init(outputOptions);
 
-        ArmStatement.initFormatChars(outputOptions);
+        initFormatChars(outputOptions);
 
-        ArmCPUState.initRegisterLabels(outputOptions);
+        initRegisterLabels(outputOptions);
     }
 
 
+    @Override
     protected String[][] getRegisterLabels() {
-        return ArmCPUState.REG_LABEL;
+        return REG_LABEL;
     }
 
+    @Override
     protected CodeStructure getCodeStructure(int start) {
         return new ArmCodeStructure(start);
     }

@@ -88,11 +88,12 @@ public class Port extends JFrame {
         graphComponent.setToolTips(true);
     }
 
+    /*
     public static void main(String[] args) {
         Port frame = new Port();
         frame.setDefaultCloseOperation(3);
         frame.setSize(400, 320);
         frame.setVisible(true);
     }
-
+    */
 }
