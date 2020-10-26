@@ -2,6 +2,7 @@ package com.nikonhacker.gui.swing;
 
 import com.nikonhacker.Constants;
 import com.nikonhacker.gui.EmulatorUI;
+import static java.lang.System.out;
 
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -76,6 +77,8 @@ public class DocumentFrame extends JInternalFrame implements InternalFrameListen
         setVisible(true);
         try {
             setSelected(true);
-        } catch (java.beans.PropertyVetoException e) { /* noop */ }
+        } catch (java.beans.PropertyVetoException e) { 
+            out.println("e: "+e);/* noop */ 
+        }
     }
 }

@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import static java.lang.System.out;
 
 /**
  * This file is part of NikonEmulator, a NikonHacker.com project.
@@ -50,6 +51,7 @@ public class ImageSensorSerialPanel extends SerialDevicePanel implements HexEdit
 
         // Start update timer
         refreshTimer = new Timer(ui.getPrefs().getRefreshIntervalMs(), new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if (eepromHexEditor.isShowing()) {
                     refreshData();
@@ -63,6 +65,7 @@ public class ImageSensorSerialPanel extends SerialDevicePanel implements HexEdit
         try {
             eepromHexEditor.open(new ByteArrayInputStream(imageSensor.getMemory()));
         } catch (IOException e) {
+            out.println("e: "+e);
             JOptionPane.showMessageDialog(this, "Error loading eeprom contents in Hex editor. See console for more information.");
         }
     }
@@ -79,6 +82,7 @@ public class ImageSensorSerialPanel extends SerialDevicePanel implements HexEdit
                 imageSensor.getMemory()[event.getOffset()] = eepromHexEditor.getByte(event.getOffset());
             }
             catch (ArrayIndexOutOfBoundsException exception) {
+                out.println("e: "+exception);
                 JOptionPane.showMessageDialog(this, "Error writing to memory: " + exception.getMessage(), "Write error", JOptionPane.ERROR_MESSAGE);
                 // Reload to show unedited values
                 refreshData();

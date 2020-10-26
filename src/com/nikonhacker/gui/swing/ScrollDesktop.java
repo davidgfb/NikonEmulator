@@ -7,6 +7,8 @@ package com.nikonhacker.gui.swing;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import static java.lang.System.out;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -67,7 +69,8 @@ class Main extends JFrame {
         try {
             f3.setSelected(true);
         }
-        catch (java.beans.PropertyVetoException ignored) {
+        catch (PropertyVetoException ignored) {
+            out.println("e: "+ignored);
         }
 
 

@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import static java.lang.System.out;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -86,6 +87,7 @@ public class PopupMenuDemo extends JFrame {
                 textArea.read(r, null);
             }
         } catch (IOException ioe) {
+            out.println("e: "+ioe);
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
         }
 
@@ -130,6 +132,7 @@ public class PopupMenuDemo extends JFrame {
                     filename = getFilenameAtCaret(tc);
                 }
             } catch (BadLocationException ble) {
+                out.println("e: "+ble);
                 UIManager.getLookAndFeel().provideErrorFeedback(tc);
                 return;
             }

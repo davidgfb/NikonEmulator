@@ -140,6 +140,7 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
                     eeprom.saveBinary(file);
                 }
             } catch (IOException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, "Error saving eeprom contents to file: " + e.getMessage(), "Save error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -149,6 +150,7 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
         try {
             eepromHexEditor.open(new ByteArrayInputStream(eeprom.getMemory()));
         } catch (IOException e) {
+            out.println("e: "+e);
             JOptionPane.showMessageDialog(this, "Error loading eeprom contents in Hex editor. See console for more information.");
         }
     }
@@ -166,6 +168,7 @@ public class EepromSerialPanel extends SerialDevicePanel implements HexEditorLis
                 eeprom.getMemory()[event.getOffset()] = eepromHexEditor.getByte(event.getOffset());
             }
             catch (ArrayIndexOutOfBoundsException exception) {
+                out.println("e: "+exception);
                 JOptionPane.showMessageDialog(this, "Error writing to memory: " + exception.getMessage(), "Write error", JOptionPane.ERROR_MESSAGE);
                 // Reload to show unedited values
                 refreshData();

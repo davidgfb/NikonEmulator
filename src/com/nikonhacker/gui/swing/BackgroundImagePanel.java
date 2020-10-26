@@ -7,6 +7,7 @@ import java.awt.LayoutManager;
 import java.awt.MediaTracker;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.lang.System.out;
 import javax.swing.JPanel;
 
 public class BackgroundImagePanel extends JPanel {
@@ -41,6 +42,7 @@ public class BackgroundImagePanel extends JPanel {
         try {
             mt.waitForAll();
         } catch (InterruptedException e) {
+            out.println("e: "+e);
         }
     }
 

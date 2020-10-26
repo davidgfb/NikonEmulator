@@ -9,6 +9,7 @@ package com.nikonhacker.gui.component.sourceCode.syntaxHighlighter;
 
 import javax.swing.text.Segment;
 import java.io.IOException;
+import static java.lang.System.out;
 
 import org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker;
 import org.fife.ui.rsyntaxtextarea.DefaultToken;
@@ -563,7 +564,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 			yybegin(state);
 			return yylex();
 		} catch (IOException ioe) {
-			return new DefaultToken();
+                    out.println("e: "+ioe);
+                    return new DefaultToken();
 		}
 
 	}
@@ -756,7 +758,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
       message = ZZ_ERROR_MSG[errorCode];
     }
     catch (ArrayIndexOutOfBoundsException e) {
-      message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
+        out.println("e: "+e);
+        message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 
     throw new Error(message);

@@ -14,6 +14,7 @@ import org.fife.ui.rsyntaxtextarea.TokenMaker;
 
 import javax.swing.text.Segment;
 import java.io.IOException;
+import static java.lang.System.out;
 
 
 /**
@@ -641,7 +642,8 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
 			yybegin(state);
 			return yylex();
 		} catch (IOException ioe) {
-			return new DefaultToken();
+                    out.println("e: "+ioe);
+                    return new DefaultToken();
 		}
 
 	}
@@ -834,6 +836,7 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
       message = ZZ_ERROR_MSG[errorCode];
     }
     catch (ArrayIndexOutOfBoundsException e) {
+        out.println("e: "+e);
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 

@@ -152,8 +152,9 @@ import org.fife.ui.rsyntaxtextarea.*;
 			yybegin(state);
 			return yylex();
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return new DefaultToken();
+                    out.println("e: "+ioe);
+                    ioe.printStackTrace();
+                    return new DefaultToken();
 		}
 
 	}

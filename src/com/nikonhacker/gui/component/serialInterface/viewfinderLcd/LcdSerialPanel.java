@@ -22,6 +22,7 @@ import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -213,6 +214,7 @@ public class LcdSerialPanel extends SerialDevicePanel {
             try {
                 manualValues[byteNumber] = (byte) (Format.parseUnsigned(value) & 0xFF);
             } catch (ParsingException e) {
+                out.println("e: "+e);
                 System.err.println("Cannot parse value: " + value);
             }
             byteNumber++;
@@ -285,12 +287,14 @@ public class LcdSerialPanel extends SerialDevicePanel {
                                 segmentImages[byteNumber][bitNumber] = resizeImage(segmentImages[byteNumber][bitNumber], (int)(bgWidth * minRatio), (int)(bgHeight * minRatio));
                             }
                         }
-                    } catch (Exception e) {
+                    } catch (IOException e) {
+                        out.println("e: "+e);
                         System.err.println("Error loading file: " + overlayImageFilename);
                     }
                 }
             }
         } catch (IOException e) {
+            out.println("e: "+e);
             System.err.println("Could not load LCD background image " + bgImageFilename);
         }
     }
@@ -323,6 +327,7 @@ public class LcdSerialPanel extends SerialDevicePanel {
                     }
                 }
             } catch (IOException e) {
+                out.println("e: "+e);
                 JOptionPane.showMessageDialog(this, "Error saving image to file: " + e.getMessage(), "Save error", JOptionPane.ERROR_MESSAGE);
             }
         }

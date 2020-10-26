@@ -53,6 +53,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.StringWriter;
 import static java.lang.System.err;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -144,6 +145,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             noInterruptImg = read(EmulatorUI.class.getResource("images/triggerNoInterrupt.png"));
             registerImg = read(EmulatorUI.class.getResource("images/triggerRegister.png"));
         } catch (IOException e) {
+            out.println("e: "+e);
             err.println("Error initializing source code break trigger icons");
         }
 
@@ -305,6 +307,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                             try {
                                 listingArea.setCaretPosition(listingArea.getLineStartOffset(line));
                             } catch (BadLocationException e1) {
+                                out.println("e: "+e1);
                             }
                         }
                     }
@@ -444,6 +447,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
+                    out.println("e: "+ble);
                 }
             }
         });
@@ -549,6 +553,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
+                    out.println("e: "+ble);
                 }
             }
         });
@@ -572,6 +577,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         }
                     }
                 } catch (BadLocationException ble) {
+                    out.println("e: "+ble);
                 }
             }
         });
@@ -604,6 +610,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                 return getBreakTrigger(address);
             }
         } catch (BadLocationException ble) {
+            out.println("e: "+ble);
             // noop
         }
         return null;
@@ -626,6 +633,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                 setLineContextVisible(lineFromAddress);
             }
         } catch (BadLocationException e) {
+            out.println("e: "+e);
             pcHighlightTag = null;
         }
     }
@@ -665,6 +673,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                 pcHighlightTag = listingArea.addLineHighlight(lineFromAddress, CYAN);
             }
         } catch (BadLocationException e) {
+            out.println("e: "+e);
             pcHighlightTag = null;
         }
     }
@@ -716,6 +725,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                     copyAddressMenuItem.setEnabled(true);
                 }
             } catch (BadLocationException ble) {
+                out.println("e: "+e);
                 // noop
             }
         }
@@ -768,6 +778,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                     }
                 }
             } catch (BadLocationException ble) {
+                out.println("e: "+e);
             }
         }
     }
@@ -831,6 +842,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
             }
             performSearch(true);
         } catch (BadLocationException e) {
+            out.println("e: "+e);
         }
     }
 
@@ -869,6 +881,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                             listingArea.append(line + "\n");
                         }
                     } catch (IOException e) {
+                        out.println("e: "+e);
                         listingArea.append("# ERROR decoding instruction at address 0x" + Format.asHex(address, 8) + " : " + e.getMessage() + "\n");
                         lineAddresses.add(null);
                     }
@@ -898,6 +911,7 @@ public class SourceCodeFrame extends DocumentFrame implements ActionListener, Ke
                         gutter.addLineTrackingIcon(lineFromAddress, getIcon(breakTrigger));
                     }
                 } catch (BadLocationException e) {
+                    out.println("e: "+e);
                 }
             }
         }

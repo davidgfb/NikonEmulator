@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.System.out;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -36,6 +37,7 @@ class TextAreaEx extends JFrame implements ActionListener, KeyListener {
                 sb.append(h + "\n");
             }
         } catch (IOException e) {
+            out.println("e: "+e);
         }
         text = sb.toString();
         tx.setText(text);

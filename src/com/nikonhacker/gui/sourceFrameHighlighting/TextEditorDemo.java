@@ -9,6 +9,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.text.BadLocationException;
 import java.awt.BorderLayout;
 import static java.awt.Color.CYAN;
+import static java.lang.System.out;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,6 +44,7 @@ public class TextEditorDemo extends JFrame {
         try {
             Object tag = textArea.addLineHighlight(3, CYAN);
         } catch (BadLocationException e) {
+            out.println("e: "+e);
         }
 
         sp.setIconRowHeaderEnabled(true);
@@ -54,6 +56,7 @@ public class TextEditorDemo extends JFrame {
         try {
             gutter.addLineTrackingIcon(2, new ImageIcon("breakpointIcon.png"));
         } catch (BadLocationException e) {
+            out.println("e: "+e);
         }
 
         cp.add(sp);

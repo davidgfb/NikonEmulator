@@ -7,6 +7,7 @@ import javax.swing.text.SimpleAttributeSet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import static java.lang.System.out;
 import javax.swing.JTextArea;
 
 /**
@@ -50,6 +51,7 @@ public class PrintWriterArea extends JTextArea {
         try {
             getDocument().insertString(getDocument().getLength(), new String(cbuf, off, len), attributeSet);
         } catch (BadLocationException e) {
+            out.println("e: "+e);
             throw new IOException(e);
         }
     }
@@ -71,6 +73,7 @@ public class PrintWriterArea extends JTextArea {
         try {
             getDocument().remove(0, getDocument().getLength());
         } catch (BadLocationException e) {
+            out.println("e: "+e);
             throw new IOException(e);
         }
     }

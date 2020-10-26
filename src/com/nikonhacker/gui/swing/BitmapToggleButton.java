@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class BitmapToggleButton extends JComponent implements MouseMotionListene
                 try {
                     imageCache[hover][stateNumber] = getBufferedImage(imgDir + "/" + imgPrefix + "_" + imageSuffixes[hover][stateNumber] + ".png");
                 } catch (IOException e) {
+                    out.println("e: "+e);
                     System.err.println("Error initializing images #" + stateNumber + " for BitmapToggleButton: " + imgPrefix);
                 }
             }
@@ -119,6 +121,7 @@ public class BitmapToggleButton extends JComponent implements MouseMotionListene
             return (mask.getRGB(e.getX(), e.getY()) & 0xff000000) != 0;
         }
         catch (ArrayIndexOutOfBoundsException ex){
+            out.println("e: "+ex);
             // out of the image. Ignore
             return false;
         }
