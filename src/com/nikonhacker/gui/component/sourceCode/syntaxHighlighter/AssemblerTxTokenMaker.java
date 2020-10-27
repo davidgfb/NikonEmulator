@@ -477,8 +477,112 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
       private boolean zzEOFDone;
 //</editor-fold>
       
+    //<editor-fold defaultstate="collapsed" desc="constructor">
+      /* user code: */
+      /**
+             * Constructor.  We must have this here as JFLex does not generate a
+             * no parameter constructor.
+             */
+            public AssemblerTxTokenMaker() {
+                    super();
+            }
+            
+            /**
+       * Creates a new scanner
+       * There is also a java.io.InputStream version of this constructor.
+       *
+       * @param   in  the java.io.Reader to read input from.
+       */
+      public AssemblerTxTokenMaker(java.io.Reader in) {
+        this.zzReader = in;
+      }
 
-      //<editor-fold defaultstate="collapsed" desc="funciones">
+      /**
+       * Creates a new scanner.
+       * There is also java.io.Reader version of this constructor.
+       *
+       * @param   in  the java.io.Inputstream to read input from.
+       */
+      public AssemblerTxTokenMaker(java.io.InputStream in) {
+        this(new java.io.InputStreamReader(in));
+      }
+//</editor-fold>
+      
+    //<editor-fold defaultstate="collapsed" desc="getters">
+            /**
+             * Returns the text to place at the beginning and end of a
+             * line to "comment" it in a this programming language.
+             *
+             * @return The start and end strings to add to a line to "comment"
+             *         it out.
+             */
+            public String[] getLineCommentStartAndEnd() {
+                    return new String[] { ";", null };
+            }
+            
+            /**
+             * Returns the first token in the linked list of tokens generated
+             * from <code>text</code>.  This method must be implemented by
+             * subclasses so they can correctly implement syntax highlighting.
+             *
+             * @param text The text from which to get tokens.
+             * @param initialTokenType The token type we should start with.
+             * @param startOffset The offset into the document at which
+             *                    <code>text</code> starts.
+             * @return The first <code>Token</code> in a linked list representing
+             *         the syntax highlighted text.
+             */
+            @Override
+            public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
+
+                    resetTokenList();
+                    this.offsetShift = -text.offset + startOffset;
+
+                    // Start off in the proper state.
+                    int state = Token.NULL;
+                    switch (initialTokenType) {
+                            default:
+                                    state = Token.NULL;
+                    }
+
+                    s = text;
+                    try {
+                            yyreset(zzReader);
+                            yybegin(state);
+                            return yylex();
+                    } catch (IOException ioe) {
+                        out.println("e: "+ioe);
+                        return new DefaultToken();
+                    }
+
+            }
+            
+            /**
+             * Returns whether tokens of the specified type should have "mark
+             * occurrences" enabled for the current programming language.
+             * Basically, we return true for everything except blanks
+             *
+             * @param type The token type.
+             * @return Whether tokens of this type should have "mark occurrences"
+             *         enabled.
+             */
+            public boolean getMarkOccurrencesOfTokenType(int type) {
+                return type == Token.IDENTIFIER || type == Token.FUNCTION || type == Token.RESERVED_WORD || type == Token.RESERVED_WORD_2 || type == Token.DATA_TYPE|| type == Token.LITERAL_CHAR|| type == Token.LITERAL_NUMBER_HEXADECIMAL|| type == Token.ANNOTATION|| type == Token.OPERATOR|| type == Token.VARIABLE;
+            }
+            
+            /**
+             * Refills the input buffer.
+             *
+             * @return      <code>true</code> if EOF was reached, otherwise
+             *              <code>false</code>.
+             * @exception   IOException  if any I/O-Error occurs.
+             */
+            private boolean zzRefill() throws java.io.IOException {
+                    return zzCurrentPos>=s.offset+s.count;
+            }
+//</editor-fold>
+      
+    //<editor-fold defaultstate="collapsed" desc="funciones">
       private static int [] zzUnpackAction() {
         int [] result = new int[177];
         int offset = 0;
@@ -773,39 +877,7 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
         return token;
     }
 //</editor-fold>
-      
-
-    //<editor-fold defaultstate="collapsed" desc="constructor">
-      /* user code: */
-      /**
-             * Constructor.  We must have this here as JFLex does not generate a
-             * no parameter constructor.
-             */
-            public AssemblerTxTokenMaker() {
-                    super();
-            }
-            
-            /**
-       * Creates a new scanner
-       * There is also a java.io.InputStream version of this constructor.
-       *
-       * @param   in  the java.io.Reader to read input from.
-       */
-      public AssemblerTxTokenMaker(java.io.Reader in) {
-        this.zzReader = in;
-      }
-
-      /**
-       * Creates a new scanner.
-       * There is also java.io.Reader version of this constructor.
-       *
-       * @param   in  the java.io.Inputstream to read input from.
-       */
-      public AssemblerTxTokenMaker(java.io.InputStream in) {
-        this(new java.io.InputStreamReader(in));
-      }
-//</editor-fold>
-            
+             
     //<editor-fold defaultstate="collapsed" desc="metodos">
             /**
              * Adds the token specified to the current linked list of tokens.
@@ -934,93 +1006,4 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
         zzMarkedPos -= number;
       }
 //</editor-fold>
-
-            
-//<editor-fold defaultstate="collapsed" desc="funciones">
-            
-//</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="getters">
-            /**
-             * Returns the text to place at the beginning and end of a
-             * line to "comment" it in a this programming language.
-             *
-             * @return The start and end strings to add to a line to "comment"
-             *         it out.
-             */
-            public String[] getLineCommentStartAndEnd() {
-                    return new String[] { ";", null };
-            }
-            
-            /**
-             * Returns the first token in the linked list of tokens generated
-             * from <code>text</code>.  This method must be implemented by
-             * subclasses so they can correctly implement syntax highlighting.
-             *
-             * @param text The text from which to get tokens.
-             * @param initialTokenType The token type we should start with.
-             * @param startOffset The offset into the document at which
-             *                    <code>text</code> starts.
-             * @return The first <code>Token</code> in a linked list representing
-             *         the syntax highlighted text.
-             */
-            @Override
-            public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
-
-                    resetTokenList();
-                    this.offsetShift = -text.offset + startOffset;
-
-                    // Start off in the proper state.
-                    int state = Token.NULL;
-                    switch (initialTokenType) {
-                            default:
-                                    state = Token.NULL;
-                    }
-
-                    s = text;
-                    try {
-                            yyreset(zzReader);
-                            yybegin(state);
-                            return yylex();
-                    } catch (IOException ioe) {
-                        out.println("e: "+ioe);
-                        return new DefaultToken();
-                    }
-
-            }
-            
-            /**
-             * Returns whether tokens of the specified type should have "mark
-             * occurrences" enabled for the current programming language.
-             * Basically, we return true for everything except blanks
-             *
-             * @param type The token type.
-             * @return Whether tokens of this type should have "mark occurrences"
-             *         enabled.
-             */
-            public boolean getMarkOccurrencesOfTokenType(int type) {
-                return type == Token.IDENTIFIER || type == Token.FUNCTION || type == Token.RESERVED_WORD || type == Token.RESERVED_WORD_2 || type == Token.DATA_TYPE|| type == Token.LITERAL_CHAR|| type == Token.LITERAL_NUMBER_HEXADECIMAL|| type == Token.ANNOTATION|| type == Token.OPERATOR|| type == Token.VARIABLE;
-            }
-            
-            /**
-             * Refills the input buffer.
-             *
-             * @return      <code>true</code> if EOF was reached, otherwise
-             *              <code>false</code>.
-             * @exception   IOException  if any I/O-Error occurs.
-             */
-            private boolean zzRefill() throws java.io.IOException {
-                    return zzCurrentPos>=s.offset+s.count;
-            }
-//</editor-fold>
-        
-
-
-      
-
-
-      
-
-
-     
 }
