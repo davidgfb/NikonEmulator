@@ -728,18 +728,15 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
                     break;
                 case 2: 
                     addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); 
-                    //token= firstToken;
                     break;
                 case 3: 
                     addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
                     break;
                 case 4: 
                     addToken(Token.COMMENT_EOL); addNullToken(); 
-                    //token= firstToken;
                     break;
                 case 5: 
                     addNullToken(); 
-                    //token= firstToken;
                     break;
                 case 6: 
                     addToken(Token.WHITESPACE);
@@ -783,7 +780,6 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
                         switch (zzLexicalState) {
                             case YYINITIAL: 
                                 addNullToken(); 
-                                //token= firstToken;
                             default:
                                 token = null;
                         }
