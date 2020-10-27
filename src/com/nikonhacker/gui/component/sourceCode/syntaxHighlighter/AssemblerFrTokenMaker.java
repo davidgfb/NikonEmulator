@@ -552,27 +552,30 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 */
   @Override
 	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
+            
+            Token token;    
+            
+            resetTokenList();
+            this.offsetShift = -text.offset + startOffset;
 
-		resetTokenList();
-		this.offsetShift = -text.offset + startOffset;
+            // Start off in the proper state.
+            int state = Token.NULL;
+            switch (initialTokenType) {
+                default:
+                    state = Token.NULL;
+            }
 
-		// Start off in the proper state.
-		int state = Token.NULL;
-		switch (initialTokenType) {
-			default:
-				state = Token.NULL;
-		}
+            s = text;
+            try {
+                yyreset(zzReader);
+                yybegin(state);
+                token= yylex();
+            } catch (IOException ioe) {
+                out.println("e: "+ioe);
+                token= new DefaultToken();
+            }
 
-		s = text;
-		try {
-			yyreset(zzReader);
-			yybegin(state);
-			return yylex();
-		} catch (IOException ioe) {
-                    out.println("e: "+ioe);
-                    return new DefaultToken();
-		}
-
+            return token;
 	}
 
 	/**
@@ -585,16 +588,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 *         enabled.
 	 */
 	public boolean getMarkOccurrencesOfTokenType(int type) {
-        return     type == Token.IDENTIFIER
-                || type == Token.FUNCTION
-                || type == Token.RESERVED_WORD
-                || type == Token.RESERVED_WORD_2
-                || type == Token.DATA_TYPE
-                || type == Token.LITERAL_CHAR
-                || type == Token.LITERAL_NUMBER_HEXADECIMAL
-                || type == Token.ANNOTATION
-                || type == Token.OPERATOR
-                || type == Token.VARIABLE;
+            return type == Token.IDENTIFIER || type == Token.FUNCTION || type == Token.RESERVED_WORD || type == Token.RESERVED_WORD_2|| type == Token.DATA_TYPE|| type == Token.LITERAL_CHAR|| type == Token.LITERAL_NUMBER_HEXADECIMAL|| type == Token.ANNOTATION|| type == Token.OPERATOR|| type == Token.VARIABLE;
 	}
 
 
@@ -606,7 +600,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 * @exception   IOException  if any I/O-Error occurs.
 	 */
 	private boolean zzRefill() throws java.io.IOException {
-		return zzCurrentPos>=s.offset+s.count;
+            return zzCurrentPos>=s.offset+s.count;
 	}
 
 
@@ -620,23 +614,23 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 *
 	 * @param reader   the new input stream 
 	 */
-	public final void yyreset(java.io.Reader reader) throws java.io.IOException {
-		// 's' has been updated.
-		zzBuffer = s.array;
-		/*
-		 * We replaced the line below with the two below it because zzRefill
-		 * no longer "refills" the buffer (since the way we do it, it's always
-		 * "full" the first time through, since it points to the segment's
-		 * array).  So, we assign zzEndRead here.
-		 */
-		//zzStartRead = zzEndRead = s.offset;
-		zzStartRead = s.offset;
-		zzEndRead = zzStartRead + s.count - 1;
-		zzCurrentPos = zzMarkedPos = s.offset;
-		zzLexicalState = YYINITIAL;
-		zzReader = reader;
-		zzAtBOL  = true;
-		zzAtEOF  = false;
+	public final void yyreset(java.io.Reader reader) throws IOException {
+            // 's' has been updated.
+            zzBuffer = s.array;
+            /*
+             * We replaced the line below with the two below it because zzRefill
+             * no longer "refills" the buffer (since the way we do it, it's always
+             * "full" the first time through, since it points to the segment's
+             * array).  So, we assign zzEndRead here.
+             */
+            //zzStartRead = zzEndRead = s.offset;
+            zzStartRead = s.offset;
+            zzEndRead = zzStartRead + s.count - 1;
+            zzCurrentPos = zzMarkedPos = s.offset;
+            zzLexicalState = YYINITIAL;
+            zzReader = reader;
+            zzAtBOL  = true;
+            zzAtEOF  = false;
 	}
 
 
