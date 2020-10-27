@@ -11,10 +11,13 @@ import javax.swing.text.Segment;
 import java.io.IOException;
 import static java.lang.System.out;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker;
 import org.fife.ui.rsyntaxtextarea.DefaultToken;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMaker;
+//</editor-fold>
+
 
 
 /**
@@ -789,168 +792,165 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
    * @return      the next token
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  public org.fife.ui.rsyntaxtextarea.Token yylex() throws java.io.IOException {
-    int zzInput = 0,
-        zzAction,
+    public Token yylex() throws IOException {
+        Token token = firstToken;
+        
+        int zzInput = 0,
+            zzAction = 0,
 
-    // cached fields:
-        zzCurrentPosL,
-        zzMarkedPosL,
-        zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer,
-            zzCMapL = ZZ_CMAP;
+        // cached fields:
+            zzCurrentPosL = 0,
+            zzMarkedPosL = 0,
+            zzEndReadL = zzEndRead;
+        char [] zzBufferL = zzBuffer,
+                zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS,
-           zzRowMapL = ZZ_ROWMAP,
-           zzAttrL = ZZ_ATTRIBUTE;
+        int [] zzTransL = ZZ_TRANS,
+               zzRowMapL = ZZ_ROWMAP,
+               zzAttrL = ZZ_ATTRIBUTE;
 
-    boolean condition = true;
-    while (condition) {
-      zzMarkedPosL = zzMarkedPos;
+        boolean condition = true;
+        
+        while (condition) {
+            zzMarkedPosL = zzMarkedPos;
 
-      zzAction = -1;
+            zzAction = -1;
 
-      zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
-  
-      zzState = ZZ_LEXSTATE[zzLexicalState];
+            zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
 
+            zzState = ZZ_LEXSTATE[zzLexicalState];
 
-      zzForAction: {
-        boolean condition1 = true;
-        while (condition1) {
-    
-          if (zzCurrentPosL < zzEndReadL)
-            zzInput = zzBufferL[zzCurrentPosL++];
-          else if (zzAtEOF) {
-            zzInput = YYEOF;
-            break zzForAction;
-          }
-          else {
-            // store back cached positions
-            zzCurrentPos  = zzCurrentPosL;
-            zzMarkedPos   = zzMarkedPosL;
-            boolean eof = zzRefill();
-            // get translated positions and possibly new buffer
-            zzCurrentPosL  = zzCurrentPos;
-            zzMarkedPosL   = zzMarkedPos;
-            zzBufferL      = zzBuffer;
-            zzEndReadL     = zzEndRead;
-            if (eof) {
-              zzInput = YYEOF;
-              break zzForAction;
+            zzForAction: {
+                boolean condition1 = true;
+                
+                while (condition1) {
+
+                    if (zzCurrentPosL < zzEndReadL)
+                        zzInput = zzBufferL[zzCurrentPosL++];
+                    else if (zzAtEOF) {
+                        zzInput = YYEOF;
+                        //break zzForAction;
+                    }
+                    else {
+                        // store back cached positions
+                        zzCurrentPos  = zzCurrentPosL;
+                        zzMarkedPos   = zzMarkedPosL;
+                        boolean eof = zzRefill();
+                        // get translated positions and possibly new buffer
+                        zzCurrentPosL  = zzCurrentPos;
+                        zzMarkedPosL   = zzMarkedPos;
+                        zzBufferL      = zzBuffer;
+                        zzEndReadL     = zzEndRead;
+                        
+                        if (eof) {
+                            zzInput = YYEOF;
+                            //break zzForAction;
+                        }
+                        else {
+                            zzInput = zzBufferL[zzCurrentPosL++];
+                        }
+                    }
+                    
+                    int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+                    
+                    /*
+                    if (zzNext == -1) {
+                        break zzForAction;
+                    }
+                    */
+                    
+                    zzState = zzNext;
+
+                    int zzAttributes = zzAttrL[zzState];
+                    if ( (zzAttributes & 1) == 1 ) {
+                        zzAction = zzState;
+                        zzMarkedPosL = zzCurrentPosL;
+                        /*
+                        if ( (zzAttributes & 8) == 8 ) {
+                            break zzForAction;
+                        }
+                        */
+                    }
+                }
             }
-            else {
-              zzInput = zzBufferL[zzCurrentPosL++];
+
+            // store back cached position
+            zzMarkedPos = zzMarkedPosL;
+
+            switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
+                case 13: 
+                    addToken(Token.RESERVED_WORD);
+                    break;
+                case 1: 
+                    addToken(Token.IDENTIFIER);
+                    break;
+                case 12: 
+                    addToken(Token.FUNCTION);
+                    break;
+                case 10: 
+                    addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+                    break;
+                case 4: 
+                    addToken(Token.COMMENT_EOL); addNullToken(); 
+                    //token= firstToken;
+                    break;
+                case 15: 
+                    addToken(Token.ANNOTATION);
+                    break;
+                case 14: 
+                    addToken(Token.RESERVED_WORD_2);
+                    break;
+                case 9: 
+                    addToken(Token.VARIABLE);
+                    break;
+                case 6: 
+                    addToken(Token.WHITESPACE);
+                    break;
+                case 8: 
+                    addToken(Token.PREPROCESSOR);
+                    break;
+                case 16: 
+                    addToken(Token.DATA_TYPE);
+                    break;
+                case 3: 
+                    addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
+                    break;
+                case 17: 
+                    addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
+                    break;
+                case 7: 
+                    addToken(Token.OPERATOR);
+                    break;
+                case 11: 
+                    addToken(Token.LITERAL_CHAR);
+                    break;
+                case 2: 
+                    addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); 
+                    //token= firstToken;
+                    break;
+                case 5: 
+                    addNullToken(); 
+                    //token= firstToken;
+                    break;
+                default: 
+                    if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
+                        zzAtEOF = true;
+                        switch (zzLexicalState) {
+                            case YYINITIAL: 
+                                addNullToken(); 
+                                //token= firstToken;
+
+                            default:
+                                token = null;
+                        }
+                    } else {
+                        zzScanError(ZZ_NO_MATCH);
+                    }
+
+                    break;
             }
-          }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
-          if (zzNext == -1) break zzForAction;
-          zzState = zzNext;
-
-          int zzAttributes = zzAttrL[zzState];
-          if ( (zzAttributes & 1) == 1 ) {
-            zzAction = zzState;
-            zzMarkedPosL = zzCurrentPosL;
-            if ( (zzAttributes & 8) == 8 ) break zzForAction;
-          }
-
         }
-      }
-
-      // store back cached position
-      zzMarkedPos = zzMarkedPosL;
-
-      switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
-        case 13: 
-          { addToken(Token.RESERVED_WORD);
-          }
-        case 18: break;
-        case 1: 
-          { addToken(Token.IDENTIFIER);
-          }
-        case 19: break;
-        case 12: 
-          { addToken(Token.FUNCTION);
-          }
-        case 20: break;
-        case 10: 
-          { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
-          }
-        case 21: break;
-        case 4: 
-          { addToken(Token.COMMENT_EOL); addNullToken(); 
-          return firstToken;
-          }
-        case 22: break;
-        case 15: 
-          { addToken(Token.ANNOTATION);
-          }
-        case 23: break;
-        case 14: 
-          { addToken(Token.RESERVED_WORD_2);
-          }
-        case 24: break;
-        case 9: 
-          { addToken(Token.VARIABLE);
-          }
-        case 25: break;
-        case 6: 
-          { addToken(Token.WHITESPACE);
-          }
-        case 26: break;
-        case 8: 
-          { addToken(Token.PREPROCESSOR);
-          }
-        case 27: break;
-        case 16: 
-          { addToken(Token.DATA_TYPE);
-          }
-        case 28: break;
-        case 3: 
-          { addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
-          }
-        case 29: break;
-        case 17: 
-          { addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
-          }
-        case 30: break;
-        case 7: 
-          { addToken(Token.OPERATOR);
-          }
-        case 31: break;
-        case 11: 
-          { addToken(Token.LITERAL_CHAR);
-          }
-        case 32: break;
-        case 2: 
-          { addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); 
-          return firstToken;
-          }
-        case 33: break;
-        case 5: 
-          { addNullToken(); 
-          return firstToken;
-          }
-        case 34: break;
-        default: 
-          if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
-            zzAtEOF = true;
-            switch (zzLexicalState) {
-            case YYINITIAL: {
-              addNullToken(); 
-              return firstToken;
-            }
-            case 148: break;
-            default:
-            return null;
-            }
-          } 
-          else {
-            zzScanError(ZZ_NO_MATCH);
-          }
-      }
+        //
+        return token;
     }
-    //
-    return firstToken;
-  }
 }

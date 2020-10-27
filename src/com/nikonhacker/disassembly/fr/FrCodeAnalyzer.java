@@ -1,5 +1,6 @@
 package com.nikonhacker.disassembly.fr;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import com.nikonhacker.emu.memory.Memory;
 import com.nikonhacker.Format;
 import com.nikonhacker.disassembly.CPUState;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+//</editor-fold>
+
 
 public class FrCodeAnalyzer extends CodeAnalyzer {
 

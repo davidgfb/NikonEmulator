@@ -27,6 +27,7 @@
  */
 package eu.hansolo.steelseries.tools;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -56,6 +57,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+//</editor-fold>
+
 
 
 /**
@@ -65,6 +68,7 @@ import java.util.regex.Pattern;
  */
 public enum Util {
 
+    //<editor-fold defaultstate="collapsed" desc="vars">
     INSTANCE;
     private final float INT_TO_FLOAT_CONST = 1f / 255f;
     private final Pattern NUMBERS_ONLY = Pattern.compile("^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$");
@@ -72,6 +76,8 @@ public enum Util {
     private Font digitalFont = null;
     private final Font STANDARD_FONT = new Font("Verdana", 1, 24);
     private final Rectangle2D TEXT_BOUNDARY = new Rectangle2D.Double(0, 0, 10, 10);
+//</editor-fold>
+    
 
     /**
      * A class that contains some useful methods related to the PointOfInterest class and
