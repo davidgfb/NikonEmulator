@@ -9,6 +9,8 @@ package com.nikonhacker.gui.component.sourceCode.syntaxHighlighter;
 
 import javax.swing.text.Segment;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import static java.lang.System.out;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
@@ -640,105 +642,107 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 
 
 
-  /**
-   * Creates a new scanner
-   * There is also a java.io.InputStream version of this constructor.
-   *
-   * @param   in  the java.io.Reader to read input from.
-   */
-  public AssemblerFrTokenMaker(java.io.Reader in) {
-    this.zzReader = in;
-  }
-
-  /**
-   * Creates a new scanner.
-   * There is also java.io.Reader version of this constructor.
-   *
-   * @param   in  the java.io.Inputstream to read input from.
-   */
-  public AssemblerFrTokenMaker(java.io.InputStream in) {
-    this(new java.io.InputStreamReader(in));
-  }
-
-  /** 
-   * Unpacks the compressed character translation table.
-   *
-   * @param packed   the packed character translation table
-   * @return         the unpacked character translation table
-   */
-  private static char [] zzUnpackCMap(String packed) {
-    char [] map = new char[0x10000];
-    int i = 0;  /* index in packed string  */
-    int j = 0;  /* index in unpacked array */
-    while (i < 194) {
-      int  count = packed.charAt(i++);
-      char value = packed.charAt(i++);
-      do map[j++] = value; while (--count > 0);
+    /**
+    * Creates a new scanner
+    * There is also a java.io.InputStream version of this constructor.
+    *
+    * @param   in  the java.io.Reader to read input from.
+    */
+    public AssemblerFrTokenMaker(java.io.Reader in) {
+        this.zzReader = in;
     }
-    return map;
-  }
+
+    /**
+    * Creates a new scanner.
+    * There is also java.io.Reader version of this constructor.
+    *
+    * @param   in  the java.io.Inputstream to read input from.
+    */
+    public AssemblerFrTokenMaker(InputStream in) {
+        this(new InputStreamReader(in));
+    }
+
+    /** 
+    * Unpacks the compressed character translation table.
+    *
+    * @param packed   the packed character translation table
+    * @return         the unpacked character translation table
+    */
+    private static char [] zzUnpackCMap(String packed) {
+        char [] map = new char[0x10000];
+        int i = 0,  /* index in packed string  */
+            j = 0;  /* index in unpacked array */
+        
+        while (i < 194) {
+            int  count = packed.charAt(i++);
+            char value = packed.charAt(i++);
+            do map[j++] = value; while (--count > 0);
+        }
+        return map;
+    }
 
 
-  /**
-   * Closes the input stream.
-   */
-  public final void yyclose() throws java.io.IOException {
-    zzAtEOF = true;            /* indicate end of file */
-    zzEndRead = zzStartRead;  /* invalidate buffer    */
+    /**
+    * Closes the input stream.
+    */
+    public final void yyclose() throws IOException {
+        zzAtEOF = true;            /* indicate end of file */
+        zzEndRead = zzStartRead;  /* invalidate buffer    */
 
-    if (zzReader != null)
-      zzReader.close();
-  }
-
-
-  /**
-   * Returns the current lexical state.
-   */
-  public final int yystate() {
-    return zzLexicalState;
-  }
+        if (zzReader != null) {
+            zzReader.close();
+        }
+    }
 
 
-  /**
-   * Enters a new lexical state
-   *
-   * @param newState the new lexical state
-   */
-  public final void yybegin(int newState) {
-    zzLexicalState = newState;
-  }
+    /**
+    * Returns the current lexical state.
+    */
+    public final int yystate() {
+        return zzLexicalState;
+    }
 
 
-  /**
-   * Returns the text matched by the current regular expression.
-   */
-  public final String yytext() {
-    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
-  }
+    /**
+    * Enters a new lexical state
+    *
+    * @param newState the new lexical state
+    */
+    public final void yybegin(int newState) {
+        zzLexicalState = newState;
+    }
 
 
-  /**
-   * Returns the character at position <tt>pos</tt> from the 
-   * matched text. 
-   * 
-   * It is equivalent to yytext().charAt(pos), but faster
-   *
-   * @param pos the position of the character to fetch. 
-   *            A value from 0 to yylength()-1.
-   *
-   * @return the character at position pos
-   */
-  public final char yycharat(int pos) {
-    return zzBuffer[zzStartRead+pos];
-  }
+    /**
+    * Returns the text matched by the current regular expression.
+    */
+    public final String yytext() {
+        return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    }
 
 
-  /**
-   * Returns the length of the matched text region.
-   */
-  public final int yylength() {
-    return zzMarkedPos-zzStartRead;
-  }
+    /**
+    * Returns the character at position <tt>pos</tt> from the 
+    * matched text. 
+    * 
+    * It is equivalent to yytext().charAt(pos), but faster
+    *
+    * @param pos the position of the character to fetch. 
+    *            A value from 0 to yylength()-1.
+    *
+    * @return the character at position pos
+    */
+    public final char yycharat(int pos) {
+        return zzBuffer[zzStartRead+pos];
+    }
+
+
+    /**
+    * Returns the length of the matched text region.
+    */
+    public final int yylength() {
+        return zzMarkedPos-zzStartRead;
+    }
 
 
   /**
@@ -755,18 +759,18 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
    *
    * @param   errorCode  the code of the errormessage to display
    */
-  private void zzScanError(int errorCode) {
-    String message;
-    try {
-      message = ZZ_ERROR_MSG[errorCode];
-    }
-    catch (ArrayIndexOutOfBoundsException e) {
-        out.println("e: "+e);
-        message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
-    }
+    private void zzScanError(int errorCode) {
+        String message;
+        
+        try {
+            message = ZZ_ERROR_MSG[errorCode];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            out.println("e: "+e);
+            message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
+        }
 
-    throw new Error(message);
-  } 
+        throw new Error(message);
+    } 
 
 
   /**
