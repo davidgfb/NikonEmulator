@@ -647,40 +647,42 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
             boolean condition1 = true;
             while (condition1) {
 
-              if (zzCurrentPosL < zzEndReadL)
-                zzInput = zzBufferL[zzCurrentPosL++];
-              else if (zzAtEOF) {
-                zzInput = YYEOF;
-                break zzForAction;
-              }
-              else {
-                // store back cached positions
-                zzCurrentPos  = zzCurrentPosL;
-                zzMarkedPos   = zzMarkedPosL;
-                boolean eof = zzRefill();
-                // get translated positions and possibly new buffer
-                zzCurrentPosL  = zzCurrentPos;
-                zzMarkedPosL   = zzMarkedPos;
-                zzBufferL      = zzBuffer;
-                zzEndReadL     = zzEndRead;
-                if (eof) {
-                  zzInput = YYEOF;
-                  break zzForAction;
+                if (zzCurrentPosL < zzEndReadL) {
+                    zzInput = zzBufferL[zzCurrentPosL++];
+                } else if (zzAtEOF) {
+                    zzInput = YYEOF;
+                    break zzForAction;
+                } else {
+                    // store back cached positions
+                    zzCurrentPos  = zzCurrentPosL;
+                    zzMarkedPos   = zzMarkedPosL;
+                    boolean eof = zzRefill();
+                    // get translated positions and possibly new buffer
+                    zzCurrentPosL  = zzCurrentPos;
+                    zzMarkedPosL   = zzMarkedPos;
+                    zzBufferL      = zzBuffer;
+                    zzEndReadL     = zzEndRead;
+                    if (eof) {
+                        zzInput = YYEOF;
+                        break zzForAction;
+                    } else {
+                        zzInput = zzBufferL[zzCurrentPosL++];
+                    }
                 }
-                else {
-                  zzInput = zzBufferL[zzCurrentPosL++];
+                int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+                if (zzNext == -1) {
+                    break zzForAction;
                 }
-              }
-              int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
-              if (zzNext == -1) break zzForAction;
-              zzState = zzNext;
+                zzState = zzNext;
 
-              int zzAttributes = zzAttrL[zzState];
-              if ( (zzAttributes & 1) == 1 ) {
-                zzAction = zzState;
-                zzMarkedPosL = zzCurrentPosL;
-                if ( (zzAttributes & 8) == 8 ) break zzForAction;
-              }
+                int zzAttributes = zzAttrL[zzState];
+                if ( (zzAttributes & 1) == 1 ) {
+                    zzAction = zzState;
+                    zzMarkedPosL = zzCurrentPosL;
+                    if ( (zzAttributes & 8) == 8 ) {
+                        break zzForAction;
+                    }
+                }
 
             }
           }
