@@ -12,6 +12,7 @@ import javax.swing.text.Segment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import static java.lang.System.out;
 import org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker;
 import org.fife.ui.rsyntaxtextarea.DefaultToken;
@@ -60,83 +61,59 @@ import org.fife.ui.rsyntaxtextarea.TokenMaker;
  */
 
 public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements TokenMaker {
+   
+    //<editor-fold defaultstate="collapsed" desc="vars">
+    /** This character denotes the end of file */
+    public static final int YYEOF = -1;
 
-  /** This character denotes the end of file */
-  public static final int YYEOF = -1;
+    /** initial size of the lookahead buffer */
+    private static final int ZZ_BUFFERSIZE = 16384;
 
-  /** initial size of the lookahead buffer */
-  private static final int ZZ_BUFFERSIZE = 16384;
+    /** lexical states */
+    public static final int YYINITIAL = 0;
 
-  /** lexical states */
-  public static final int YYINITIAL = 0;
+    /**
+     * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
+     * ZZ_LEXSTATE[l+1] is the state in the DFA for the lexical state l
+     *                  at the beginning of a line
+     * l is of the form l = 2*k, k a non negative integer
+     */
+    private static final int ZZ_LEXSTATE[] = {0, 0};
 
-  /**
-   * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
-   * ZZ_LEXSTATE[l+1] is the state in the DFA for the lexical state l
-   *                  at the beginning of a line
-   * l is of the form l = 2*k, k a non negative integer
-   */
-  private static final int ZZ_LEXSTATE[] = {0, 0};
+    /** 
+    * Translates characters to character classes
+    */
+    private static final String ZZ_CMAP_PACKED = "\11\0\1\10\1\7\1\0\1\10\23\0\1\10\1\12\1\4\2\0"+
+                                                 "\1\12\1\12\1\5\2\0\1\12\1\12\1\0\1\12\1\0\1\12"+
+                                                 "\1\34\1\36\1\15\1\37\1\40\1\50\1\2\1\2\1\42\1\2"+
+                                                 "\1\11\1\6\1\12\1\12\1\12\2\0\1\13\1\22\1\16\1\14"+
+                                                 "\1\26\1\3\1\44\1\24\1\32\1\45\1\1\1\25\1\31\1\17"+
+                                                 "\1\27\1\21\1\43\1\23\1\20\1\30\1\35\1\33\1\46\1\41"+
+                                                 "\1\47\1\1\3\0\1\12\1\1\1\0\1\13\1\22\1\16\1\14"+
+                                                 "\1\26\1\3\1\44\1\24\1\32\1\45\1\1\1\25\1\31\1\17"+
+                                                 "\1\27\1\21\1\43\1\23\1\20\1\30\1\35\1\33\1\46\1\41"+
+                                                 "\1\47\1\1\1\0\1\12\1\0\1\12\uff81\0";
 
-  /** 
-   * Translates characters to character classes
-   */
-  private static final String ZZ_CMAP_PACKED = "\11\0\1\10\1\7\1\0\1\10\23\0\1\10\1\12\1\4\2\0"+
-                                               "\1\12\1\12\1\5\2\0\1\12\1\12\1\0\1\12\1\0\1\12"+
-                                               "\1\34\1\36\1\15\1\37\1\40\1\50\1\2\1\2\1\42\1\2"+
-                                               "\1\11\1\6\1\12\1\12\1\12\2\0\1\13\1\22\1\16\1\14"+
-                                               "\1\26\1\3\1\44\1\24\1\32\1\45\1\1\1\25\1\31\1\17"+
-                                               "\1\27\1\21\1\43\1\23\1\20\1\30\1\35\1\33\1\46\1\41"+
-                                               "\1\47\1\1\3\0\1\12\1\1\1\0\1\13\1\22\1\16\1\14"+
-                                               "\1\26\1\3\1\44\1\24\1\32\1\45\1\1\1\25\1\31\1\17"+
-                                               "\1\27\1\21\1\43\1\23\1\20\1\30\1\35\1\33\1\46\1\41"+
-                                               "\1\47\1\1\1\0\1\12\1\0\1\12\uff81\0";
+    /** 
+    * Translates characters to character classes
+    */
+    private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
 
-  /** 
-   * Translates characters to character classes
-   */
-  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+    /** 
+    * Translates DFA states to action switch labels.
+    */
+    private static final int [] ZZ_ACTION = zzUnpackAction();
 
-  /** 
-   * Translates DFA states to action switch labels.
-   */
-  private static final int [] ZZ_ACTION = zzUnpackAction();
-
-  private static final String ZZ_ACTION_PACKED_0 = "\1\0\4\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-                                                   "\23\1\1\10\2\0\1\1\1\11\1\12\1\13\1\1"+
-                                                   "\1\11\2\1\1\14\1\1\1\14\2\1\1\14\10\1"+
-                                                   "\1\15\3\1\3\16\11\1\1\11\1\15\5\1\1\15"+
-                                                   "\1\1\1\11\7\1\1\0\1\1\2\15\4\1\1\15"+
-                                                   "\4\1\1\15\1\1\1\10\4\1\1\16\3\1\1\15"+
-                                                   "\2\1\2\15\2\1\2\17\2\15\4\1\1\16\1\20"+
-                                                   "\1\1\1\16\1\10\2\1\1\15\1\0\2\1\2\0"+
-                                                   "\1\15\1\0\1\1\1\0\1\1\2\21";
-
-    private static int [] zzUnpackAction() {
-        int [] result = new int[147];
-        int offset = zzUnpackAction(ZZ_ACTION_PACKED_0, 0, result);
-        return result;
-    }
-
-    private static int zzUnpackAction(String packed, int offset, int [] result) {
-        int i = 0,       /* index in packed string  */
-            j = offset,  /* index in unpacked array */
-            l = packed.length();
-        
-        while (i < l) {
-            int count = packed.charAt(i++),
-                value = packed.charAt(i++);
-            do result[j++] = value; while (--count > 0);
-        }
-        
-        return j;
-    }
-
-
-  /** 
-   * Translates a state to a row index in the transition table
-   */
-  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+    private static final String ZZ_ACTION_PACKED_0 = "\1\0\4\1\1\2\1\3\1\4\1\5\1\6\1\7\23\1\1\10\2\0\1\1\1\11\1\12\1\13\1\1"+
+                                                     "\1\11\2\1\1\14\1\1\1\14\2\1\1\14\10\1\1\15\3\1\3\16\11\1\1\11\1\15\5\1\1\15"+
+                                                     "\1\1\1\11\7\1\1\0\1\1\2\15\4\1\1\15\4\1\1\15\1\1\1\10\4\1\1\16\3\1\1\15"+
+                                                     "\2\1\2\15\2\1\2\17\2\15\4\1\1\16\1\20\1\1\1\16\1\10\2\1\1\15\1\0\2\1\2\0"+
+                                                     "\1\15\1\0\1\1\1\0\1\1\2\21";
+    
+    /** 
+    * Translates a state to a row index in the transition table
+    */
+    private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
     private static final String ZZ_ROWMAP_PACKED_0 = "\0\0\0\51\0\122\0\173\0\244\0\315\0\366\0\u011f"+
                                                      "\0\51\0\u0148\0\51\0\u0171\0\u019a\0\u01c3\0\u01ec\0\u0215"+
@@ -157,30 +134,11 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
                                                      "\0\122\0\u1219\0\122\0\u1242\0\u10a8\0\u126b\0\u0d22\0\u1294"+
                                                      "\0\u12bd\0\u12e6\0\u130f\0\u1338\0\51\0\u1361\0\u138a\0\u13b3"+
                                                      "\0\u13dc\0\u047c\0\122";
-
-    private static int [] zzUnpackRowMap() {
-        int [] result = new int[147];
-        int offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, 0, result);
-        return result;
-    }
-
-    private static int zzUnpackRowMap(String packed, int offset, int [] result) {
-        int i = 0,  /* index in packed string  */
-            j = offset,  /* index in unpacked array */
-            l = packed.length();
-        
-        while (i < l) {
-            int high = packed.charAt(i++) << 16;
-            result[j++] = high | packed.charAt(i++);
-        }
-        
-        return j;
-    }
-
-  /** 
-   * The transition table of the DFA
-   */
-  private static final int [] ZZ_TRANS = zzUnpackTrans();
+    
+    /** 
+     * The transition table of the DFA
+     */
+    private static final int [] ZZ_TRANS = zzUnpackTrans();
 
     private static final String ZZ_TRANS_PACKED_0 = "\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
                                                     "\1\12\1\2\1\13\1\14\1\15\1\4\1\16\1\17"+
@@ -358,7 +316,116 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
                                                     "\1\222\5\40\1\222\1\0\1\3\2\223\5\0\1\37"+
                                                     "\1\0\4\223\3\3\1\223\3\3\1\223\5\3\1\223"+
                                                     "\1\3\3\223\1\3\1\223\5\3\1\223";
+    
+    /* error codes */
+    private static final int ZZ_UNKNOWN_ERROR = 0,
+                             ZZ_NO_MATCH = 1,
+                             ZZ_PUSHBACK_2BIG = 2;
 
+    /* error messages for the codes above */
+    private static final String ZZ_ERROR_MSG[] = {"Unkown internal scanner error",
+                                                  "Error: could not match input",
+                                                  "Error: pushback value was too large"};
+
+    /**
+    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
+    */
+    private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+
+    private static final String ZZ_ATTRIBUTE_PACKED_0 = "\1\0\1\11\6\1\1\11\1\1\1\11\23\1\1\11"+
+                                                        "\2\0\2\1\2\11\63\1\1\0\46\1\1\11\7\1"+
+                                                        "\1\0\2\1\2\0\1\11\1\0\1\1\1\0\3\1";
+    
+    /** the input device */
+    private Reader zzReader;
+
+    /** the current state of the DFA */
+    private int zzState,
+
+    /** the current lexical state */
+                zzLexicalState = YYINITIAL;
+
+    /** this buffer contains the current text to be matched and is
+      the source of the yytext() string */
+    private char zzBuffer[] = new char[ZZ_BUFFERSIZE];
+
+    /** the textposition at the last accepting state */
+    private int zzMarkedPos,
+
+    /** the current text position in the buffer */
+     zzCurrentPos,
+
+    /** startRead marks the beginning of the yytext() string in the buffer */
+     zzStartRead,
+
+    /** endRead marks the last character in the buffer, that has been read
+      from input */
+     zzEndRead,
+
+    /** number of newlines encountered up to the start of the matched text */
+     yyline,
+
+    /** the number of characters up to the start of the matched text */
+     yychar,
+
+    /**
+    * the number of characters from the last newline up to the start of the 
+    * matched text
+    */
+     yycolumn;
+
+    /** 
+    * zzAtBOL == true <=> the scanner is currently at the beginning of a line
+    */
+    private boolean zzAtBOL = true,
+
+    /** zzAtEOF == true <=> the scanner is at the EOF */
+     zzAtEOF,
+
+    /** denotes if the user-EOF-code has already been executed */
+     zzEOFDone;
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="funciones">
+    private static int [] zzUnpackAction() {
+        int [] result = new int[147];
+        int offset = zzUnpackAction(ZZ_ACTION_PACKED_0, 0, result);
+        return result;
+    }
+
+    private static int zzUnpackAction(String packed, int offset, int [] result) {
+        int i = 0,       /* index in packed string  */
+            j = offset,  /* index in unpacked array */
+            l = packed.length();
+        
+        while (i < l) {
+            int count = packed.charAt(i++),
+                value = packed.charAt(i++);
+            do result[j++] = value; while (--count > 0);
+        }
+        
+        return j;
+    }
+    
+    private static int [] zzUnpackRowMap() {
+        int [] result = new int[147];
+        int offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, 0, result);
+        return result;
+    }
+
+    private static int zzUnpackRowMap(String packed, int offset, int [] result) {
+        int i = 0,  /* index in packed string  */
+            j = offset,  /* index in unpacked array */
+            l = packed.length();
+        
+        while (i < l) {
+            int high = packed.charAt(i++) << 16;
+            result[j++] = high | packed.charAt(i++);
+        }
+        
+        return j;
+    }
+    
     private static int [] zzUnpackTrans() {
         int[] result = new int[5125];
         int offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, 0, result);
@@ -379,27 +446,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
         
         return j;
     }
-
-
-    /* error codes */
-    private static final int ZZ_UNKNOWN_ERROR = 0,
-                             ZZ_NO_MATCH = 1,
-                             ZZ_PUSHBACK_2BIG = 2;
-
-    /* error messages for the codes above */
-    private static final String ZZ_ERROR_MSG[] = {"Unkown internal scanner error",
-                                                  "Error: could not match input",
-                                                  "Error: pushback value was too large"};
-
-    /**
-    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
-    */
-    private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
-
-    private static final String ZZ_ATTRIBUTE_PACKED_0 = "\1\0\1\11\6\1\1\11\1\1\1\11\23\1\1\11"+
-                                                        "\2\0\2\1\2\11\63\1\1\0\46\1\1\11\7\1"+
-                                                        "\1\0\2\1\2\0\1\11\1\0\1\1\1\0\3\1";
-
+    
     private static int [] zzUnpackAttribute() {
         int [] result = new int[147];
         int offset = 0;
@@ -418,57 +465,12 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
         }
         return j;
     }
+//</editor-fold>
+    
 
-  /** the input device */
-  private java.io.Reader zzReader;
+    
 
-  /** the current state of the DFA */
-  private int zzState;
-
-  /** the current lexical state */
-  private int zzLexicalState = YYINITIAL;
-
-  /** this buffer contains the current text to be matched and is
-      the source of the yytext() string */
-  private char zzBuffer[] = new char[ZZ_BUFFERSIZE];
-
-  /** the textposition at the last accepting state */
-  private int zzMarkedPos;
-
-  /** the current text position in the buffer */
-  private int zzCurrentPos;
-
-  /** startRead marks the beginning of the yytext() string in the buffer */
-  private int zzStartRead;
-
-  /** endRead marks the last character in the buffer, that has been read
-      from input */
-  private int zzEndRead;
-
-  /** number of newlines encountered up to the start of the matched text */
-  private int yyline;
-
-  /** the number of characters up to the start of the matched text */
-  private int yychar;
-
-  /**
-   * the number of characters from the last newline up to the start of the 
-   * matched text
-   */
-  private int yycolumn;
-
-  /** 
-   * zzAtBOL == true <=> the scanner is currently at the beginning of a line
-   */
-  private boolean zzAtBOL = true;
-
-  /** zzAtEOF == true <=> the scanner is at the EOF */
-  private boolean zzAtEOF;
-
-  /** denotes if the user-EOF-code has already been executed */
-  private boolean zzEOFDone;
-
-  /* user code: */
+    /* user code: */
 
 
 	/**
