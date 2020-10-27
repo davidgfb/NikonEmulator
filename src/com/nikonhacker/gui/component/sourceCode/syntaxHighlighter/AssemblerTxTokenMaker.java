@@ -664,28 +664,32 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
                     zzEndReadL     = zzEndRead;
                     if (eof) {
                         zzInput = YYEOF;
-                        break zzForAction;
+                        //break zzForAction;
                     } else {
                         zzInput = zzBufferL[zzCurrentPosL++];
                     }
                 }
                 int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+                /*
                 if (zzNext == -1) {
                     break zzForAction;
                 }
+                */
                 zzState = zzNext;
 
                 int zzAttributes = zzAttrL[zzState];
                 if ( (zzAttributes & 1) == 1 ) {
                     zzAction = zzState;
                     zzMarkedPosL = zzCurrentPosL;
+                    /*
                     if ( (zzAttributes & 8) == 8 ) {
                         break zzForAction;
                     }
+                    */
                 }
 
             }
-          }
+        }
 
           // store back cached position
           zzMarkedPos = zzMarkedPosL;
