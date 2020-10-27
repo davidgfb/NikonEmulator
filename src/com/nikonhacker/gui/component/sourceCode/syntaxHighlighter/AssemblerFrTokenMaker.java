@@ -472,17 +472,18 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 
     /* user code: */
 
-
-	/**
+    //<editor-fold defaultstate="collapsed" desc="constructor">
+    /**
 	 * Constructor.  We must have this here as JFLex does not generate a
 	 * no parameter constructor.
 	 */
 	public AssemblerFrTokenMaker() {
             super();
 	}
-
-
-	/**
+//</editor-fold>
+	
+        //<editor-fold defaultstate="collapsed" desc="proced">
+        /**
 	 * Adds the token specified to the current linked list of tokens.
 	 *
 	 * @param tokenType The token's type.
@@ -490,9 +491,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	private void addToken(int tokenType) {
             addToken(zzStartRead, zzMarkedPos-1, tokenType);
 	}
-
-
-	/**
+        
+        /**
 	 * Adds the token specified to the current linked list of tokens.
 	 *
 	 * @param tokenType The token's type.
@@ -501,9 +501,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             int so = start + offsetShift;
             addToken(zzBuffer, start,end, tokenType, so);
 	}
-
-
-	/**
+        
+        /**
 	 * Adds the token specified to the current linked list of tokens.
 	 *
 	 * @param array The character array.
@@ -517,9 +516,81 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             super.addToken(array, start,end, tokenType, startOffset);
             zzStartRead = zzMarkedPos;
 	}
+        
+//</editor-fold>
+        
+        
+        //<editor-fold defaultstate="collapsed" desc="funciones">
+        
+        /**
+	 * Refills the input buffer.
+	 *
+	 * @return      <code>true</code> if EOF was reached, otherwise
+	 *              <code>false</code>.
+	 * @exception   IOException  if any I/O-Error occurs.
+	 */
+	private boolean zzRefill() throws java.io.IOException {
+            return zzCurrentPos>=s.offset+s.count;
+	}
+        
+        /** 
+    * Unpacks the compressed character translation table.
+    *
+    * @param packed   the packed character translation table
+    * @return         the unpacked character translation table
+    */
+    private static char [] zzUnpackCMap(String packed) {
+        char [] map = new char[0x10000];
+        int i = 0,  /* index in packed string  */
+            j = 0;  /* index in unpacked array */
+        
+        while (i < 194) {
+            int  count = packed.charAt(i++);
+            char value = packed.charAt(i++);
+            do map[j++] = value; while (--count > 0);
+        }
+        return map;
+    }
+    
+    /**
+    * Returns the current lexical state.
+    */
+    public final int yystate() {
+        return zzLexicalState;
+    }
+    
+    /**
+    * Returns the text matched by the current regular expression.
+    */
+    public final String yytext() {
+        return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    }
+    
+    /**
+    * Returns the character at position <tt>pos</tt> from the 
+    * matched text. 
+    * 
+    * It is equivalent to yytext().charAt(pos), but faster
+    *
+    * @param pos the position of the character to fetch. 
+    *            A value from 0 to yylength()-1.
+    *
+    * @return the character at position pos
+    */
+    public final char yycharat(int pos) {
+        return zzBuffer[zzStartRead+pos];
+    }
+    
+    /**
+    * Returns the length of the matched text region.
+    */
+    public final int yylength() {
+        return zzMarkedPos-zzStartRead;
+    }
+//</editor-fold>
 
-
-	/**
+        //<editor-fold defaultstate="collapsed" desc="getters">
+        /**
 	 * Returns the text to place at the beginning and end of a
 	 * line to "comment" it in a this programming language.
 	 *
@@ -529,9 +600,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	public String[] getLineCommentStartAndEnd() {
             return new String[] { ";", null };
 	}
-
-
-	/**
+        
+        /**
 	 * Returns the first token in the linked list of tokens generated
 	 * from <code>text</code>.  This method must be implemented by
 	 * subclasses so they can correctly implement syntax highlighting.
@@ -570,8 +640,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 
             return token;
 	}
-
-	/**
+        
+        /**
 	 * Returns whether tokens of the specified type should have "mark
 	 * occurrences" enabled for the current programming language.
 	 * Basically, we return true for everything except blanks
@@ -583,21 +653,10 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	public boolean getMarkOccurrencesOfTokenType(int type) {
             return type == Token.IDENTIFIER || type == Token.FUNCTION || type == Token.RESERVED_WORD || type == Token.RESERVED_WORD_2|| type == Token.DATA_TYPE|| type == Token.LITERAL_CHAR|| type == Token.LITERAL_NUMBER_HEXADECIMAL|| type == Token.ANNOTATION|| type == Token.OPERATOR|| type == Token.VARIABLE;
 	}
+//</editor-fold>
 
-
-	/**
-	 * Refills the input buffer.
-	 *
-	 * @return      <code>true</code> if EOF was reached, otherwise
-	 *              <code>false</code>.
-	 * @exception   IOException  if any I/O-Error occurs.
-	 */
-	private boolean zzRefill() throws java.io.IOException {
-            return zzCurrentPos>=s.offset+s.count;
-	}
-
-
-	/**
+        //<editor-fold defaultstate="collapsed" desc="proced">
+        /**
 	 * Resets the scanner to read from a new input stream.
 	 * Does not close the old reader.
 	 *
@@ -625,51 +684,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             zzAtBOL  = true;
             zzAtEOF  = false;
 	}
-
-
-
-
-    /**
-    * Creates a new scanner
-    * There is also a java.io.InputStream version of this constructor.
-    *
-    * @param   in  the java.io.Reader to read input from.
-    */
-    public AssemblerFrTokenMaker(java.io.Reader in) {
-        this.zzReader = in;
-    }
-
-    /**
-    * Creates a new scanner.
-    * There is also java.io.Reader version of this constructor.
-    *
-    * @param   in  the java.io.Inputstream to read input from.
-    */
-    public AssemblerFrTokenMaker(InputStream in) {
-        this(new InputStreamReader(in));
-    }
-
-    /** 
-    * Unpacks the compressed character translation table.
-    *
-    * @param packed   the packed character translation table
-    * @return         the unpacked character translation table
-    */
-    private static char [] zzUnpackCMap(String packed) {
-        char [] map = new char[0x10000];
-        int i = 0,  /* index in packed string  */
-            j = 0;  /* index in unpacked array */
         
-        while (i < 194) {
-            int  count = packed.charAt(i++);
-            char value = packed.charAt(i++);
-            do map[j++] = value; while (--count > 0);
-        }
-        return map;
-    }
-
-
-    /**
+        /**
     * Closes the input stream.
     */
     public final void yyclose() throws IOException {
@@ -680,16 +696,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             zzReader.close();
         }
     }
-
-
-    /**
-    * Returns the current lexical state.
-    */
-    public final int yystate() {
-        return zzLexicalState;
-    }
-
-
+    
     /**
     * Enters a new lexical state
     *
@@ -698,38 +705,31 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
     public final void yybegin(int newState) {
         zzLexicalState = newState;
     }
+//</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="constructor">
+        /**
+        * Creates a new scanner
+        * There is also a java.io.InputStream version of this constructor.
+        *
+        * @param   in  the java.io.Reader to read input from.
+        */
+        public AssemblerFrTokenMaker(java.io.Reader in) {
+            this.zzReader = in;
+        }
+        
+        /**
+        * Creates a new scanner.
+        * There is also java.io.Reader version of this constructor.
+        *
+        * @param   in  the java.io.Inputstream to read input from.
+        */
+        public AssemblerFrTokenMaker(InputStream in) {
+            this(new InputStreamReader(in));
+        }
+//</editor-fold>
 
-    /**
-    * Returns the text matched by the current regular expression.
-    */
-    public final String yytext() {
-        return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
-    }
-
-
-    /**
-    * Returns the character at position <tt>pos</tt> from the 
-    * matched text. 
-    * 
-    * It is equivalent to yytext().charAt(pos), but faster
-    *
-    * @param pos the position of the character to fetch. 
-    *            A value from 0 to yylength()-1.
-    *
-    * @return the character at position pos
-    */
-    public final char yycharat(int pos) {
-        return zzBuffer[zzStartRead+pos];
-    }
-
-
-    /**
-    * Returns the length of the matched text region.
-    */
-    public final int yylength() {
-        return zzMarkedPos-zzStartRead;
-    }
+    
 
 
   /**
