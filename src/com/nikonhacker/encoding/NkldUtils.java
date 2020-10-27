@@ -1,5 +1,6 @@
 package com.nikonhacker.encoding;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
 import org.apache.commons.io.FileUtils;
@@ -10,9 +11,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import static java.lang.System.out;
 import java.security.NoSuchAlgorithmException;
+//</editor-fold>
 
 public class NkldUtils {
 
+    //<editor-fold defaultstate="collapsed" desc="vars">
     private static final int[] tab0 = {
             0xc1,0xbf,0x6d,0x0d,0x59,0xc5,0x13,0x9d,0x83,0x61,0x6b,0x4f,0xc7,0x7f,0x3d,0x3d,
 			0x53,0x59,0xe3,0xc7,0xe9,0x2f,0x95,0xa7,0x95,0x1f,0xdf,0x7f,0x2b,0x29,0xc7,0x0d,
@@ -70,6 +73,8 @@ public class NkldUtils {
 
     private static final int CRC_MASK = 0x1021;
     private static final int CRC_INIT_FILE = 0x0000;
+//</editor-fold>
+    
 
     public static byte[] load(File f) throws IOException {
         FileInputStream fis = null;

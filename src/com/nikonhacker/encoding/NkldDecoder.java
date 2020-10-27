@@ -1,16 +1,18 @@
 package com.nikonhacker.encoding;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
+//</editor-fold>
 
 public class NkldDecoder {
 
     private static void usage() {
-        System.out.println("Usage : " + NkldDecoder.class.getName() + " <infile> [<outfile>]");
-        System.exit(1);
+        out.println("Usage : " + NkldDecoder.class.getName() + " <infile> [<outfile>]");
+        exit(1);
     }
 
     /*
