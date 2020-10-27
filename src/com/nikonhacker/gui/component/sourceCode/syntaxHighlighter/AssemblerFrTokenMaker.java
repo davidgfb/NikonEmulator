@@ -723,59 +723,59 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
             zzMarkedPos = zzMarkedPosL;
 
             switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
-                case 13: 
-                    addToken(Token.RESERVED_WORD);
-                    break;
                 case 1: 
                     addToken(Token.IDENTIFIER);
-                    break;
-                case 12: 
-                    addToken(Token.FUNCTION);
-                    break;
-                case 10: 
-                    addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
-                    break;
-                case 4: 
-                    addToken(Token.COMMENT_EOL); addNullToken(); 
-                    //token= firstToken;
-                    break;
-                case 15: 
-                    addToken(Token.ANNOTATION);
-                    break;
-                case 14: 
-                    addToken(Token.RESERVED_WORD_2);
-                    break;
-                case 9: 
-                    addToken(Token.VARIABLE);
-                    break;
-                case 6: 
-                    addToken(Token.WHITESPACE);
-                    break;
-                case 8: 
-                    addToken(Token.PREPROCESSOR);
-                    break;
-                case 16: 
-                    addToken(Token.DATA_TYPE);
-                    break;
-                case 3: 
-                    addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
-                    break;
-                case 17: 
-                    addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
-                    break;
-                case 7: 
-                    addToken(Token.OPERATOR);
-                    break;
-                case 11: 
-                    addToken(Token.LITERAL_CHAR);
                     break;
                 case 2: 
                     addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); 
                     //token= firstToken;
                     break;
+                case 3: 
+                    addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
+                    break;
+                case 4: 
+                    addToken(Token.COMMENT_EOL); addNullToken(); 
+                    //token= firstToken;
+                    break;
                 case 5: 
                     addNullToken(); 
                     //token= firstToken;
+                    break;
+                case 6: 
+                    addToken(Token.WHITESPACE);
+                    break;
+                case 7: 
+                    addToken(Token.OPERATOR);
+                    break;
+                case 8: 
+                    addToken(Token.PREPROCESSOR);
+                    break;
+                case 9: 
+                    addToken(Token.VARIABLE);
+                    break;
+                case 10: 
+                    addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+                    break;
+                case 11: 
+                    addToken(Token.LITERAL_CHAR);
+                    break;
+                case 12: 
+                    addToken(Token.FUNCTION);
+                    break;
+                case 13: 
+                    addToken(Token.RESERVED_WORD);
+                    break;
+                case 14: 
+                    addToken(Token.RESERVED_WORD_2);
+                    break;
+                case 15: 
+                    addToken(Token.ANNOTATION);
+                    break;
+                case 16: 
+                    addToken(Token.DATA_TYPE);
+                    break;
+                case 17: 
+                    addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
                     break;
                 default: 
                     if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
@@ -784,18 +784,16 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
                             case YYINITIAL: 
                                 addNullToken(); 
                                 //token= firstToken;
-
                             default:
                                 token = null;
                         }
                     } else {
                         zzScanError(ZZ_NO_MATCH);
                     }
-
                     break;
             }
         }
-        //
+        
         return token;
     }
 //</editor-fold>
