@@ -618,6 +618,8 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
        * @exception   java.io.IOException  if any I/O-Error occurs
        */
       public Token yylex() throws IOException {
+        Token token = firstToken;  
+          
         int zzInput = 0,
             zzAction = 0,
 
@@ -697,42 +699,59 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
             switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
                 case 1: 
                     addToken(Token.IDENTIFIER);
+                    break;
                 case 2: 
                     addToken(Token.ERROR_STRING_DOUBLE); 
                     addNullToken(); 
-                    return firstToken;
+                    //token= firstToken;
+                    break;
                 case 3: 
                     addToken(Token.ERROR_CHAR); /*addNullToken(); return firstToken;*/
+                    break;
                 case 4: 
                     addToken(Token.COMMENT_EOL); addNullToken(); 
-                    return firstToken;
+                    //token= firstToken;
+                    break;
                 case 5:  
                     addNullToken(); 
-                    return firstToken;
+                    //token= firstToken;
+                    break;
                 case 6:  
                     addToken(Token.WHITESPACE);
+                    break;
                 case 7:  
                     addToken(Token.OPERATOR);
+                    break;
                 case 8: 
                     addToken(Token.RESERVED_WORD_2);
+                    break;
                 case 9: 
                     addToken(Token.PREPROCESSOR);
+                    break;
                 case 10:  
                     addToken(Token.VARIABLE);
+                    break;
                 case 11:  
                     addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+                    break;
                 case 12: 
                     addToken(Token.LITERAL_CHAR);
+                    break;
                 case 13:  
                     addToken(Token.FUNCTION);
+                    break;
                 case 14:  
                     addToken(Token.RESERVED_WORD);
+                    break;
                 case 15: 
                     addToken(Token.ANNOTATION);
+                    break;
                 case 16: 
                     addToken(Token.DATA_TYPE);
+                    break;
                 case 17:  
                     addToken(Token.LITERAL_NUMBER_HEXADECIMAL);
+                    break;
                 default: 
                     if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
                         zzAtEOF = true;
@@ -740,18 +759,19 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
 
                             case YYINITIAL: 
                                 addNullToken(); 
-                                return firstToken;
+                                //token= firstToken;
                             default:
-                                return null;
+                                token= null;
                         }
                     } else {
                         zzScanError(ZZ_NO_MATCH);
                     }
-          }
+                    break;
+            }
         }  
         //
-        return firstToken;
-      }
+        return token;
+    }
 //</editor-fold>
       
 
