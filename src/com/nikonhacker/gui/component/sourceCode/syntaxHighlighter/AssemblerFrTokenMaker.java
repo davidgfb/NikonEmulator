@@ -387,46 +387,43 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
   }
 
 
-  /* error codes */
-  private static final int ZZ_UNKNOWN_ERROR = 0;
-  private static final int ZZ_NO_MATCH = 1;
-  private static final int ZZ_PUSHBACK_2BIG = 2;
+    /* error codes */
+    private static final int ZZ_UNKNOWN_ERROR = 0;
+    private static final int ZZ_NO_MATCH = 1;
+    private static final int ZZ_PUSHBACK_2BIG = 2;
 
-  /* error messages for the codes above */
-  private static final String ZZ_ERROR_MSG[] = {
-    "Unkown internal scanner error",
-    "Error: could not match input",
-    "Error: pushback value was too large"
-  };
+    /* error messages for the codes above */
+    private static final String ZZ_ERROR_MSG[] = {"Unkown internal scanner error",
+                                                  "Error: could not match input",
+                                                  "Error: pushback value was too large"};
 
-  /**
-   * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
-   */
-  private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+    /**
+    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
+    */
+    private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
-  private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\6\1\1\11\1\1\1\11\23\1\1\11"+
-    "\2\0\2\1\2\11\63\1\1\0\46\1\1\11\7\1"+
-    "\1\0\2\1\2\0\1\11\1\0\1\1\1\0\3\1";
+    private static final String ZZ_ATTRIBUTE_PACKED_0 = "\1\0\1\11\6\1\1\11\1\1\1\11\23\1\1\11"+
+                                                        "\2\0\2\1\2\11\63\1\1\0\46\1\1\11\7\1"+
+                                                        "\1\0\2\1\2\0\1\11\1\0\1\1\1\0\3\1";
 
-  private static int [] zzUnpackAttribute() {
-    int [] result = new int[147];
-    int offset = 0;
-    offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
-    return result;
-  }
-
-  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
-    int l = packed.length();
-    while (i < l) {
-      int count = packed.charAt(i++);
-      int value = packed.charAt(i++);
-      do result[j++] = value; while (--count > 0);
+    private static int [] zzUnpackAttribute() {
+        int [] result = new int[147];
+        int offset = 0;
+        offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
+        return result;
     }
-    return j;
-  }
+
+    private static int zzUnpackAttribute(String packed, int offset, int [] result) {
+        int i = 0,       /* index in packed string  */
+            j = offset,  /* index in unpacked array */
+            l = packed.length();
+        while (i < l) {
+            int count = packed.charAt(i++),
+                value = packed.charAt(i++);
+            do result[j++] = value; while (--count > 0);
+        }
+        return j;
+    }
 
   /** the input device */
   private java.io.Reader zzReader;
@@ -485,7 +482,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 * no parameter constructor.
 	 */
 	public AssemblerFrTokenMaker() {
-		super();
+            super();
 	}
 
 
@@ -495,7 +492,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 * @param tokenType The token's type.
 	 */
 	private void addToken(int tokenType) {
-		addToken(zzStartRead, zzMarkedPos-1, tokenType);
+            addToken(zzStartRead, zzMarkedPos-1, tokenType);
 	}
 
 
@@ -505,8 +502,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 * @param tokenType The token's type.
 	 */
 	private void addToken(int start, int end, int tokenType) {
-		int so = start + offsetShift;
-		addToken(zzBuffer, start,end, tokenType, so);
+            int so = start + offsetShift;
+            addToken(zzBuffer, start,end, tokenType, so);
 	}
 
 
@@ -521,8 +518,8 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 *                    occurs.
 	 */
 	public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
-		super.addToken(array, start,end, tokenType, startOffset);
-		zzStartRead = zzMarkedPos;
+            super.addToken(array, start,end, tokenType, startOffset);
+            zzStartRead = zzMarkedPos;
 	}
 
 
@@ -534,7 +531,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 *         it out.
 	 */
 	public String[] getLineCommentStartAndEnd() {
-		return new String[] { ";", null };
+            return new String[] { ";", null };
 	}
 
 
@@ -550,7 +547,7 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
 	 * @return The first <code>Token</code> in a linked list representing
 	 *         the syntax highlighted text.
 	 */
-  @Override
+        @Override
 	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
             
             Token token;    
