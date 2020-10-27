@@ -366,31 +366,32 @@ public class AssemblerFrTokenMaker extends AbstractJFlexTokenMaker implements To
     "\1\0\4\223\3\3\1\223\3\3\1\223\5\3\1\223"+
     "\1\3\3\223\1\3\1\223\5\3\1\223";
 
-  private static int [] zzUnpackTrans() {
-    int [] result = new int[5125];
-    int offset = 0;
-    offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
-    return result;
-  }
-
-  private static int zzUnpackTrans(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
-    int l = packed.length();
-    while (i < l) {
-      int count = packed.charAt(i++);
-      int value = packed.charAt(i++);
-      value--;
-      do result[j++] = value; while (--count > 0);
+    private static int [] zzUnpackTrans() {
+        int[] result = new int[5125];
+        int offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, 0, result);
+        return result;
     }
-    return j;
-  }
+
+    private static int zzUnpackTrans(String packed, int offset, int [] result) {
+        int i = 0,       /* index in packed string  */
+            j = offset,  /* index in unpacked array */
+            l = packed.length();
+        
+        while (i < l) {
+            int count = packed.charAt(i++),
+                value = packed.charAt(i++);
+            value--;
+            do result[j++] = value; while (--count > 0);
+        }
+        
+        return j;
+    }
 
 
     /* error codes */
-    private static final int ZZ_UNKNOWN_ERROR = 0;
-    private static final int ZZ_NO_MATCH = 1;
-    private static final int ZZ_PUSHBACK_2BIG = 2;
+    private static final int ZZ_UNKNOWN_ERROR = 0,
+                             ZZ_NO_MATCH = 1,
+                             ZZ_PUSHBACK_2BIG = 2;
 
     /* error messages for the codes above */
     private static final String ZZ_ERROR_MSG[] = {"Unkown internal scanner error",
