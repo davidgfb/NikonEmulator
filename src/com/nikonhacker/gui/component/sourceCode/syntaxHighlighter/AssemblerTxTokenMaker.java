@@ -554,221 +554,14 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
         }
         return j;
       }
-//</editor-fold>
       
-      
-
-      
-
-      
-
-      
-
-    //<editor-fold defaultstate="collapsed" desc="constructor">
-      /* user code: */
-      /**
-             * Constructor.  We must have this here as JFLex does not generate a
-             * no parameter constructor.
-             */
-            public AssemblerTxTokenMaker() {
-                    super();
-            }
-//</editor-fold>
-            
-//<editor-fold defaultstate="collapsed" desc="metodos">
-            /**
-             * Adds the token specified to the current linked list of tokens.
-             *
-             * @param tokenType The token's type.
-             */
-            private void addToken(int tokenType) {
-                    addToken(zzStartRead, zzMarkedPos-1, tokenType);
-            }
-
-
-            /**
-             * Adds the token specified to the current linked list of tokens.
-             *
-             * @param tokenType The token's type.
-             */
-            private void addToken(int start, int end, int tokenType) {
-                    int so = start + offsetShift;
-                    addToken(zzBuffer, start,end, tokenType, so);
-            }
-            
-            /**
-             * Adds the token specified to the current linked list of tokens.
-             *
-             * @param array The character array.
-             * @param start The starting offset in the array.
-             * @param end The ending offset in the array.
-             * @param tokenType The token's type.
-             * @param startOffset The offset in the document at which this token
-             *                    occurs.
-             */
-            public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
-                    super.addToken(array, start,end, tokenType, startOffset);
-                    zzStartRead = zzMarkedPos;
-            }
-//</editor-fold>
-
-            
-//<editor-fold defaultstate="collapsed" desc="funciones">
-            
-//</editor-fold>
-
-            //<editor-fold defaultstate="collapsed" desc="getters">
-            /**
-             * Returns the text to place at the beginning and end of a
-             * line to "comment" it in a this programming language.
-             *
-             * @return The start and end strings to add to a line to "comment"
-             *         it out.
-             */
-            public String[] getLineCommentStartAndEnd() {
-                    return new String[] { ";", null };
-            }
-            
-            /**
-             * Returns the first token in the linked list of tokens generated
-             * from <code>text</code>.  This method must be implemented by
-             * subclasses so they can correctly implement syntax highlighting.
-             *
-             * @param text The text from which to get tokens.
-             * @param initialTokenType The token type we should start with.
-             * @param startOffset The offset into the document at which
-             *                    <code>text</code> starts.
-             * @return The first <code>Token</code> in a linked list representing
-             *         the syntax highlighted text.
-             */
-            @Override
-            public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
-
-                    resetTokenList();
-                    this.offsetShift = -text.offset + startOffset;
-
-                    // Start off in the proper state.
-                    int state = Token.NULL;
-                    switch (initialTokenType) {
-                            default:
-                                    state = Token.NULL;
-                    }
-
-                    s = text;
-                    try {
-                            yyreset(zzReader);
-                            yybegin(state);
-                            return yylex();
-                    } catch (IOException ioe) {
-                        out.println("e: "+ioe);
-                        return new DefaultToken();
-                    }
-
-            }
-            
-            /**
-             * Returns whether tokens of the specified type should have "mark
-             * occurrences" enabled for the current programming language.
-             * Basically, we return true for everything except blanks
-             *
-             * @param type The token type.
-             * @return Whether tokens of this type should have "mark occurrences"
-             *         enabled.
-             */
-            public boolean getMarkOccurrencesOfTokenType(int type) {
-            return     type == Token.IDENTIFIER
-                    || type == Token.FUNCTION
-                    || type == Token.RESERVED_WORD
-                    || type == Token.RESERVED_WORD_2
-                    || type == Token.DATA_TYPE
-                    || type == Token.LITERAL_CHAR
-                    || type == Token.LITERAL_NUMBER_HEXADECIMAL
-                    || type == Token.ANNOTATION
-                    || type == Token.OPERATOR
-                    || type == Token.VARIABLE;
-            }
-//</editor-fold>
-
-
-            
-
-
-            
-
-            
-
-
-            /**
-             * Refills the input buffer.
-             *
-             * @return      <code>true</code> if EOF was reached, otherwise
-             *              <code>false</code>.
-             * @exception   IOException  if any I/O-Error occurs.
-             */
-            private boolean zzRefill() throws java.io.IOException {
-                    return zzCurrentPos>=s.offset+s.count;
-            }
-
-
-            /**
-             * Resets the scanner to read from a new input stream.
-             * Does not close the old reader.
-             *
-             * All internal variables are reset, the old input stream 
-             * <b>cannot</b> be reused (internal buffer is discarded and lost).
-             * Lexical state is set to <tt>YY_INITIAL</tt>.
-             *
-             * @param reader   the new input stream 
-             */
-            public final void yyreset(java.io.Reader reader) throws java.io.IOException {
-                    // 's' has been updated.
-                    zzBuffer = s.array;
-                    /*
-                     * We replaced the line below with the two below it because zzRefill
-                     * no longer "refills" the buffer (since the way we do it, it's always
-                     * "full" the first time through, since it points to the segment's
-                     * array).  So, we assign zzEndRead here.
-                     */
-                    //zzStartRead = zzEndRead = s.offset;
-                    zzStartRead = s.offset;
-                    zzEndRead = zzStartRead + s.count - 1;
-                    zzCurrentPos = zzMarkedPos = s.offset;
-                    zzLexicalState = YYINITIAL;
-                    zzReader = reader;
-                    zzAtBOL  = true;
-                    zzAtEOF  = false;
-            }
-
-
-
-
-      /**
-       * Creates a new scanner
-       * There is also a java.io.InputStream version of this constructor.
-       *
-       * @param   in  the java.io.Reader to read input from.
-       */
-      public AssemblerTxTokenMaker(java.io.Reader in) {
-        this.zzReader = in;
-      }
-
-      /**
-       * Creates a new scanner.
-       * There is also java.io.Reader version of this constructor.
-       *
-       * @param   in  the java.io.Inputstream to read input from.
-       */
-      public AssemblerTxTokenMaker(java.io.InputStream in) {
-        this(new java.io.InputStreamReader(in));
-      }
-
       /** 
        * Unpacks the compressed character translation table.
        *
        * @param packed   the packed character translation table
        * @return         the unpacked character translation table
        */
-      private static char [] zzUnpackCMap(String packed) {
+      private static char[] zzUnpackCMap(String packed) {
         char [] map = new char[0x10000];
         int i = 0;  /* index in packed string  */
         int j = 0;  /* index in unpacked array */
@@ -779,46 +572,21 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
         }
         return map;
       }
-
-
-      /**
-       * Closes the input stream.
-       */
-      public final void yyclose() throws java.io.IOException {
-        zzAtEOF = true;            /* indicate end of file */
-        zzEndRead = zzStartRead;  /* invalidate buffer    */
-
-        if (zzReader != null)
-          zzReader.close();
-      }
-
-
+      
       /**
        * Returns the current lexical state.
        */
       public final int yystate() {
         return zzLexicalState;
       }
-
-
-      /**
-       * Enters a new lexical state
-       *
-       * @param newState the new lexical state
-       */
-      public final void yybegin(int newState) {
-        zzLexicalState = newState;
-      }
-
-
+      
       /**
        * Returns the text matched by the current regular expression.
        */
       public final String yytext() {
         return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
       }
-
-
+      
       /**
        * Returns the character at position <tt>pos</tt> from the 
        * matched text. 
@@ -840,53 +608,8 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
        */
       public final int yylength() {
         return zzMarkedPos-zzStartRead;
-      }
-
-
-      /**
-       * Reports an error that occured while scanning.
-       *
-       * In a wellformed scanner (no or only correct usage of 
-       * yypushback(int) and a match-all fallback rule) this method 
-       * will only be called with things that "Can't Possibly Happen".
-       * If this method is called, something is seriously wrong
-       * (e.g. a JFlex bug producing a faulty scanner etc.).
-       *
-       * Usual syntax/scanner level error handling should be done
-       * in error fallback rules.
-       *
-       * @param   errorCode  the code of the errormessage to display
-       */
-      private void zzScanError(int errorCode) {
-        String message;
-        try {
-          message = ZZ_ERROR_MSG[errorCode];
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            out.println("e: "+e);
-          message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
-        }
-
-        throw new Error(message);
       } 
-
-
-      /**
-       * Pushes the specified amount of characters back into the input stream.
-       *
-       * They will be read again by then next call of the scanning method
-       *
-       * @param number  the number of characters to be read again.
-       *                This number must not be greater than yylength()!
-       */
-      public void yypushback(int number)  {
-        if ( number > yylength() )
-          zzScanError(ZZ_PUSHBACK_2BIG);
-
-        zzMarkedPos -= number;
-      }
-
-
+      
       /**
        * Resumes scanning until the next regular expression is matched,
        * the end of input is encountered or an I/O-Error occurs.
@@ -896,11 +619,11 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
        */
       public Token yylex() throws IOException {
         int zzInput = 0,
-            zzAction,
+            zzAction = 0,
 
         // cached fields:
-            zzCurrentPosL,
-            zzMarkedPosL,
+            zzCurrentPosL = 0,
+            zzMarkedPosL = 0,
             zzEndReadL = zzEndRead;
         char [] zzBufferL = zzBuffer,
                 zzCMapL = ZZ_CMAP;
@@ -1023,4 +746,255 @@ public class AssemblerTxTokenMaker extends AbstractJFlexTokenMaker implements To
         //
         return firstToken;
       }
+//</editor-fold>
+      
+
+    //<editor-fold defaultstate="collapsed" desc="constructor">
+      /* user code: */
+      /**
+             * Constructor.  We must have this here as JFLex does not generate a
+             * no parameter constructor.
+             */
+            public AssemblerTxTokenMaker() {
+                    super();
+            }
+            
+            /**
+       * Creates a new scanner
+       * There is also a java.io.InputStream version of this constructor.
+       *
+       * @param   in  the java.io.Reader to read input from.
+       */
+      public AssemblerTxTokenMaker(java.io.Reader in) {
+        this.zzReader = in;
+      }
+
+      /**
+       * Creates a new scanner.
+       * There is also java.io.Reader version of this constructor.
+       *
+       * @param   in  the java.io.Inputstream to read input from.
+       */
+      public AssemblerTxTokenMaker(java.io.InputStream in) {
+        this(new java.io.InputStreamReader(in));
+      }
+//</editor-fold>
+            
+    //<editor-fold defaultstate="collapsed" desc="metodos">
+            /**
+             * Adds the token specified to the current linked list of tokens.
+             *
+             * @param tokenType The token's type.
+             */
+            private void addToken(int tokenType) {
+                    addToken(zzStartRead, zzMarkedPos-1, tokenType);
+            }
+
+
+            /**
+             * Adds the token specified to the current linked list of tokens.
+             *
+             * @param tokenType The token's type.
+             */
+            private void addToken(int start, int end, int tokenType) {
+                    int so = start + offsetShift;
+                    addToken(zzBuffer, start,end, tokenType, so);
+            }
+            
+            /**
+             * Adds the token specified to the current linked list of tokens.
+             *
+             * @param array The character array.
+             * @param start The starting offset in the array.
+             * @param end The ending offset in the array.
+             * @param tokenType The token's type.
+             * @param startOffset The offset in the document at which this token
+             *                    occurs.
+             */
+            public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
+                    super.addToken(array, start,end, tokenType, startOffset);
+                    zzStartRead = zzMarkedPos;
+            }
+            
+           
+            /**
+             * Resets the scanner to read from a new input stream.
+             * Does not close the old reader.
+             *
+             * All internal variables are reset, the old input stream 
+             * <b>cannot</b> be reused (internal buffer is discarded and lost).
+             * Lexical state is set to <tt>YY_INITIAL</tt>.
+             *
+             * @param reader   the new input stream 
+             */
+            public final void yyreset(java.io.Reader reader) throws java.io.IOException {
+                    // 's' has been updated.
+                    zzBuffer = s.array;
+                    /*
+                     * We replaced the line below with the two below it because zzRefill
+                     * no longer "refills" the buffer (since the way we do it, it's always
+                     * "full" the first time through, since it points to the segment's
+                     * array).  So, we assign zzEndRead here.
+                     */
+                    //zzStartRead = zzEndRead = s.offset;
+                    zzStartRead = s.offset;
+                    zzEndRead = zzStartRead + s.count - 1;
+                    zzCurrentPos = zzMarkedPos = s.offset;
+                    zzLexicalState = YYINITIAL;
+                    zzReader = reader;
+                    zzAtBOL  = true;
+                    zzAtEOF  = false;
+            }
+            
+            /**
+       * Closes the input stream.
+       */
+      public final void yyclose() throws java.io.IOException {
+        zzAtEOF = true;            /* indicate end of file */
+        zzEndRead = zzStartRead;  /* invalidate buffer    */
+
+        if (zzReader != null)
+          zzReader.close();
+      }
+      
+      /**
+       * Enters a new lexical state
+       *
+       * @param newState the new lexical state
+       */
+      public final void yybegin(int newState) {
+        zzLexicalState = newState;
+      }
+      
+      /**
+       * Reports an error that occured while scanning.
+       *
+       * In a wellformed scanner (no or only correct usage of 
+       * yypushback(int) and a match-all fallback rule) this method 
+       * will only be called with things that "Can't Possibly Happen".
+       * If this method is called, something is seriously wrong
+       * (e.g. a JFlex bug producing a faulty scanner etc.).
+       *
+       * Usual syntax/scanner level error handling should be done
+       * in error fallback rules.
+       *
+       * @param   errorCode  the code of the errormessage to display
+       */
+      private void zzScanError(int errorCode) {
+        String message;
+        try {
+          message = ZZ_ERROR_MSG[errorCode];
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            out.println("e: "+e);
+          message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
+        }
+
+        throw new Error(message);
+      } 
+      
+      /**
+       * Pushes the specified amount of characters back into the input stream.
+       *
+       * They will be read again by then next call of the scanning method
+       *
+       * @param number  the number of characters to be read again.
+       *                This number must not be greater than yylength()!
+       */
+      public void yypushback(int number)  {
+        if ( number > yylength() )
+          zzScanError(ZZ_PUSHBACK_2BIG);
+
+        zzMarkedPos -= number;
+      }
+//</editor-fold>
+
+            
+//<editor-fold defaultstate="collapsed" desc="funciones">
+            
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="getters">
+            /**
+             * Returns the text to place at the beginning and end of a
+             * line to "comment" it in a this programming language.
+             *
+             * @return The start and end strings to add to a line to "comment"
+             *         it out.
+             */
+            public String[] getLineCommentStartAndEnd() {
+                    return new String[] { ";", null };
+            }
+            
+            /**
+             * Returns the first token in the linked list of tokens generated
+             * from <code>text</code>.  This method must be implemented by
+             * subclasses so they can correctly implement syntax highlighting.
+             *
+             * @param text The text from which to get tokens.
+             * @param initialTokenType The token type we should start with.
+             * @param startOffset The offset into the document at which
+             *                    <code>text</code> starts.
+             * @return The first <code>Token</code> in a linked list representing
+             *         the syntax highlighted text.
+             */
+            @Override
+            public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
+
+                    resetTokenList();
+                    this.offsetShift = -text.offset + startOffset;
+
+                    // Start off in the proper state.
+                    int state = Token.NULL;
+                    switch (initialTokenType) {
+                            default:
+                                    state = Token.NULL;
+                    }
+
+                    s = text;
+                    try {
+                            yyreset(zzReader);
+                            yybegin(state);
+                            return yylex();
+                    } catch (IOException ioe) {
+                        out.println("e: "+ioe);
+                        return new DefaultToken();
+                    }
+
+            }
+            
+            /**
+             * Returns whether tokens of the specified type should have "mark
+             * occurrences" enabled for the current programming language.
+             * Basically, we return true for everything except blanks
+             *
+             * @param type The token type.
+             * @return Whether tokens of this type should have "mark occurrences"
+             *         enabled.
+             */
+            public boolean getMarkOccurrencesOfTokenType(int type) {
+                return type == Token.IDENTIFIER || type == Token.FUNCTION || type == Token.RESERVED_WORD || type == Token.RESERVED_WORD_2 || type == Token.DATA_TYPE|| type == Token.LITERAL_CHAR|| type == Token.LITERAL_NUMBER_HEXADECIMAL|| type == Token.ANNOTATION|| type == Token.OPERATOR|| type == Token.VARIABLE;
+            }
+            
+            /**
+             * Refills the input buffer.
+             *
+             * @return      <code>true</code> if EOF was reached, otherwise
+             *              <code>false</code>.
+             * @exception   IOException  if any I/O-Error occurs.
+             */
+            private boolean zzRefill() throws java.io.IOException {
+                    return zzCurrentPos>=s.offset+s.count;
+            }
+//</editor-fold>
+        
+
+
+      
+
+
+      
+
+
+     
 }
